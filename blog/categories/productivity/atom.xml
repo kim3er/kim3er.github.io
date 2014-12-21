@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Adventures in brine]]></title>
-  <link href="http://kim3er.github.io/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Productivity | Adventures in brine]]></title>
+  <link href="http://kim3er.github.io/blog/categories/productivity/atom.xml" rel="self"/>
   <link href="http://kim3er.github.io/"/>
   <updated>2014-12-21T11:29:51+00:00</updated>
   <id>http://kim3er.github.io/</id>
