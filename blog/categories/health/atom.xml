@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Health | Adventures in brine]]></title>
-  <link href="http://kim3er.github.io/blog/categories/health/atom.xml" rel="self"/>
-  <link href="http://kim3er.github.io/"/>
-  <updated>2014-12-21T11:44:52+00:00</updated>
-  <id>http://kim3er.github.io/</id>
+  <link href="http://rich.k3r.me/blog/categories/health/atom.xml" rel="self"/>
+  <link href="http://rich.k3r.me/"/>
+  <updated>2014-12-21T11:46:55+00:00</updated>
+  <id>http://rich.k3r.me/</id>
   <author>
     <name><![CDATA[Richard Kimber]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Half-arsed Working Techniques]]></title>
-    <link href="http://kim3er.github.io/blog/2014/12/21/half-arsed-working-techniques/"/>
+    <link href="http://rich.k3r.me/blog/2014/12/21/half-arsed-working-techniques/"/>
     <updated>2014-12-21T11:21:41+00:00</updated>
-    <id>http://kim3er.github.io/blog/2014/12/21/half-arsed-working-techniques</id>
+    <id>http://rich.k3r.me/blog/2014/12/21/half-arsed-working-techniques</id>
     <content type="html"><![CDATA[<h2>TL;DR</h2>
 
 <p>&ldquo;Half-arsed&rdquo;, as in reducing possibility of getting a fat arse by working more efficiently.  It&rsquo;s a pun, I&rsquo;m funny like that.</p>
