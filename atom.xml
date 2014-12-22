@@ -4,7 +4,7 @@
   <title><![CDATA[Adventures in brine]]></title>
   <link href="http://rich.k3r.me/atom.xml" rel="self"/>
   <link href="http://rich.k3r.me/"/>
-  <updated>2014-12-21T11:46:55+00:00</updated>
+  <updated>2014-12-22T10:42:10+00:00</updated>
   <id>http://rich.k3r.me/</id>
   <author>
     <name><![CDATA[Richard Kimber]]></name>
@@ -79,6 +79,123 @@
 <p>What&rsquo;s weird about my conclusion, is that it doesn&rsquo;t talk about my ideas in context of standing more; which is the point of the post. I seem to be more concerned with disruptions in my workflow and being approachable to my co-workers. I think that&rsquo;s interesting, because for me, it&rsquo;s all interconnected.</p>
 
 <p>By playing with these techniques, I don&rsquo;t just prevent the onset of having a fat arse, I also become more productive and collaborative in my work.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Converting SVN to GIT]]></title>
+    <link href="http://rich.k3r.me/blog/2012/11/25/converting-svn-to-git/"/>
+    <updated>2012-11-25T20:36:00+00:00</updated>
+    <id>http://rich.k3r.me/blog/2012/11/25/converting-svn-to-git</id>
+    <content type="html"><![CDATA[<blockquote><p>This is a repost of <a href="http://dogma.co.uk/blog/10-converting-svn-to-git">http://dogma.co.uk/blog/10-converting-svn-to-git</a></p></blockquote>
+
+<p>We&rsquo;ve recently set about converting all our old SVN repositories to GIT. The process is quite easy thanks to the <code>git svn</code> command, but there are some gotchas. So, I&rsquo;ll detail the process below.</p>
+
+<p>Every revision in a SVN repository has an author, these authors need to be migrated to the new GIT repository; which is done by compiling a text file listing the existing SVN username along with the author&rsquo;s new GIT equivalent. The format of the text file is as follows:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">svn_username</span> <span class="o">=</span> GIT User Name &lt;user@dogma.co.uk&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You can list as many users in this file as you like, duplicating the GIT details if required. To generate a list of the SVN author&rsquo;s run the following with the SVN repo:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>svn log --xml <span class="p">|</span> grep author <span class="p">|</span> sort -u <span class="p">|</span> perl -pe <span class="s1">&#39;s/.&gt;(.?)&lt;./$1 = /&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A potential gotcha here is that <code>git svn</code> will fail if the SVN username has spaces in it. This caught me out as our older SVN repos were originally hosted on a Visual SVN Server, which used the username <code>Visual SVN</code>.  If you have a username with spaces in it, you must change that username in each revision the author is attached to.</p>
+
+<p>To identify the offending revisions, run:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>svn log <span class="p">|</span> sed -n <span class="s1">&#39;/svn_username/,/-----$/ p&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then to fix the username, run the following on each revision:</p>
+
+<p>svn propedit svn:author -r revision &ndash;revprop svn_url
+Once you have created an authors file (usually called authors.txt), run the following in an empty directory to clone the SVN repo into a new temporary GIT repo called <code>git-tmp</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git svn clone --stdlayout --no-metadata -A authors.txt svn_url git-tmp
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Change directory into <code>git-tmp</code> and run the following to fetch the SVN repo structure:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git svn fetch
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now you&rsquo;ll want to link the temporary repository to your destination remote GIT repo, by running the following:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git remote add remote git_url
+</span><span class='line'>git push -u remote master
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The commands above will only push the master (what was trunk) to the remote repo. Currently, any branches you have in the SVN repo only exist as remote references in <code>git-tmp</code>. To make these references local branches and then push them to the server, run the following for each branch you would like to keep:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">branch</span><span class="o">=</span>branch<span class="p">;</span> <span class="nv">remote</span><span class="o">=</span>remote<span class="p">;</span> git checkout -b <span class="nv">$branch</span> remotes/<span class="nv">$branch</span><span class="p">;</span> git push -u <span class="nv">$remote</span> <span class="nv">$branch</span><span class="p">;</span> git checkout master
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Providing all went well, you can now discard the temporary GIT repo and clone a fresh copy of your new remote GIT repo.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Content Management With Perch]]></title>
+    <link href="http://rich.k3r.me/blog/2011/03/04/content-management-with-perch/"/>
+    <updated>2011-03-04T04:22:42+00:00</updated>
+    <id>http://rich.k3r.me/blog/2011/03/04/content-management-with-perch</id>
+    <content type="html"><![CDATA[<blockquote><p>This is a repost of <a href="http://dogma.co.uk/blog/1-content-management-with-perch">http://dogma.co.uk/blog/1-content-management-with-perch</a></p></blockquote>
+
+<p>Perch, if you not already aware is a curious little PHP CMS by British design agency edgeofmyseat.com.  Curious because in an ecosystem dominated by feature rich, open source, free CMSs like WordPress and Drupal; Perch provides only one feature out of the box and costs about £40 per site including VAT. Curious because given this information, I&rsquo;m still overwhelming drawn to Perch for a lot of my projects.</p>
+
+<p>Why I&rsquo;m drawn to Perch is the simplicity of the CMS itself. <a href="http://edgeofmyseat.com/">edgeofmyseat.com</a> have found niche between the handful of static HTML files in a directory and site built from the ground up to be content managed.</p>
+
+<p>WordPress for instance, makes it very easy to create a very manageable site in minutes, literally. I dropped the folder on to my server, ran the installer and two minutes later I had a fully content managed site. Amazing, and with such a large community supporting WordPress I had customised the look, feel and function of my site with some of the thousands of free themes and plugins on offer.</p>
+
+<p>But what about the site I already have? The individual HTML pages, strung together with anchor tags and a splash of PHP or similar as the contact form required it. Or the client who is intimidated (or just disinterested) with admin screens filled with Posts, Comments, Plugins and Tools?</p>
+
+<p>If I was to content manage that static site with WordPress, I&rsquo;d have to extract a template from the many pages built by my predecessors and create a theme. Assuming that is the pages have retained a uniform appearance over time. Then I manually recreate each of the pages in the CMS and create (or find equivalent) plugins for all the little bits of bespoke functionality that WordPress doesn&rsquo;t quite deal with. The horrible feeling that developers get when retreading old ground.</p>
+
+<p>Or, you install Perch. Perch is designed to let you work the way you want. You create your pages, your structure, add your images and navigation. Out of the box, Perch does one thing really well. When you&rsquo;re creating your pages and you come across section that needs to be edited by the client, drop in a content tag.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span> <span class="nx">perch_content</span><span class="p">(</span><span class="s2">&quot;Dynamic Content&quot;</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You also need to tell Perch to watch the page; you do this by adding the following line to the top of the page:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span> <span class="k">include</span><span class="p">(</span><span class="s2">&quot;../perch/runtime.php&quot;</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>What happens is this; when you subsequently load that page. Perch queries the database to see if it has any content for page X called &lsquo;Dynamic Content&rsquo;. If Perch doesn&rsquo;t have a content region in that location, it creates one. The next time you log into Perch, you&rsquo;ll be provided with a content region called &lsquo;Dynamic Content&rsquo; flagged as new.</p>
+
+<p><img src="http://rich.k3r.me/images/content-manage-perch-1.png" alt="Dynamic Content" /></p>
+
+<p>Clicking on the region gives you the opportunity to define the content type from many built-in templates ranging from text to Google Analytics to images to blocks of code. If there isn&rsquo;t a template that suits your needs, create your own. You can also decide whether the content is recurring (like a list of posts) and whether content is to be shared between multiple pages.</p>
+
+<p>So to go back to the example of that static site. Your client just wants to change the text on the front page, or update the news feed themselves. Just add a couple of PHP tags to the desired page, set the content type in the CMS and away you go. Replicating the existing news feed is as easy as copying one of the existing news items and pasting it into a new template, replacing the content with perch tags.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;</span><span class="nx">perch</span><span class="o">:</span><span class="nx">content</span> <span class="nx">id</span><span class="o">=</span><span class="s2">&quot;heading&quot;</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;text&quot;</span> <span class="nx">label</span><span class="o">=</span><span class="s2">&quot;Heading&quot;</span> <span class="o">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In summary, Perch is easy to setup (install process similar to WordPress) and makes it incredibly easy to add content management to existing sites on PHP capable web servers. Perch also contains an elegant API for extending the core functionality in the form of Apps. Apps available for download from the Perch site provide blogging functionality and dynamic page creation amongst other things. Hopefully I&rsquo;ll get a chance to cover Apps and App development in another post. If you regularly deal with legacy sites or just want to simplify things a bit, I recommend you check Perch out.</p>
 ]]></content>
   </entry>
   
