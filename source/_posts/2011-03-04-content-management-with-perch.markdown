@@ -3,7 +3,7 @@ layout: post
 title: "Content Management With Perch"
 date: 2011-03-04 04:22:42 +0000
 comments: true
-categories: 
+categories: [ Perch, PHP ]
 ---
 
 > This is a repost of [http://dogma.co.uk/blog/1-content-management-with-perch](http://dogma.co.uk/blog/1-content-management-with-perch)
