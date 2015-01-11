@@ -4,6 +4,7 @@ title: "Flexible Index Pages in Perch"
 date: 2015-01-08 10:05:12 +0000
 comments: true
 categories: [ Perch, PHP ]
+published: false
 ---
 It's pretty easy to knock up an index page in Perch. By 'index page', I mean a page that summarises the content of a sub folder. For instance, you have a collection of projects, implemented as sub pages of a directory called 'projects'. You could provide a link to each of these projects on an index page.
 
@@ -51,28 +52,34 @@ Page Content
 		- some_content <-- Can't access this
 ```
 
-As of Perch 2.4, the Perch team have an answer to this restriction, with the introduction of [Page Attributes](http://docs.grabaperch.com/docs/pages/page-attributes/).
+As of Perch 2.4, the Perch team have an answer to this restriction, with the introduction of [Page Attributes](http://docs.grabaperch.com/docs/pages/page-attributes/). Page Attributes can be very useful, but they can't be used to be target a sub-sect of pages (like our project pages), so are not ideal for what we're trying to achieve.
 
-##Page Attributes
-Page Attributes allow you to add editable content at the page level, rather than on a content level. The syntax is almost identical to that of a standard content region. Below is an extract of `perch/templates/pages/attributes/seo.html`:
+What is needed is a mechanism, whereby the page order is retrieved from the Navigation part of Perch and the content, from a region designed with our projects in mind.
 
-``` html
-<perch:pages id="description" label="Description" type="textarea" size="xs" escape="true" count="chars" />
+``` php
+<ul>
+	<?php
+		$nav = perch_pages_navigation(array( // Return navigation pages data as array
+			'from-path' => '*',
+			'skip-template' => true
+			));
+
+		foreach($nav as $page) { // Loop through & customise each item returned in the array
+			PerchSystem::set_var('pageNavText', $page['pageNavText']); // Grab the page title
+			PerchSystem::set_var('pagePath', $page['pagePath']); // Find the correct links for each page
+			perch_content_custom('Detail', array( // 'Detail' is the region containing the data we need - this is used in the target page template
+				'page' => $page['pagePath'], // The dynamic path to the page which contains the target region
+				'template' =>'industry_icon.html' // This region reuses data from target pages (image, excerpt)									
+			));
+
+			$i = $i + 1;
+		}
+	?>
+</ul>
 ```
 
-_If you're not already familiar with how to implement Page Attributes, I urge you follow the link above. The implementation is simple, and as the builtin example suggests, very effective for SEO._
+The PHP above retrieves our list of pages using `perch_pages_navigation`, but this time skipping the template. Setting `skip-template` to `true`, bypasses the HTML rendering process and returns an array instead. The array itself is a list of all our project pages, including associated page data.
 
-We can use Page Attributes to fresh out our index page, with an image and an excerpt.
+Within the `foreach` loop, we grab what we need from the page data (in this case `pagePath` and `pageNavText`, 
 
-Adding the following to `perch/templates/pages/attributes/default.html`:
 
-``` html
-<perch:pages id="image" label="Image" type="image" />
-<perch:pages id="excerpt" label="Excerpt" type="textarea" />
-```
-
-Would add two additional fields in the Page Details section of all pages.
-
-![Page Attributes added](/images/page-attributes-1.png)
-
-We could the
