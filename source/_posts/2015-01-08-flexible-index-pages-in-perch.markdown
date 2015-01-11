@@ -4,7 +4,7 @@ title: "Flexible Index Pages in Perch"
 date: 2015-01-08 10:05:12 +0000
 comments: true
 categories: [ Perch, PHP ]
-published: false
+published: true
 ---
 It's pretty easy to knock up an index page in Perch. By 'index page', I mean a page that summarises the content of a sub folder. For instance, you have a collection of projects, implemented as sub pages of a directory called 'projects'. You could provide a link to each of these projects on an index page.
 
@@ -69,7 +69,7 @@ What is needed is a mechanism, whereby the page order is retrieved from the Navi
 			PerchSystem::set_var('pagePath', $page['pagePath']); // Find the correct links for each page
 			perch_content_custom('Detail', array( // 'Detail' is the region containing the data we need - this is used in the target page template
 				'page' => $page['pagePath'], // The dynamic path to the page which contains the target region
-				'template' =>'industry_icon.html' // This region reuses data from target pages (image, excerpt)									
+				'template' =>'project_item.html' // This region reuses data from target pages (image, excerpt)
 			));
 
 			$i = $i + 1;
@@ -80,6 +80,43 @@ What is needed is a mechanism, whereby the page order is retrieved from the Navi
 
 The PHP above retrieves our list of pages using `perch_pages_navigation`, but this time skipping the template. Setting `skip-template` to `true`, bypasses the HTML rendering process and returns an array instead. The array itself is a list of all our project pages, including associated page data.
 
-Within the `foreach` loop, we grab what we need from the page data (in this case `pagePath` and `pageNavText`, 
+With the array in hand, we can apply it to a standard content region, allowing us to access project specific content. Within the `foreach` loop, we grab what we need from the page data (in this case `pagePath` and `pageNavText`). We'll need the `pagePath` value for two reasons; we'll need to know where we're linking too, but also we can use `pagePath` to summon up our project specific content. 
 
+See this line below, it's instructing `perch_content_custom` to go to the project page for the content to populate our template ('project_item.html').
+
+``` php
+'page' => $page['pagePath'], // The dynamic path to the page which contains the target region
+```
+
+That's really powerful, but I've skipped two things:
+
+1. What does the 'Detail' region of the project page look like?
+2. What does 'project_item.html' look like?
+
+Where possible I tend to organise my page templates into as few content regions as possible, the primary region typically being called 'Detail'.
+
+Let's assume we're project title is being inferred from the page title, so our Detail region includes a description, an image and a list of features. We'd create a template ('project_detail.html') that looked like this:
+
+``` html
+<div class="desc">
+	<perch:content id="desc" type="textarea" label="Description" html="true" editor="ckeditor" imagewidth="640" imageheight="480" />
+</div>
+
+<div class="two-col">
+	<div class="image">
+		<img src="<perch:content type="image" id="image" label="Image" width="800" />" alt="<perch:content type="text" id="alt" label="Description" required="true" help="e.g. Photo of MD John Smith with his best wig on" title="true" />" />
+	</div>
+	<div class="feat">
+		<ul>
+			<perch:repeater id="features" label="Features">
+				<li>
+					<perch:content type="text" id="feature" label="Feature" />
+				</li>
+			</perch:repeater>
+		</ul>
+	</div>
+</div>
+```
+
+_Since the inclusion of [Repeaters](http://docs.grabaperch.com/docs/templates/repeaters/) within content templates, it's become much easier to create self contained content regions. Before repeaters, the moment you hit a image gallery or feature list, you'd need to duck out of your primary content region and create a new repeating content region. Leading to fun naming conventions like 'Detail - Top' and 'Detail - Bottom', with 'Feature List' stuck in the middle._
 
