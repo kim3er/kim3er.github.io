@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Perch | Adventures in brine]]></title>
+  <link href="http://rich.k3r.me/blog/categories/perch/atom.xml" rel="self"/>
+  <link href="http://rich.k3r.me/"/>
+  <updated>2015-01-13T17:22:04+00:00</updated>
+  <id>http://rich.k3r.me/</id>
+  <author>
+    <name><![CDATA[Richard Kimber]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Flexible Index Pages in Perch]]></title>
+    <link href="http://rich.k3r.me/blog/2015/01/08/flexible-index-pages-in-perch/"/>
+    <updated>2015-01-08T10:05:12+00:00</updated>
+    <id>http://rich.k3r.me/blog/2015/01/08/flexible-index-pages-in-perch</id>
+    <content type="html"><![CDATA[<p>It&rsquo;s pretty easy to knock up an index page in Perch. By &lsquo;index page&rsquo;, I mean a page that summarises the content of a sub folder. For instance, you have a collection of projects, implemented as sub pages of a directory called &lsquo;projects&rsquo;. You could provide a link to each of these projects on an index page.</p>
+
+<p>The typical structure would be:</p>
+
+<pre><code>root
+    projects
+        index.php
+        project-1.php
+        project-2.php
+</code></pre>
+
+<p>The index itself would be provided by the <code>perch_pages_navigation</code> function. A basic example below:</p>
+
+<pre><code class="php">&lt;?php perch_pages_navigation(array( 'from-path' =&gt; '*' )); ?&gt;
+</code></pre>
+
+<p><em>The asterisk assigned to <code>from-path</code> tells <code>perch_pages_navigation</code> to work from the current directory (&lsquo;projects&rsquo;).</em></p>
+
+<p><em>More information on <code>perch_pages_navigation</code> can be found here, <a href="http://docs.grabaperch.com/docs/navigation/perch-pages-navigation/">perch_pages_navigation</a>.</em></p>
+
+<p>Would output:</p>
+
+<p>&#8220;` html</p>
+
+<ul>
+    <li>
+        <a href="http://rich.k3r.me/industries/project-1.php">Project 1</a>
+    </li>
+    <li>
+        <a href="http://rich.k3r.me/industries/project-2.php">Project 2</a>
+    </li>
+</ul>
+
+
+<pre><code>
+The HTML is generated from the HTML template 'perch/templates/navigation/item.html'. This is a file that can be modified or even replaced, using the `template` option.
+
+You're restricted in the content that can be displayed in this template. This is because of how data in Perch is grouped. Within a `perch_pages_navigation` template, you have access to data related to the page, like the title and path. However, you don't have access to content regions, defined using `perch_content`, as this not information that is shared across all pages.
+</code></pre>
+
+<p>Page Content
+    - pagePath &lt;&ndash; Can access this
+    Region Content (as defined in a perch_content region)
+        - some_content &lt;&ndash; Can&rsquo;t access this
+&#8220;`</p>
+
+<p>As of Perch 2.4, the Perch team have an answer to this restriction, with the introduction of <a href="http://docs.grabaperch.com/docs/pages/page-attributes/">Page Attributes</a>. Page Attributes can be very useful, but they can&rsquo;t be used to be target a sub-sect of pages (like our project pages), so are not ideal for what we&rsquo;re trying to achieve.</p>
+
+<p>What is needed is a mechanism, whereby the page order is retrieved from the Navigation part of Perch and the content, from a region designed with our projects in mind.</p>
+
+<p>&#8220;` php</p>
+
+<ul>
+    <?php
+        $nav = perch_pages_navigation(array( // Return navigation pages data as array
+            'from-path' => &#8216;*&#8217;,
+            &#8216;skip-template&#8217; => true
+            ));
+
+        foreach($nav as $page) { // Loop through & customise each item returned in the array
+            PerchSystem::set_var(&#8216;pageNavText&#8217;, $page[&#8216;pageNavText&#8217;]); // Grab the page title
+            PerchSystem::set_var(&#8216;pagePath&#8217;, $page[&#8216;pagePath&#8217;]); // Find the correct links for each page
+            perch_content_custom(&#8216;Detail&#8217;, array( // &#8216;Detail&#8217; is the region containing the data we need - this is used in the target page template
+                &#8216;page&#8217; => $page[&#8216;pagePath&#8217;], // The dynamic path to the page which contains the target region
+                &#8216;template&#8217; =>&#8217;project_item.html&#8217; // This region reuses data from target pages (image, excerpt)
+            ));
+
+            $i = $i + 1;
+        }
+    ?>
+</ul>
+
+
+<pre><code>
+The PHP above retrieves our list of pages using `perch_pages_navigation`, but this time skipping the template. Setting `skip-template` to `true`, bypasses the HTML rendering process and returns an array instead. The array itself is a list of all our project pages, including associated page data.
+
+With the array in hand, we can apply it to a standard content region, allowing us to access project specific content. Within the `foreach` loop, we grab what we need from the page data (in this case `pagePath` and `pageNavText`). We'll need the `pagePath` value for two reasons; we'll need to know where we're linking too, but also we can use `pagePath` to summon up our project specific content. 
+
+See this line below, it's instructing `perch_content_custom` to go to the project page for the content to populate our template ('project_item.html').
+</code></pre>
+
+<pre><code>'page' =&gt; $page['pagePath'], // The dynamic path to the page which contains the target region
+</code></pre>
+
+<pre><code>
+That's really powerful, but I've skipped two things:
+
+1. What does the 'Detail' region of the project page look like?
+2. What does 'project_item.html' look like?
+
+Where possible I tend to organise my page templates into as few content regions as possible, the primary region typically being called 'Detail'.
+
+Let's assume we're project title is being inferred from the page title, so our Detail region includes a description, an image and a list of features. We'd create a template ('project_detail.html') that looked like this:
+</code></pre>
+
+<div class="desc">
+    <perch:content id="desc" type="textarea" label="Description" html="true" editor="ckeditor" imagewidth="640" imageheight="480" />
+</div>
+
+
+
+
+<div class="two-col">
+    <div class="image">
+        <img src="<perch:content type="image" id="image" label="Image" width="800" />&#8221; alt=&#8221;<perch:content type="text" id="alt" label="Description" required="true" help="e.g. Photo of MD John Smith with his best wig on" title="true" />&#8221; />
+    </div>
+    <div class="feat">
+        <ul>
+            <perch:repeater id="features" label="Features">
+                <li>
+                    <perch:content type="text" id="feature" label="Feature" />
+                </li>
+            </perch:repeater>
+        </ul>
+    </div>
+</div>
+
+
+<p>&#8220;`</p>
+
+<p><em>Since the inclusion of <a href="http://docs.grabaperch.com/docs/templates/repeaters/">Repeaters</a> within content templates, it&rsquo;s become much easier to create self contained content regions. Before repeaters, the moment you hit a image gallery or feature list, you&rsquo;d need to duck out of your primary content region and create a new repeating content region. Leading to fun naming conventions like &lsquo;Detail - Top&rsquo; and &lsquo;Detail - Bottom&rsquo;, with &lsquo;Feature List&rsquo; stuck in the middle.</em></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Content Management With Perch]]></title>
+    <link href="http://rich.k3r.me/blog/2011/03/04/content-management-with-perch/"/>
+    <updated>2011-03-04T04:22:42+00:00</updated>
+    <id>http://rich.k3r.me/blog/2011/03/04/content-management-with-perch</id>
+    <content type="html"><![CDATA[<blockquote><p>This is a repost of <a href="http://dogma.co.uk/blog/1-content-management-with-perch">http://dogma.co.uk/blog/1-content-management-with-perch</a></p></blockquote>
+
+<p>Perch, if you not already aware is a curious little PHP CMS by British design agency edgeofmyseat.com.  Curious because in an ecosystem dominated by feature rich, open source, free CMSs like WordPress and Drupal; Perch provides only one feature out of the box and costs about £40 per site including VAT. Curious because given this information, I&rsquo;m still overwhelming drawn to Perch for a lot of my projects.</p>
+
+<p>Why I&rsquo;m drawn to Perch is the simplicity of the CMS itself. <a href="http://edgeofmyseat.com/">edgeofmyseat.com</a> have found niche between the handful of static HTML files in a directory and site built from the ground up to be content managed.</p>
+
+<p>WordPress for instance, makes it very easy to create a very manageable site in minutes, literally. I dropped the folder on to my server, ran the installer and two minutes later I had a fully content managed site. Amazing, and with such a large community supporting WordPress I had customised the look, feel and function of my site with some of the thousands of free themes and plugins on offer.</p>
+
+<p>But what about the site I already have? The individual HTML pages, strung together with anchor tags and a splash of PHP or similar as the contact form required it. Or the client who is intimidated (or just disinterested) with admin screens filled with Posts, Comments, Plugins and Tools?</p>
+
+<p>If I was to content manage that static site with WordPress, I&rsquo;d have to extract a template from the many pages built by my predecessors and create a theme. Assuming that is the pages have retained a uniform appearance over time. Then I manually recreate each of the pages in the CMS and create (or find equivalent) plugins for all the little bits of bespoke functionality that WordPress doesn&rsquo;t quite deal with. The horrible feeling that developers get when retreading old ground.</p>
+
+<p>Or, you install Perch. Perch is designed to let you work the way you want. You create your pages, your structure, add your images and navigation. Out of the box, Perch does one thing really well. When you&rsquo;re creating your pages and you come across section that needs to be edited by the client, drop in a content tag.</p>
+
+<pre><code class="php">&lt;?php perch_content("Dynamic Content"); ?&gt;
+</code></pre>
+
+<p>You also need to tell Perch to watch the page; you do this by adding the following line to the top of the page:</p>
+
+<pre><code class="php">&lt;?php include("../perch/runtime.php"); ?&gt;
+</code></pre>
+
+<p>What happens is this; when you subsequently load that page. Perch queries the database to see if it has any content for page X called &lsquo;Dynamic Content&rsquo;. If Perch doesn&rsquo;t have a content region in that location, it creates one. The next time you log into Perch, you&rsquo;ll be provided with a content region called &lsquo;Dynamic Content&rsquo; flagged as new.</p>
+
+<p><img src="/images/content-manage-perch-1.png" alt="Dynamic Content" /></p>
+
+<p>Clicking on the region gives you the opportunity to define the content type from many built-in templates ranging from text to Google Analytics to images to blocks of code. If there isn&rsquo;t a template that suits your needs, create your own. You can also decide whether the content is recurring (like a list of posts) and whether content is to be shared between multiple pages.</p>
+
+<p>So to go back to the example of that static site. Your client just wants to change the text on the front page, or update the news feed themselves. Just add a couple of PHP tags to the desired page, set the content type in the CMS and away you go. Replicating the existing news feed is as easy as copying one of the existing news items and pasting it into a new template, replacing the content with perch tags.</p>
+
+<pre><code class="php">&lt;perch:content id="heading" type="text" label="Heading" /&gt;
+</code></pre>
+
+<p>In summary, Perch is easy to setup (install process similar to WordPress) and makes it incredibly easy to add content management to existing sites on PHP capable web servers. Perch also contains an elegant API for extending the core functionality in the form of Apps. Apps available for download from the Perch site provide blogging functionality and dynamic page creation amongst other things. Hopefully I&rsquo;ll get a chance to cover Apps and App development in another post. If you regularly deal with legacy sites or just want to simplify things a bit, I recommend you check Perch out.</p>
+]]></content>
+  </entry>
+  
+</feed>
