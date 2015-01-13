@@ -85,7 +85,7 @@ With the array in hand, we can apply it to a standard content region, allowing u
 See this line below, it's instructing `perch_content_custom` to go to the project page for the content to populate our template ('project_item.html').
 
 ``` php
-'page' => $page['pagePath'], // The dynamic path to the page which contains the target region
+	'page' => $page['pagePath'], // The dynamic path to the page which contains the target region
 ```
 
 That's really powerful, but I've skipped two things:
