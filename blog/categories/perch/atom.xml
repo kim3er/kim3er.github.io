@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Perch | Adventures in brine]]></title>
   <link href="http://rich.k3r.me/blog/categories/perch/atom.xml" rel="self"/>
   <link href="http://rich.k3r.me/"/>
-  <updated>2015-01-14T22:24:02+00:00</updated>
+  <updated>2015-01-14T23:16:18+00:00</updated>
   <id>http://rich.k3r.me/</id>
   <author>
     <name><![CDATA[Richard Kimber]]></name>
@@ -12,6 +12,230 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Flexible Index Pages in Perch]]></title>
+    <link href="http://rich.k3r.me/blog/2015/01/14/flexible-index-pages-in-perch/"/>
+    <updated>2015-01-14T23:14:12+00:00</updated>
+    <id>http://rich.k3r.me/blog/2015/01/14/flexible-index-pages-in-perch</id>
+    <content type="html"><![CDATA[<p>It&rsquo;s pretty easy to knock up an index page in Perch. By &lsquo;index page&rsquo;, I mean a page that summarises the content of a sub folder. For instance, you have a collection of projects, implemented as sub pages of a directory called &lsquo;projects&rsquo;. You could provide a link to each of these projects on an index page.</p>
+
+<p>The typical structure would be:</p>
+
+<pre><code>root
+    projects
+        index.php
+        project-1.php
+        project-2.php
+</code></pre>
+
+<p>The index itself would be provided by the <code>perch_pages_navigation</code> function. A basic example below:</p>
+
+<pre><code class="php">&lt;?php perch_pages_navigation(array( 'from-path' =&gt; '*' )); ?&gt;
+</code></pre>
+
+<p><em>The asterisk assigned to <code>from-path</code> tells <code>perch_pages_navigation</code> to work from the current directory (&lsquo;projects&rsquo;).</em></p>
+
+<p><em>More information on <code>perch_pages_navigation</code> can be found here, <a href="http://docs.grabaperch.com/docs/navigation/perch-pages-navigation/">perch_pages_navigation</a>.</em></p>
+
+<p>Would output:</p>
+
+<p>&#8220;` html</p>
+
+<ul>
+    <li>
+        <a href="http://rich.k3r.me/projects/project-1.php">Project 1</a>
+    </li>
+    <li>
+        <a href="http://rich.k3r.me/projects/project-2.php">Project 2</a>
+    </li>
+</ul>
+
+
+<pre><code>
+The `perch_pages_navigation` function uses the HTML template 'perch/templates/navigation/item.html' to generate the HTML above. This is a file that can be modified, or even replaced using the `template` option.
+
+You're restricted in the content that can be displayed in this template. This is because of how data in Perch is grouped. Within a `perch_pages_navigation` template, you have access to data related to the page, like the title and path. But you don't have access to content regions, defined using `perch_content`, as this not information that is shared across all pages.
+</code></pre>
+
+<p>Page Content
+    - pagePath &lt;&ndash; Can access this
+    Region Content (as defined in a perch_content region)
+        - some_content &lt;&ndash; Can&rsquo;t access this
+&#8220;`</p>
+
+<p>As of Perch 2.4, you can extend the amount content saved at a page level, using <a href="http://docs.grabaperch.com/docs/pages/page-attributes/">Page Attributes</a>. Page Attributes can be very useful, but they can&rsquo;t be used to be target a sub-sect of pages (like our project pages), so are not ideal for what we&rsquo;re trying to achieve. I.E You can only add fields that will be available to all pages.</p>
+
+<p>What is needed is a mechanism, whereby the page order is retrieved from the Navigation part of Perch and the content, from a region designed with our projects in mind.</p>
+
+<p>&#8220;` php</p>
+
+<ul>
+    <?php
+        $nav = perch_pages_navigation(array( // Return navigation pages data as array
+            'from-path' => &#8216;*&#8217;,
+            &#8216;skip-template&#8217; => true
+            ));
+
+        foreach($nav as $page) { // Loop through & customise each item returned in the array
+            PerchSystem::set_var(&#8216;pageNavText&#8217;, $page[&#8216;pageNavText&#8217;]); // Grab the page title
+            PerchSystem::set_var(&#8216;pagePath&#8217;, $page[&#8216;pagePath&#8217;]); // Find the correct links for each page
+            perch_content_custom(&#8216;Detail&#8217;, array( // &#8216;Detail&#8217; is the region containing the data we need - this is used in the target page template
+                &#8216;page&#8217; => $page[&#8216;pagePath&#8217;], // The dynamic path to the page which contains the target region
+                &#8216;template&#8217; =>&#8217;project_item.html&#8217; // This region reuses data from target pages (image, excerpt)
+            ));
+
+            $i = $i + 1;
+        }
+    ?>
+</ul>
+
+
+<pre><code>
+The PHP above retrieves our list of pages using `perch_pages_navigation`, but this time skipping the template. Setting `skip-template` to `true`, bypasses the HTML rendering process and returns an array instead. The array itself is a list of all our project pages, including associated page data.
+
+With the array in hand, we can apply it to a standard content region, allowing us to access project specific content. Within the `foreach` loop, we grab what we need from the page data (in this case `pagePath` and `pageNavText`). We'll need the `pagePath` value for two reasons; we'll need to know where we're linking too, but also we can use `pagePath` to summon up our project specific content. 
+
+See this line below, it's instructing `perch_content_custom` to go to the project page for the content to populate our template ('project_item.html').
+</code></pre>
+
+<pre><code>'page' =&gt; $page['pagePath'], // The dynamic path to the page which contains the target region
+</code></pre>
+
+<pre><code>
+That's really powerful, but I've skipped two things:
+
+1. What does the 'Detail' region of the project page look like?
+2. What does 'project_item.html' look like?
+
+Where possible I tend to organise my page templates into as few content regions as possible, the primary region typically being called 'Detail'.
+
+Let's assume we're project title is being inferred from the page title. Below is the Detail region ('project_detail.html'), which includes a description, an image and a list of features.
+</code></pre>
+
+<div class="desc">
+    <perch:content id="desc" type="textarea" label="Description" html="true" editor="ckeditor" imagewidth="640" imageheight="480" />
+</div>
+
+
+
+
+<div class="two-col">
+    <div class="image">
+        <img src="<perch:content type="image" id="image" label="Image" width="800" />&#8221; alt=&#8221;<perch:content type="text" id="alt" label="Description" required="true" help="e.g. Photo of MD John Smith with his best wig on" title="true" />&#8221; />
+    </div>
+    <div class="feat">
+        <ul>
+            <perch:repeater id="features" label="Features">
+                <li>
+                    <perch:content type="text" id="feature" label="Feature" />
+                </li>
+            </perch:repeater>
+        </ul>
+    </div>
+</div>
+
+
+<pre><code>
+_Since the inclusion of [Repeaters](http://docs.grabaperch.com/docs/templates/repeaters/) within content templates, it's become much easier to create self contained content regions. Before repeaters, the moment you hit an image gallery or feature list, you'd need to duck out of your primary content region and create a new repeating content region. Leading to fun naming conventions like 'Detail - Top' and 'Detail - Bottom', with 'Feature List' stuck in the middle._
+
+We'll need to some an additional fields to 'project_detail.html',for us to access in the index page, a thumbnail and an excerpt:
+</code></pre>
+
+<pre><code>&lt;perch:content id="thumbnail" type="image" label="Thumbnail" width="310" height="160" crop="true" required="true" help="Recommended image size: 310px wide &amp; 160px high" suppress="true"/&gt;
+&lt;perch:content id="excerpt" type="textarea" label="Excerpt" html="false" imagewidth="640" imageheight="480" suppress="true" /&gt;
+</code></pre>
+
+<pre><code>
+Both fields have `suppress` set to `true`, meaning that they fields available for input, but will not appear in the resulting HTML for the template. We want the use to be able to enter an excerpt, but we don't want the except to appear on the detail page.
+
+So, what does 'project_item.html' look like? You can see it below:
+</code></pre>
+
+<pre><code>&lt;article&gt;
+    &lt;h2&gt;
+        &lt;perch:content id="pageNavText" /&gt;
+    &lt;/h2&gt;
+    &lt;div class="project-thumb"&gt;
+        &lt;img src="&lt;perch:content id="thumbnail" type="image" width="310" height="160" crop="true"/&gt;" alt="" class="img-responsive" /&gt;
+    &lt;/div&gt;
+    &lt;div class="project-detail"&gt;
+        &lt;div class="excerpt"&gt;
+            &lt;p&gt;
+                &lt;perch:content id="excerpt" type="textarea" /&gt;
+            &lt;/p&gt;
+
+        &lt;/div&gt;
+        &lt;a href="&lt;perch:content id="pagePath" /&gt;"&gt;
+            VIEW CASE STUDY
+        &lt;/a&gt;
+    &lt;/div&gt;
+&lt;/article&gt;
+</code></pre>
+
+<pre><code>
+The title is inferred from the `pageNavText` variable (set in the `foreach` loop), likewise the url comes from `pagePath`. The thumbnail and the except are retrieved using standard Perch content tags, as it is after all content being rendered using `perch_content_custom`.
+
+Your resulting index page will look something like:
+</code></pre>
+
+<pre><code>&lt;article&gt;
+    &lt;h2&gt;
+        Project 1
+    &lt;/h2&gt;
+    &lt;div class="project-thumb"&gt;
+        &lt;img src="http://rich.k3r.me/images/project-1.jpg" alt="" class="img-responsive" /&gt;
+    &lt;/div&gt;
+    &lt;div class="project-detail"&gt;
+        &lt;div class="excerpt"&gt;
+            &lt;p&gt;
+                Project excerpt
+            &lt;/p&gt;
+
+        &lt;/div&gt;
+        &lt;a href="http://rich.k3r.me/projects/project-1.php"&gt;
+            VIEW CASE STUDY
+        &lt;/a&gt;
+    &lt;/div&gt;
+&lt;/article&gt;
+&lt;article&gt;
+    &lt;h2&gt;
+        Project 2
+    &lt;/h2&gt;
+    &lt;div class="project-thumb"&gt;
+        &lt;img src="http://rich.k3r.me/images/project-2.jpg" alt="" class="img-responsive" /&gt;
+    &lt;/div&gt;
+    &lt;div class="project-detail"&gt;
+        &lt;div class="excerpt"&gt;
+            &lt;p&gt;
+                Project 2 excerpt
+            &lt;/p&gt;
+
+        &lt;/div&gt;
+        &lt;a href="http://rich.k3r.me/projects/project-2.php"&gt;
+            VIEW CASE STUDY
+        &lt;/a&gt;
+    &lt;/div&gt;
+&lt;/article&gt;
+</code></pre>
+
+<p>&#8220;`</p>
+
+<p>As you can see above, we now have an index page with links to the sub pages, including a brief excerpt and a thumbnail for each.</p>
+
+<p>The advantages of this solution are:</p>
+
+<ol>
+<li>Because the solution uses  <code>perch_pages_navigation</code>, the page will honour Perch&rsquo;s ordering functionality.</li>
+<li>The use of <code>perch_content_custom</code> means that we can create fields specifically for use in project pages, that don&rsquo;t bloat the page data of non project pages.</li>
+</ol>
+
+
+<p>The problem with the solution, is that multiple calls to the database are required to display the list. One to retrieve the navigation list, and then an additional call for each of the pages returned.</p>
+
+<p>A solution that reduced the amount of database calls, while still harnessed the power of the Perch templating system, might to write a SQL statement manually, the joined the navigation <code>SELECT</code> statement to a statement retrieving the desired content data, then parsed each of the results through the templating system. This might be something I investigate, should the volume of sub pages, demonstrate a noticeable slowdown of load time.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Content Management With Perch]]></title>
