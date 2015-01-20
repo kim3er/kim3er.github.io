@@ -3,7 +3,7 @@ layout: post
 title: "Shutting the world out"
 date: 2015-01-11 00:26:34 +0000
 comments: true
-categories: 
+categories: [ Distraction, Productivity, Tips ]
 published: false
 ---
 There is never enough time. Last year in particular, it always felt like there wasn't enough time in the day.  Running a company, where your work is also the primary source of income, is no easy task. I was always looking for ways of squeezing more hours out of day; tweaking processes, finding better tools, writing scripts. It's become a bit of an obsession for me, finding "better" ways to get more stuff done. I was pretty good at it, I think I still am. But as the end of last year drew in, it became clear that I was spreading myself too thin.
