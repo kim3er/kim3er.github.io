@@ -15,3 +15,5 @@ http://stackoverflow.com/questions/23022258/tzinfodatasourcenotfound-error-start
 http://stackoverflow.com/questions/26636471/windows-ruby-rails-install-cannot-load-such-file-sqlite3-sqlite3-native
 
 Install Node!
+
+http://stackoverflow.com/questions/25093276/node-js-windows-error-enoent-stat-c-users-rt-appdata-roaming-npm
