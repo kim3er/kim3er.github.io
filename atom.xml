@@ -4,7 +4,7 @@
   <title><![CDATA[Adventures in brine]]></title>
   <link href="http://rich.k3r.me/atom.xml" rel="self"/>
   <link href="http://rich.k3r.me/"/>
-  <updated>2015-01-20T22:52:54+00:00</updated>
+  <updated>2015-01-22T19:53:59+00:00</updated>
   <id>http://rich.k3r.me/</id>
   <author>
     <name><![CDATA[Richard Kimber]]></name>
@@ -12,6 +12,70 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[RailsInstaller (Ruby 2.1) on Windows 8.1]]></title>
+    <link href="http://rich.k3r.me/blog/2015/01/22/railsinstaller-ruby-2-dot-1-on-windows-8-dot-1/"/>
+    <updated>2015-01-22T19:53:44+00:00</updated>
+    <id>http://rich.k3r.me/blog/2015/01/22/railsinstaller-ruby-2-dot-1-on-windows-8-dot-1</id>
+    <content type="html"><![CDATA[<p>I&rsquo;ve recently had to get Rails and Capistrano up and running on a Windows 8.1 machine. These are the problems I encountered and how I fixed them. All issues were encountered after trying to run an existing Rails 4 project.</p>
+
+<p>My first step was to install Rails using <a href="http://railsinstaller.org">RailsInstaller</a>. This is a great first step for Windows users, as you also get Ruby, Git and DevKit (which is important for building gems that contain native code). I elected to install the Ruby 2.1 version, which at the time of install, was sporting Ruby 2.1.5.</p>
+
+<h2>Invalid Certificate</h2>
+
+<p>When running <code>bundle</code>, I encountered the following error:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Unable to download data from https://rubygems.org/ - SSL_connect <span class="nv">returned</span><span class="o">=</span><span class="m">1</span> <span class="nv">errno</span><span class="o">=</span><span class="m">0</span> <span class="nv">state</span><span class="o">=</span>SSLv3
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As per the accepted answer on this <a href="http://stackoverflow.com/questions/27435841/windows-7-64-bit-could-not-find-a-valid-gem-compass-0-here-is-why-unab">StackOverflow question</a>, I downloaded <a href="http://curl.haxx.se/ca/cacert.pem">cacert.pem</a> and placed it here, C:\RailsInstaller. You also need to tell <code>gem</code> where to find the certificate, which is done by setting a environment variable called <code>SSL_CERT_FILE</code>. This can be done on a temporary basis by typing the following into Command Prompt&#8221;:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">set </span><span class="nv">SSL_CERT_FILE</span><span class="o">=</span>C:<span class="se">\R</span>ailsInstaller<span class="se">\c</span>acert.pem
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Sqlite Native</h2>
+
+<p>Running any command related to the local Sqlite db, threw up:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>cannot load such file -- sqlite3/sqlite3_native
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>According to this <a href="http://stackoverflow.com/questions/26636471/windows-ruby-rails-install-cannot-load-such-file-sqlite3-sqlite3-native">accepted answer</a>, the problem is caused by the version of the <code>sqlite3</code> gem not supporting Ruby 2.1.3+ on Windows. The gem needed to be updated to at least 1.3.10.</p>
+
+<h2>Bcrypt</h2>
+
+<p>I encountered a similar problem with the <code>bcrypt</code> gem. I didn&rsquo;t record the nature of the problem, but updating to at least 3.1.7 resolved the issue.</p>
+
+<h2>TZInfo</h2>
+
+<p>When starting up the Rails server, I received an error relating to <code>TZInfo::DataSourceNotFound</code>. According to the accepted answer on this <a href="http://stackoverflow.com/questions/23022258/tzinfodatasourcenotfound-error-starting-rails-v4-1-0-server-on-windows">question</a>, Windows needs an additional gem for the <code>tzinfo</code> gem to work correctly. Add this to your <code>Gemfile</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;tzinfo-data&#39;</span><span class="p">,</span> <span class="ss">platforms</span><span class="p">:</span> <span class="o">[</span><span class="ss">:mingw</span><span class="p">,</span> <span class="ss">:mswin</span><span class="p">,</span> <span class="ss">:x64_mingw</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>NPM Error</h2>
+
+<p>For bonus points, I always install Node along with my Rails installations, if only for JavaScript compilation in Sprockets. Node is best installed using the binary from the official <a href="http://nodejs.org/">website</a>.</p>
+
+<p>Typing <code>npm</code> into Command Prompt for the first time, returned the following:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Error: ENOENT, stat <span class="err">&#39;</span>C:<span class="se">\U</span>sers<span class="se">\[</span>Username Here<span class="o">]</span><span class="se">\A</span>ppData<span class="se">\R</span>oaming<span class="se">\n</span>pm
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This issue was resolved by creating the missing <code>npm</code> folder in <code>Roaming</code>. Credit goes to the accepted answer of this <a href="http://stackoverflow.com/questions/25093276/node-js-windows-error-enoent-stat-c-users-rt-appdata-roaming-npm">question</a>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Finding a Pair of Headphones]]></title>
