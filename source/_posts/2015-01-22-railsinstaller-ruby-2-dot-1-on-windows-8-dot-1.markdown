@@ -13,3 +13,5 @@ add this gem. gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 http://stackoverflow.com/questions/23022258/tzinfodatasourcenotfound-error-starting-rails-v4-1-0-server-on-windows
 
 http://stackoverflow.com/questions/26636471/windows-ruby-rails-install-cannot-load-such-file-sqlite3-sqlite3-native
+
+Install Node!
