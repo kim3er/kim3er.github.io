@@ -12,20 +12,20 @@ My first step was to install Rails using [RailsInstaller](http://railsinstaller.
 ##Invalid Certificate
 When running `bundle`, I encountered the following error:
 
-``` bash
+``` bat
 Unable to download data from https://rubygems.org/ - SSL_connect returned=1 errno=0 state=SSLv3
 ```
 
 As per the accepted answer on this [StackOverflow question](http://stackoverflow.com/questions/27435841/windows-7-64-bit-could-not-find-a-valid-gem-compass-0-here-is-why-unab), I downloaded [cacert.pem](http://curl.haxx.se/ca/cacert.pem) and placed it here, C:\RailsInstaller\. You also need to tell `gem` where to find the certificate, which is done by setting a environment variable called `SSL_CERT_FILE`. This can be done on a temporary basis by typing the following into Command Prompt":
 
-``` bash
+``` bat
 set SSL_CERT_FILE=C:\RailsInstaller\cacert.pem
 ```
 
 ##Sqlite Native
 Running any command related to the local Sqlite db, threw up:
 
-``` bash
+``` bat
 cannot load such file -- sqlite3/sqlite3_native
 ```
 
@@ -46,7 +46,7 @@ For bonus points, I always install Node along with my Rails installations, if on
 
 Typing `npm` into Command Prompt for the first time, returned the following:
 
-``` bash
+``` bat
 Error: ENOENT, stat 'C:\Users\[Username Here]\AppData\Roaming\npm
 ```
 
