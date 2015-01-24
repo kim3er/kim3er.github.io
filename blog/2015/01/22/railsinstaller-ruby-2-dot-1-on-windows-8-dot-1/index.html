@@ -106,14 +106,14 @@
 <p>When running <code>bundle</code>, I encountered the following error:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>Unable to download data from https://rubygems.org/ - SSL_connect <span class="nv">returned</span><span class="o">=</span><span class="m">1</span> <span class="nv">errno</span><span class="o">=</span><span class="m">0</span> <span class="nv">state</span><span class="o">=</span>SSLv3
+</pre></td><td class='code'><pre><code class='bat'><span class='line'>Unable to download data from https:<span class="n">//rubygems.org/</span> - SSL_connect returned<span class="o">=</span><span class="m">1</span> errno<span class="o">=</span><span class="m">0</span> state<span class="o">=</span>SSLv<span class="m">3</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
 <p>As per the accepted answer on this <a href="http://stackoverflow.com/questions/27435841/windows-7-64-bit-could-not-find-a-valid-gem-compass-0-here-is-why-unab">StackOverflow question</a>, I downloaded <a href="http://curl.haxx.se/ca/cacert.pem">cacert.pem</a> and placed it here, C:\RailsInstaller. You also need to tell <code>gem</code> where to find the certificate, which is done by setting a environment variable called <code>SSL_CERT_FILE</code>. This can be done on a temporary basis by typing the following into Command Prompt&#8221;:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">set </span><span class="nv">SSL_CERT_FILE</span><span class="o">=</span>C:<span class="se">\R</span>ailsInstaller<span class="se">\c</span>acert.pem
+</pre></td><td class='code'><pre><code class='bat'><span class='line'><span class="k">set</span> <span class="nv">SSL_CERT_FILE</span><span class="o">=</span>C:\RailsInstaller\cacert.pem
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -122,7 +122,7 @@
 <p>Running any command related to the local Sqlite db, threw up:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>cannot load such file -- sqlite3/sqlite3_native
+</pre></td><td class='code'><pre><code class='bat'><span class='line'>cannot load such file -- sqlite<span class="m">3</span><span class="n">/sqlite3_native</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -148,11 +148,30 @@
 <p>Typing <code>npm</code> into Command Prompt for the first time, returned the following:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>Error: ENOENT, stat <span class="err">&#39;</span>C:<span class="se">\U</span>sers<span class="se">\[</span>Username Here<span class="o">]</span><span class="se">\A</span>ppData<span class="se">\R</span>oaming<span class="se">\n</span>pm
+</pre></td><td class='code'><pre><code class='bat'><span class='line'>Error: ENOENT<span class="p">,</span> stat &#39;C:\Users\[Username Here]\AppData\Roaming\npm
 </span></code></pre></td></tr></table></div></figure>
 
 
 <p>This issue was resolved by creating the missing <code>npm</code> folder in <code>Roaming</code>. Credit goes to the accepted answer of this <a href="http://stackoverflow.com/questions/25093276/node-js-windows-error-enoent-stat-c-users-rt-appdata-roaming-npm">question</a>.</p>
+
+<h2>Capistrano</h2>
+
+<p>On the first day of setup, Capistrano worked like a dream. The following day, after a system restart, no dice. Capistrano tasks kept dying with the following:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bat'><span class='line'>Error reading response length from authentication socket
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I tried reinstalling certificates and ensured the SSH Agent was running, to no avail. I still don&rsquo;t completely understand the problem, but I think the solution has more to do with the PC&rsquo;s specific environment.</p>
+
+<p><a href="http://www.sourcetreeapp.com/">SourceTree</a> was already installed (and running) on the PC, when I came to install Rails. As part of the installation, SourceTree installs <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">Pageant</a>, a Windows based SSH authentication tool.</p>
+
+<p>Basically, Capistrano started working again the moment I had the presence of mind to start Pageant again.</p>
+
+<p><em>NOTE: The PC has two sets of SSH keys setup, one through Pageant, the other through <a href="https://msysgit.github.io/">Msysgit</a>. I thought I&rsquo;d been using the Msysgit key, but I suspect I was using the Pageant one all along. For Capistrano at least, Git works from the command line, regardless of the status of Pageant.</em></p>
+
+<p>I&rsquo;m not aware of any dependancy on Pageant by RailsInstaller. So I wonder whether I wouldn&rsquo;t have this dependancy now, if I didn&rsquo;t already have Pageant on the system. Or possibly, I&rsquo;d have struggled getting Capistrano working at all, not appreciating the need for Pageant.</p>
 </div>
 
 

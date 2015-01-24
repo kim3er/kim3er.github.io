@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Tips | Adventures in brine]]></title>
   <link href="http://rich.k3r.me/blog/categories/tips/atom.xml" rel="self"/>
   <link href="http://rich.k3r.me/"/>
-  <updated>2015-01-22T20:19:55+00:00</updated>
+  <updated>2015-01-24T10:29:47+00:00</updated>
   <id>http://rich.k3r.me/</id>
   <author>
     <name><![CDATA[Richard Kimber]]></name>
@@ -55,19 +55,19 @@
 
 <p>When running <code>bundle</code>, I encountered the following error:</p>
 
-<pre><code class="bash">Unable to download data from https://rubygems.org/ - SSL_connect returned=1 errno=0 state=SSLv3
+<pre><code class="bat">Unable to download data from https://rubygems.org/ - SSL_connect returned=1 errno=0 state=SSLv3
 </code></pre>
 
 <p>As per the accepted answer on this <a href="http://stackoverflow.com/questions/27435841/windows-7-64-bit-could-not-find-a-valid-gem-compass-0-here-is-why-unab">StackOverflow question</a>, I downloaded <a href="http://curl.haxx.se/ca/cacert.pem">cacert.pem</a> and placed it here, C:\RailsInstaller. You also need to tell <code>gem</code> where to find the certificate, which is done by setting a environment variable called <code>SSL_CERT_FILE</code>. This can be done on a temporary basis by typing the following into Command Prompt&#8221;:</p>
 
-<pre><code class="bash">set SSL_CERT_FILE=C:\RailsInstaller\cacert.pem
+<pre><code class="bat">set SSL_CERT_FILE=C:\RailsInstaller\cacert.pem
 </code></pre>
 
 <h2>Sqlite Native</h2>
 
 <p>Running any command related to the local Sqlite db, threw up:</p>
 
-<pre><code class="bash">cannot load such file -- sqlite3/sqlite3_native
+<pre><code class="bat">cannot load such file -- sqlite3/sqlite3_native
 </code></pre>
 
 <p>According to this <a href="http://stackoverflow.com/questions/26636471/windows-ruby-rails-install-cannot-load-such-file-sqlite3-sqlite3-native">accepted answer</a>, the problem is caused by the version of the <code>sqlite3</code> gem not supporting Ruby 2.1.3+ on Windows. The gem needed to be updated to at least 1.3.10.</p>
@@ -89,10 +89,27 @@
 
 <p>Typing <code>npm</code> into Command Prompt for the first time, returned the following:</p>
 
-<pre><code class="bash">Error: ENOENT, stat 'C:\Users\[Username Here]\AppData\Roaming\npm
+<pre><code class="bat">Error: ENOENT, stat 'C:\Users\[Username Here]\AppData\Roaming\npm
 </code></pre>
 
 <p>This issue was resolved by creating the missing <code>npm</code> folder in <code>Roaming</code>. Credit goes to the accepted answer of this <a href="http://stackoverflow.com/questions/25093276/node-js-windows-error-enoent-stat-c-users-rt-appdata-roaming-npm">question</a>.</p>
+
+<h2>Capistrano</h2>
+
+<p>On the first day of setup, Capistrano worked like a dream. The following day, after a system restart, no dice. Capistrano tasks kept dying with the following:</p>
+
+<pre><code class="bat">Error reading response length from authentication socket
+</code></pre>
+
+<p>I tried reinstalling certificates and ensured the SSH Agent was running, to no avail. I still don&rsquo;t completely understand the problem, but I think the solution has more to do with the PC&rsquo;s specific environment.</p>
+
+<p><a href="http://www.sourcetreeapp.com/">SourceTree</a> was already installed (and running) on the PC, when I came to install Rails. As part of the installation, SourceTree installs <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">Pageant</a>, a Windows based SSH authentication tool.</p>
+
+<p>Basically, Capistrano started working again the moment I had the presence of mind to start Pageant again.</p>
+
+<p><em>NOTE: The PC has two sets of SSH keys setup, one through Pageant, the other through <a href="https://msysgit.github.io/">Msysgit</a>. I thought I&rsquo;d been using the Msysgit key, but I suspect I was using the Pageant one all along. For Capistrano at least, Git works from the command line, regardless of the status of Pageant.</em></p>
+
+<p>I&rsquo;m not aware of any dependancy on Pageant by RailsInstaller. So I wonder whether I wouldn&rsquo;t have this dependancy now, if I didn&rsquo;t already have Pageant on the system. Or possibly, I&rsquo;d have struggled getting Capistrano working at all, not appreciating the need for Pageant.</p>
 ]]></content>
   </entry>
   
