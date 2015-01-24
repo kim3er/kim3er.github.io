@@ -51,3 +51,20 @@ Error: ENOENT, stat 'C:\Users\[Username Here]\AppData\Roaming\npm
 ```
 
 This issue was resolved by creating the missing `npm` folder in `Roaming`. Credit goes to the accepted answer of this [question](http://stackoverflow.com/questions/25093276/node-js-windows-error-enoent-stat-c-users-rt-appdata-roaming-npm).
+
+##Capistrano
+On the first day of setup, Capistrano worked like a dream. The following day, after a system restart, no dice. Capistrano tasks kept dying with the following:
+
+``` bat
+Error reading response length from authentication socket
+```
+
+I tried reinstalling certificates and ensured the SSH Agent was running, to no avail. I still don't completely understand the problem, but I think the solution has more to do with the PC's specific environment.
+
+[SourceTree](http://www.sourcetreeapp.com/) was already installed (and running) on the PC, when I came to install Rails. As part of the installation, SourceTree installs [Pageant](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html), a Windows based SSH authentication tool.
+
+Basically, Capistrano started working again the moment I had the presence of mind to start Pageant again.
+
+_NOTE: The PC has two sets of SSH keys setup, one through Pageant, the other through [Msysgit](https://msysgit.github.io/). I thought I'd been using the Msysgit key, but I suspect I was using the Pageant one all along. For Capistrano at least, Git works from the command line, regardless of the status of Pageant._
+
+I'm not aware of any dependancy on Pageant by RailsInstaller. So I wonder whether I wouldn't have this dependancy now, if I didn't already have Pageant on the system. Or possibly, I'd have struggled getting Capistrano working at all, not appreciating the need for Pageant.
