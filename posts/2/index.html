@@ -1,361 +1,109 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Adventures in brine]]></title>
-  <link href="http://rich.k3r.me/atom.xml" rel="self"/>
-  <link href="http://rich.k3r.me/"/>
-  <updated>2015-01-31T18:11:34+00:00</updated>
-  <id>http://rich.k3r.me/</id>
-  <author>
-    <name><![CDATA[Richard Kimber]]></name>
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Adventures in brine</title>
+  <meta name="author" content="Richard Kimber">
+
+  
+  <meta name="description" content="It&rsquo;s pretty easy to knock up an index page in Perch. By &lsquo;index page&rsquo;, I mean a page that summarises the content of a sub folder. &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://rich.k3r.me/posts/2">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Adventures in brine" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-56802309-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Adventures in brine</a></h1>
+  
+    <h2>A blog about code and coding.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="rich.k3r.me">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
     
-  </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+      <h1 class="entry-title"><a href="/blog/2015/01/14/flexible-index-pages-in-perch/">Flexible Index Pages in Perch</a></h1>
+    
+    
+      <p class="meta">
+        
 
-  
-  <entry>
-    <title type="html"><![CDATA[Helpers as Partial Controllers]]></title>
-    <link href="http://rich.k3r.me/blog/2015/01/31/helpers-as-partial-controllers/"/>
-    <updated>2015-01-31T18:08:46+00:00</updated>
-    <id>http://rich.k3r.me/blog/2015/01/31/helpers-as-partial-controllers</id>
-    <content type="html"><![CDATA[<p>This is the first of what I expect will be a series of posts, about revelations that are entirely obvious in hindsight, but whose simplicity had eluded me for so long.</p>
 
-<p>I came to Rails from ASP.NET MVC (have I told you about my <a href="http://www.amazon.co.uk/ASP-Net-MVC-Cookbook-Andrew-Siemer/dp/1849690308">book</a>), as part of a three pronged transition:</p>
 
-<ol>
-<li>Microsoft stack > Open source stack</li>
-<li>IDE (VS2010) > Smart text editor (TextMate at the time, now Sublime Text 3)</li>
-<li>Windows PC > Mac</li>
-</ol>
 
+<time class='entry-date' datetime='2015-01-14T23:14:12+00:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:14 pm</span></time>
+        
+           | <a href="/blog/2015/01/14/flexible-index-pages-in-perch/#disqus_thread"
+             data-disqus-identifier="http://rich.k3r.me/blog/2015/01/14/flexible-index-pages-in-perch/">Comments</a>
+        
+      </p>
+    
+  </header>
 
-<p>The one thing I remember missing most when transitioning from ASP.NET MVC to Rails, was not being able to <a href="http://haacked.com/archive/2009/11/18/aspnetmvc2-render-action.aspx/">render actions</a> within a view. I&rsquo;m not going to regurgitate Phil Haack&rsquo;s example here (by the way, when did he start working at Github? He was part of my MS dream team). Basically, what we&rsquo;re talking about is rendering a partial that is attached to a controller. This way the logic is as portable as the partial itself, without putting logic into the actual partial; something I used a lot in ASP.NET MVC.</p>
 
-<h2>Where there&rsquo;s a will there&rsquo;s a gem</h2>
-
-<p>When I&rsquo;d convinced myself there wasn&rsquo;t a direct replacement for this functionality, I went about searching for a gem. What I found, was <a href="https://github.com/apotonick/cells">Cells</a>. This is about four years ago now, so I&rsquo;m happy to see the gem is still so active. It is pretty much a direct replacement for the functionality I was looking for and I did use it for a few projects. Thing is though, it wasn&rsquo;t really clicking with the other Rails devs I was working with.</p>
-
-<p>I think maybe it was an &ldquo;against the grain&rdquo;, purest, &ldquo;this isn&rsquo;t the Rails way&rdquo; sort of reaction. But maybe they just saw what I couldn&rsquo;t; that there is a very easy way to accomplish my specific requirement. Either way, after the initial surge of wanting to use every gem under the sum, you gradually begin wanting to slim down your dependancies, and well, Cells didn&rsquo;t make the cut.</p>
-
-<h2>So, to the point. Helpers</h2>
-
-<p>Oh my god, it&rsquo;s so obvious now. For years I was ruefully sticking logic directly into my partial views, thinking &ldquo;Well, if I can&rsquo;t render actions, what else can I do?&rdquo;. What a doofus.</p>
-
-<p>On a recent project, I was tired of the <code>locals</code> syntax of a partial I was using quite a lot.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">render</span><span class="p">(</span> <span class="ss">partial</span><span class="p">:</span> <span class="s2">&quot;path/to/partial&quot;</span><span class="p">,</span> <span class="ss">locals</span><span class="p">:</span> <span class="p">{</span> <span class="ss">param_one</span><span class="p">:</span> <span class="s2">&quot;something&quot;</span> <span class="p">}</span> <span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Really tiresome, I know. Anyway, as the partial was being used more, the logic being stuck into said partial was also increasing exponentially.</p>
-
-<figure class='code'><figcaption><span>partial.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="cp">&lt;%</span>
-</span><span class='line'><span class="n">param_three</span> <span class="o">=</span> <span class="kp">false</span> <span class="k">unless</span> <span class="n">defined?</span><span class="p">(</span> <span class="n">param_three</span> <span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">if</span> <span class="n">param_two</span> <span class="o">==</span> <span class="s2">&quot;Something&quot;</span>
-</span><span class='line'>  <span class="n">param_one</span> <span class="o">=</span> <span class="s2">&quot;Something incredibly hideous&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="cp">%&gt;</span><span class="x"></span>
-</span><span class='line'><span class="x">&lt;p class=&quot;</span><span class="cp">&lt;%=</span> <span class="s2">&quot;yuck&quot;</span> <span class="k">if</span> <span class="n">param_three</span> <span class="o">==</span> <span class="kp">true</span> <span class="cp">%&gt;</span><span class="x">&gt;</span>
-</span><span class='line'><span class="x">  </span><span class="cp">&lt;%=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">param_two</span><span class="si">}</span><span class="s2"> - </span><span class="si">#{</span><span class="n">param_one</span><span class="si">}</span><span class="s2">&quot;</span> <span class="cp">%&gt;</span><span class="x"></span>
-</span><span class='line'><span class="x">&lt;/p&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In spite of the disgrace my partial had become, what really irked me was having to type in <code>locals</code> every time I rendered the partial. &ldquo;I know, I&rsquo;ll put it into a helper method&rdquo;, I thought.</p>
-
-<figure class='code'><figcaption><span>something_helpers.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">SomethingHelpers</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">render_something</span><span class="p">(</span><span class="n">param_one</span><span class="p">,</span> <span class="n">param_two</span><span class="p">,</span> <span class="n">param_three</span> <span class="o">=</span> <span class="kp">false</span><span class="p">)</span>
-</span><span class='line'>      <span class="n">render</span><span class="p">(</span> <span class="ss">partial</span><span class="p">:</span> <span class="s2">&quot;path/to/partial&quot;</span><span class="p">,</span> <span class="ss">locals</span><span class="p">:</span> <span class="p">{</span> <span class="ss">param_one</span><span class="p">:</span> <span class="n">param_one</span><span class="p">,</span> <span class="ss">param_two</span><span class="p">:</span> <span class="n">param_two</span><span class="p">,</span> <span class="ss">param_three</span><span class="p">:</span> <span class="n">param_three</span> <span class="p">})</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And then the revelation, &ldquo;Hang on a minute, I can put my logic in here as well&rdquo;. Hello.</p>
-
-<figure class='code'><figcaption><span>something_helpers.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">SomethingHelpers</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">render_something</span><span class="p">(</span><span class="n">param_one</span><span class="p">,</span> <span class="n">param_two</span><span class="p">,</span> <span class="n">param_three</span> <span class="o">=</span> <span class="kp">false</span><span class="p">)</span>
-</span><span class='line'>      <span class="k">if</span> <span class="n">param_two</span> <span class="o">==</span> <span class="s2">&quot;Something&quot;</span>
-</span><span class='line'>          <span class="n">param_one</span> <span class="o">=</span> <span class="s2">&quot;Something incredibly hideous&quot;</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">param_two</span><span class="si">}</span><span class="s2"> - </span><span class="si">#{</span><span class="n">param_one</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="n">render</span><span class="p">(</span> <span class="ss">partial</span><span class="p">:</span> <span class="s2">&quot;path/to/partial&quot;</span><span class="p">,</span> <span class="ss">locals</span><span class="p">:</span> <span class="p">{</span> <span class="ss">text</span><span class="p">:</span> <span class="n">text</span><span class="p">,</span> <span class="ss">param_three</span><span class="p">:</span> <span class="n">param_three</span> <span class="p">})</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>partial.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="x">&lt;p class=&quot;</span><span class="cp">&lt;%=</span> <span class="s2">&quot;yuck&quot;</span> <span class="k">if</span> <span class="n">param_three</span> <span class="o">==</span> <span class="kp">true</span> <span class="cp">%&gt;</span><span class="x">&gt;</span>
-</span><span class='line'><span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">text</span> <span class="cp">%&gt;</span><span class="x"></span>
-</span><span class='line'><span class="x">&lt;/p&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Seriously, sometimes I worry about me. I think I probably have this revelation every six months or so, then forget it. Hopefully after writing this, I won&rsquo;t forget again.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Casual Gaming]]></title>
-    <link href="http://rich.k3r.me/blog/2015/01/31/casual-gaming/"/>
-    <updated>2015-01-31T10:26:17+00:00</updated>
-    <id>http://rich.k3r.me/blog/2015/01/31/casual-gaming</id>
-    <content type="html"><![CDATA[<p>To say I am a casual gamer is probably overstating my position, but I do like a bit of inflight entertainment during a &ldquo;comfort break&rdquo;. This is a list of games I enjoy playing on the iPhone.</p>
-
-<p><img class="centre" src="http://rich.k3r.me/images/games/shades.png" width="175" height="175" title="Shades iOS Game Icon" ></p>
-
-<h2><a href="https://itunes.apple.com/gb/app/shades-a-simple-puzzle-game/id888683802?mt=8">Shades</a></h2>
-
-<p>This is a new find for me and I love it. On first appearances, it&rsquo;s a Tetris clone. Actually though, that is not a fair assessment. The game&rsquo;s clever use of shades of colour and how they merge together, makes for an addictive game, that is harder than it looks! I think I&rsquo;ve managed to get to level 9 so far.</p>
-
-<p><img class="centre" src="http://rich.k3r.me/images/games/monument.jpg" width="175" height="233" title="Monument Valley iOS Game Screenshot" ></p>
-
-<h2><a href="http://appstore.com/monumentvalley">Monument Valley</a></h2>
-
-<p>Probably the best puzzle game I&rsquo;ve ever played, certainly the most beautiful (of any genre). The game plays on the complexity of Escher style architecture. I completed the game and the two expansions without too much difficulty, that shouldn&rsquo;t put you off though. It&rsquo;s a game that can replayed over and over and the experience is absorbing.</p>
-
-<iframe src="//player.vimeo.com/video/5892502" width="500" height="375" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-
-
-<h2><a href="itms://itunes.com/apps/osmos">Osmos</a></h2>
-
-<p>It&rsquo;s the longest standing (memorable) iOS game I have, actually on my iPad, but it is also available for iPhone. Also the first game that I installed that actively encourages the use of headphones to enhance the experience. I love Osmos; it&rsquo;s an incredibly relaxing game to play. The difficulty of levels varies greatly. I&rsquo;ve not managed to complete the game so far, but I play it more out relaxation than out of a need to push through to the upper levels.</p>
-
-<p><img class="centre" src="http://rich.k3r.me/images/games/badland.jpg" width="248" height="175" title="Badland iOS Game Screenshot" ></p>
-
-<h2><a href="https://itunes.apple.com/us/app/badland/id535176909?mt=8&amp;uo=4">Badland</a></h2>
-
-<p>It seems to me that when everyone was getting excited about Flappy Bird, what they should have been playing is Badland. The idea of keeping the main character up by tapping isn&rsquo;t a new one. I remember playing games of a similar vein on the Commodore 64 (struggling to remember the name though). Badland is this sort of game, but the obstacles can be tricky and timing is key. The graphics and soundtrack really work for me in playfully steampunk-y sort of way.</p>
-
-<p><img class="centre" src="http://rich.k3r.me/images/games/crossy-road.png" width="175" height="310" title="Crossy Road iOS Game Screenshot" ></p>
-
-<h2><a href="https://itunes.apple.com/app/crossy-road-endless-arcade/id924373886?at=1l3vs3u&amp;ct=crcom">Crossy Road</a></h2>
-
-<p>My kids introduced me to this one. Cue yet another eye-roll of something that the kids thought they had found, that our generation owned. &ldquo;It&rsquo;s <a href="http://en.wikipedia.org/wiki/Frogger">Frogger</a>!&rdquo; I exclaimed. &ldquo;I played this when I was your age&rdquo;, with a smug curl to my lip. I received blank expressions to this reaction, as I usually do when I attempt some sort of generational dominance. The point of Crossy Road, is that it is completely gorgeous to look at. I loved Frogger, now I get to play it on my iPhone with sensational graphics.</p>
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/2N1TJP1cxmo" frameborder="0" allowfullscreen></iframe>
-
-
-<h2><a href="http://www.mirrorsedge.com/">Mirror&rsquo;s Edge</a></h2>
-
-<p>I can&rsquo;t believe that this game is no longer available on the App Store! What the eff! This game has single handedly taken more hours of my life than any other game. The multiplayer modes are brilliant, I love playing against my kids on them. The purpose of the game is to get from A to B using the Parkour style. I can only hope that a new one is not far off.</p>
-
-<h2>Honourable Mentions</h2>
-
-<p>Oh man, I really want to get this post wrapped up, but I can&rsquo;t without mentioning two (well, three) more games.</p>
-
-<h3>N.O.V.A 2&amp;3</h3>
-
-<p>I don&rsquo;t own a console capable of playing Halo. I&rsquo;m not a big console sort of person, but I do love Halo. N.O.V.A 2 was the closest I could find to the experience on an iPhone. It&rsquo;s a great game that my kids and I regularly team up on. Well, we used too, until N.O.V.A 3 came out. #3 was initially quite frustrating, because the multiplayer maps are just so vast, we&rsquo;d spend the whole game just trying to find each other. We&rsquo;re better now and the game can be a great afternoon of destruction.</p>
-
-<h3>Modern Combat 5</h3>
-
-<p>A sort of progression on from N.O.V.A. I hope N.O.V.A isn&rsquo;t dropped because of the popularity of games like Modern Combat, but even so, MC5 is aces. I&rsquo;ve completed the solo missions. I&rsquo;m an absolute disaster at the multiplayer missions though.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Shutting the World Out]]></title>
-    <link href="http://rich.k3r.me/blog/2015/01/22/shutting-the-world-out/"/>
-    <updated>2015-01-22T20:18:34+00:00</updated>
-    <id>http://rich.k3r.me/blog/2015/01/22/shutting-the-world-out</id>
-    <content type="html"><![CDATA[<p>There is never enough time. Last year in particular, it always felt like there wasn&rsquo;t enough time in the day.  Running a company, where your work is also the primary source of income, is no easy task. I was always looking for ways of squeezing more hours out of day; tweaking processes, finding better tools, writing scripts. It&rsquo;s become a bit of an obsession for me, finding &ldquo;better&rdquo; ways to get more stuff done. I was pretty good at it, I think I still am. But as the end of last year drew in, it became clear that I was spreading myself too thin.</p>
-
-<p>I was a manager, a sales person, a support desk, a developer, and was switching these hats constantly throughout the day. My goal on any given day, was to get to the end of the day without any major mishaps. If I managed to progress at all, in terms of significant progression of a project or a more efficient way of doing something, well that was amazing.</p>
-
-<p>The problem was concentration, I couldn&rsquo;t stay focused on a single task, without being distracted by someone or something craving my attention. We experimented with a few different ways of tackling this:</p>
-
-<ol>
-<li>Switching off access to email at specific parts of the day.</li>
-<li>We decided that I should not answer the phone.</li>
-<li>Further than this, I wouldn&rsquo;t participate in a phone call unless it was me that initiated it. If someone wanted to talk to me, a time would be arranged for me to ring them back.</li>
-<li>Allocated time to perform specific tasks.</li>
-</ol>
-
-
-<p>These feel obvious to me now, but they weren&rsquo;t back then and had a huge impact on my ability to get through work. Even combined though, these were not the silver bullets I was after. I&rsquo;m too nosey for one thing, if someone else picked up the phone, my ears would prick up, brain on overdrive wondering what they wanted and were the requirements being dealt with correctly. And who can blame me, it&rsquo;s my company after all.</p>
-
-<p>I needed a way of maintaining concentration, without completely removing myself from the office. My salvation came in another, now startlingly obvious, epiphany; headphones. It&rsquo;d never really occurred to me in the past to try headphones, because in the past I&rsquo;ve typically opted for in-ear earphones, which are uncomfortable over long periods of time. I&rsquo;m also pretty negative on headphones in an office environment as rule, because I hate sound leakage. But I didn&rsquo;t see that I had an option and it&rsquo;s made the world of difference. <a href="http://rich.k3r.me/blog/2015/01/20/finding-a-pair-of-headphones/">My earphones</a> use noise reduction to completely immerse me in the task at hand.</p>
-
-<p>An unexpected and corny side effect of the headphones has been trust. I am nosey because I believe I need to be involved in every decision, that my opinion always needs to be considered. Switching on the headphones has demonstrated to me that  I&rsquo;m not (always) the centre of the universe, and that many facets of the company can run without my constant interference.</p>
-
-<p>I&rsquo;m okay with that, because I spend a lot more time on the stuff I like doing now.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[RailsInstaller (Ruby 2.1) on Windows 8.1]]></title>
-    <link href="http://rich.k3r.me/blog/2015/01/22/railsinstaller-ruby-2-dot-1-on-windows-8-dot-1/"/>
-    <updated>2015-01-22T19:53:44+00:00</updated>
-    <id>http://rich.k3r.me/blog/2015/01/22/railsinstaller-ruby-2-dot-1-on-windows-8-dot-1</id>
-    <content type="html"><![CDATA[<p>I&rsquo;ve recently had to get Rails and Capistrano up and running on a Windows 8.1 machine. These are the problems I encountered and how I fixed them. All issues were encountered after trying to run an existing Rails 4 project.</p>
-
-<p>My first step was to install Rails using <a href="http://railsinstaller.org">RailsInstaller</a>. This is a great first step for Windows users, as you also get Ruby, Git and DevKit (which is important for building gems that contain native code). I elected to install the Ruby 2.1 version, which at the time of install, was sporting Ruby 2.1.5.</p>
-
-<h2>Invalid Certificate</h2>
-
-<p>When running <code>bundle</code>, I encountered the following error:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bat'><span class='line'>Unable to download data from https:<span class="n">//rubygems.org/</span> - SSL_connect returned<span class="o">=</span><span class="m">1</span> errno<span class="o">=</span><span class="m">0</span> state<span class="o">=</span>SSLv<span class="m">3</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>As per the accepted answer on this <a href="http://stackoverflow.com/questions/27435841/windows-7-64-bit-could-not-find-a-valid-gem-compass-0-here-is-why-unab">StackOverflow question</a>, I downloaded <a href="http://curl.haxx.se/ca/cacert.pem">cacert.pem</a> and placed it here, C:\RailsInstaller. You also need to tell <code>gem</code> where to find the certificate, which is done by setting a environment variable called <code>SSL_CERT_FILE</code>. This can be done on a temporary basis by typing the following into Command Prompt&#8221;:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bat'><span class='line'><span class="k">set</span> <span class="nv">SSL_CERT_FILE</span><span class="o">=</span>C:\RailsInstaller\cacert.pem
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Sqlite Native</h2>
-
-<p>Running any command related to the local Sqlite db, threw up:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bat'><span class='line'>cannot load such file -- sqlite<span class="m">3</span><span class="n">/sqlite3_native</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>According to this <a href="http://stackoverflow.com/questions/26636471/windows-ruby-rails-install-cannot-load-such-file-sqlite3-sqlite3-native">accepted answer</a>, the problem is caused by the version of the <code>sqlite3</code> gem not supporting Ruby 2.1.3+ on Windows. The gem needed to be updated to at least 1.3.10.</p>
-
-<h2>Bcrypt</h2>
-
-<p>I encountered a similar problem with the <code>bcrypt</code> gem. I didn&rsquo;t record the nature of the problem, but updating to at least 3.1.7 resolved the issue.</p>
-
-<h2>TZInfo</h2>
-
-<p>When starting up the Rails server, I received an error relating to <code>TZInfo::DataSourceNotFound</code>. According to the accepted answer on this <a href="http://stackoverflow.com/questions/23022258/tzinfodatasourcenotfound-error-starting-rails-v4-1-0-server-on-windows">question</a>, Windows needs an additional gem for the <code>tzinfo</code> gem to work correctly. Add this to your <code>Gemfile</code>:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;tzinfo-data&#39;</span><span class="p">,</span> <span class="ss">platforms</span><span class="p">:</span> <span class="o">[</span><span class="ss">:mingw</span><span class="p">,</span> <span class="ss">:mswin</span><span class="p">,</span> <span class="ss">:x64_mingw</span><span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>NPM Error</h2>
-
-<p>For bonus points, I always install Node along with my Rails installations, if only for JavaScript compilation in Sprockets. Node is best installed using the binary from the official <a href="http://nodejs.org/">website</a>.</p>
-
-<p>Typing <code>npm</code> into Command Prompt for the first time, returned the following:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bat'><span class='line'>Error: ENOENT<span class="p">,</span> stat &#39;C:\Users\[Username Here]\AppData\Roaming\npm
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This issue was resolved by creating the missing <code>npm</code> folder in <code>Roaming</code>. Credit goes to the accepted answer of this <a href="http://stackoverflow.com/questions/25093276/node-js-windows-error-enoent-stat-c-users-rt-appdata-roaming-npm">question</a>.</p>
-
-<h2>Capistrano</h2>
-
-<p>On the first day of setup, Capistrano worked like a dream. The following day, after a system restart, no dice. Capistrano tasks kept dying with the following:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bat'><span class='line'>Error reading response length from authentication socket
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I tried reinstalling certificates and ensured the SSH Agent was running, to no avail. I still don&rsquo;t completely understand the problem, but I think the solution has more to do with the PC&rsquo;s specific environment.</p>
-
-<p><a href="http://www.sourcetreeapp.com/">SourceTree</a> was already installed (and running) on the PC, when I came to install Rails. As part of the installation, SourceTree installs <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">Pageant</a>, a Windows based SSH authentication tool.</p>
-
-<p>Basically, Capistrano started working again the moment I had the presence of mind to start Pageant again.</p>
-
-<p><em>NOTE: The PC has two sets of SSH keys setup, one through Pageant, the other through <a href="https://msysgit.github.io/">Msysgit</a>. I thought I&rsquo;d been using the Msysgit key, but I suspect I was using the Pageant one all along. For Capistrano at least, Git works from the command line, regardless of the status of Pageant.</em></p>
-
-<p>I&rsquo;m not aware of any dependancy on Pageant by RailsInstaller. So I wonder whether I wouldn&rsquo;t have this dependancy now, if I didn&rsquo;t already have Pageant on the system. Or possibly, I&rsquo;d have struggled getting Capistrano working at all, not appreciating the need for Pageant.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Finding a Pair of Headphones]]></title>
-    <link href="http://rich.k3r.me/blog/2015/01/20/finding-a-pair-of-headphones/"/>
-    <updated>2015-01-20T22:38:34+00:00</updated>
-    <id>http://rich.k3r.me/blog/2015/01/20/finding-a-pair-of-headphones</id>
-    <content type="html"><![CDATA[<p>When looking for a pair of headphones, it was important to me that they shut out as much outside noise as possible and be comfortable for long periods of time. I&rsquo;ve never spent more than £15 on a pair of earphones (typically in ear), so when you type in those requirements into a search engine, you should expect quite a shock!</p>
-
-<p>I&rsquo;d read on a couple of developer blogs, that &ldquo;around ear&rdquo; design was the way to go for comfort. Also, that <a href="http://www.audio-technica.com/cms/headphones/99aff89488ddd6b1/">Audio Technica ATH-M50X</a>s were a good choice for the money, at around £100. I&rsquo;m a long time fan of Sennheiser, and came across the <a href="http://en-uk.sennheiser.com/over-ear-headphone-momentum-stereo">Momentum</a> range under my own steam. The &ldquo;around ear&rdquo; Momentum&rsquo;s are around £200 and are far and away the most gorgeous looking headphones I&rsquo;ve ever seen.</p>
-
-<p>Feeling out of my depth though, I asked around a couple of friends. The response was unanimous. If you want to block out sound, it has to be the Bose Quiet Comfort range. The <a href="https://www.bose.co.uk/GB/en/home-and-personal-audio/headphones-and-headsets/acoustic-noise-cancelling-headphones/quietcomfort-25-headphones/">QC25</a> model is the latest and cost £270! Holy floor Batman, that was not going to be an off-the-cuff decision!</p>
-
-<p>What makes a pair of headphones cost almost £300? The QC25 has acoustic noise cancellation, which I think is basically a series of microphones that detect outside noise, which the headphone then counteracts with a reverse wave, cancelling out the sound. It sounds cool, but I was also concerned the cancelation might work against me, I&rsquo;m quiet sensitive to electrical noise.</p>
-
-<p>Working on the assumption that Bose aren&rsquo;t the only company capable of such feats, I also found the <a href="http://en-uk.sennheiser.com/wireless-bluetooth-headset-stereo-mm-550-x-travel">Sennheiser MM 550-X</a>, which purport to do the same as the QC25s, but with bluetooth and surround sound for the same price! At this point the prices were more like monopoly money in my head.</p>
-
-<p>I&rsquo;d seen these headphones online, but no way was I going to spend dollar until I&rsquo;d tried them on! I set out to two city centres and a shopping centre, where I found two Bose shops and a third shop that only had Bose headphones for you to try. Not a snifter of the other headphones!</p>
-
-<p>The QC25s were incredible! The sound was beautiful and crisp. In the busy shopping centre, I switched the noise reduction on and the world slipped away. Wow. The &ldquo;anti sound&rdquo; wasn&rsquo;t noticeable to me in the shopping centre.</p>
-
-<p>I wanted to make sure I was making the right choice though, so I hit the internet reviews. I needed noise reduction now, I wasn&rsquo;t going to spend a £100 on a pair of earphones that didn&rsquo;t disconnect me from the world. So the question was, how good are the MM 550-Xs? Even the most glowing review of these headphones, that cited them as the best bluetooth headphones on the market, suggested that surround sound was best turned off and the noise reduction was not on par with the QC25. I was really attracted to the bluetooth, but noise reduction was becoming very important to me.</p>
-
-<p>Fast forward a lot &ldquo;first world&rdquo; agonising and several attempts to find a shop that would allow me to try a decent selection of headphones. I conceded though and bought the QC25s.</p>
-
-<p>In the silence of my home, I was initially stuck by two disappointments:</p>
-
-<ol>
-<li>The &ldquo;anti noise&rdquo; is audible if you&rsquo;re in a quiet environment. To me at least.</li>
-<li>The headphones leak more noise to the outside than I&rsquo;d like at moderate volumes.</li>
-</ol>
-
-
-<p>Then I told myself to get a grip. Why would you use the noise reduction in a quiet environment any way. The headphones do leak more noise than I&rsquo;d like, but I am exceptionally picky in this area.</p>
-
-<p>I&rsquo;ve been using them for about two weeks now and I&rsquo;m entirely satisfied. At work I am blissful ignorance to the world around me. At home, Gravity Rush on the PS Vita is a completely new experience with these bad boys on.</p>
-
-<p>I cannot overstate how comfy they are to wear and the case is invaluable as I am always lugging stuff around in my man bag.</p>
-
-<p>I still have reservations over spending that amount of money on a pair of headphones, but the headphones themselves, I&rsquo;m doubtless are worth every penny.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Flexible Index Pages in Perch]]></title>
-    <link href="http://rich.k3r.me/blog/2015/01/14/flexible-index-pages-in-perch/"/>
-    <updated>2015-01-14T23:14:12+00:00</updated>
-    <id>http://rich.k3r.me/blog/2015/01/14/flexible-index-pages-in-perch</id>
-    <content type="html"><![CDATA[<p>It&rsquo;s pretty easy to knock up an index page in Perch. By &lsquo;index page&rsquo;, I mean a page that summarises the content of a sub folder. For instance, you have a collection of projects, implemented as sub pages of a directory called &lsquo;projects&rsquo;. You could provide a link to each of these projects on an index page.</p>
+  <div class="entry-content"><p>It&rsquo;s pretty easy to knock up an index page in Perch. By &lsquo;index page&rsquo;, I mean a page that summarises the content of a sub folder. For instance, you have a collection of projects, implemented as sub pages of a directory called &lsquo;projects&rsquo;. You could provide a link to each of these projects on an index page.</p>
 
 <p>The typical structure would be:</p>
 
@@ -677,15 +425,38 @@
 <p>The problem with the solution, is that multiple calls to the database are required to display the list. One to retrieve the navigation list, and then an additional call for each of the pages returned.</p>
 
 <p>A solution that reduced the amount of database calls, while still harnessed the power of the Perch templating system, might to write a SQL statement manually, the joined the navigation <code>SELECT</code> statement to a statement retrieving the desired content data, then parsed each of the results through the templating system. This might be something I investigate, should the volume of sub pages, demonstrate a noticeable slowdown of load time.</p>
-]]></content>
-  </entry>
+</div>
   
-  <entry>
-    <title type="html"><![CDATA[The Funniest Men of All Time - Rebuttal]]></title>
-    <link href="http://rich.k3r.me/blog/2015/01/13/the-funniest-men-of-all-time-rebuttal/"/>
-    <updated>2015-01-13T17:20:21+00:00</updated>
-    <id>http://rich.k3r.me/blog/2015/01/13/the-funniest-men-of-all-time-rebuttal</id>
-    <content type="html"><![CDATA[<p>When I saw the post <a href="http://thechive.com/2015/01/03/the-funniest-men-of-all-time-15-photos/">The funniest men of all time</a> pop up on my feed the other day, I was interested to see the awesome caliber of comic genius that would appear on such a strongly titled list.</p>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/01/13/the-funniest-men-of-all-time-rebuttal/">The Funniest Men of All Time - Rebuttal</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-01-13T17:20:21+00:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>13</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>5:20 pm</span></time>
+        
+           | <a href="/blog/2015/01/13/the-funniest-men-of-all-time-rebuttal/#disqus_thread"
+             data-disqus-identifier="http://rich.k3r.me/blog/2015/01/13/the-funniest-men-of-all-time-rebuttal/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>When I saw the post <a href="http://thechive.com/2015/01/03/the-funniest-men-of-all-time-15-photos/">The funniest men of all time</a> pop up on my feed the other day, I was interested to see the awesome caliber of comic genius that would appear on such a strongly titled list.</p>
 
 <p><em>I think we can all safely assume going into this post, that the use of the word &lsquo;men&rsquo; is used strictly in the non-specific gender meaning of the word. Definitely.</em></p>
 
@@ -767,15 +538,38 @@
 <p>I also find Adam Buxton extremely funny. I hope there is a new series of Bug in the works.</p>
 
 <p>What would your list of funny people look like? I&rsquo;d love to hear.</p>
-]]></content>
-  </entry>
+</div>
   
-  <entry>
-    <title type="html"><![CDATA[Half-arsed Working Techniques]]></title>
-    <link href="http://rich.k3r.me/blog/2014/12/21/half-arsed-working-techniques/"/>
-    <updated>2014-12-21T11:21:41+00:00</updated>
-    <id>http://rich.k3r.me/blog/2014/12/21/half-arsed-working-techniques</id>
-    <content type="html"><![CDATA[<h2>TL;DR</h2>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/12/21/half-arsed-working-techniques/">Half-arsed Working Techniques</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-12-21T11:21:41+00:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2014</span></span> <span class='time'>11:21 am</span></time>
+        
+           | <a href="/blog/2014/12/21/half-arsed-working-techniques/#disqus_thread"
+             data-disqus-identifier="http://rich.k3r.me/blog/2014/12/21/half-arsed-working-techniques/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>TL;DR</h2>
 
 <p>&ldquo;Half-arsed&rdquo;, as in reducing possibility of getting a fat arse by working more efficiently.  It&rsquo;s a pun, I&rsquo;m funny like that.</p>
 
@@ -836,15 +630,38 @@
 <p>What&rsquo;s weird about my conclusion, is that it doesn&rsquo;t talk about my ideas in context of standing more; which is the point of the post. I seem to be more concerned with disruptions in my workflow and being approachable to my co-workers. I think that&rsquo;s interesting, because for me, it&rsquo;s all interconnected.</p>
 
 <p>By playing with these techniques, I don&rsquo;t just prevent the onset of having a fat arse, I also become more productive and collaborative in my work.</p>
-]]></content>
-  </entry>
+</div>
   
-  <entry>
-    <title type="html"><![CDATA[Converting SVN to GIT]]></title>
-    <link href="http://rich.k3r.me/blog/2012/11/25/converting-svn-to-git/"/>
-    <updated>2012-11-25T20:36:00+00:00</updated>
-    <id>http://rich.k3r.me/blog/2012/11/25/converting-svn-to-git</id>
-    <content type="html"><![CDATA[<blockquote><p>This is a repost of <a href="http://dogma.co.uk/blog/10-converting-svn-to-git">http://dogma.co.uk/blog/10-converting-svn-to-git</a></p></blockquote>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/11/25/converting-svn-to-git/">Converting SVN to GIT</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2012-11-25T20:36:00+00:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>8:36 pm</span></time>
+        
+           | <a href="/blog/2012/11/25/converting-svn-to-git/#disqus_thread"
+             data-disqus-identifier="http://rich.k3r.me/blog/2012/11/25/converting-svn-to-git/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><blockquote><p>This is a repost of <a href="http://dogma.co.uk/blog/10-converting-svn-to-git">http://dogma.co.uk/blog/10-converting-svn-to-git</a></p></blockquote>
 
 <p>We&rsquo;ve recently set about converting all our old SVN repositories to GIT. The process is quite easy thanks to the <code>git svn</code> command, but there are some gotchas. So, I&rsquo;ll detail the process below.</p>
 
@@ -905,15 +722,38 @@ Once you have created an authors file (usually called authors.txt), run the foll
 
 
 <p>Providing all went well, you can now discard the temporary GIT repo and clone a fresh copy of your new remote GIT repo.</p>
-]]></content>
-  </entry>
+</div>
   
-  <entry>
-    <title type="html"><![CDATA[Content Management With Perch]]></title>
-    <link href="http://rich.k3r.me/blog/2011/03/04/content-management-with-perch/"/>
-    <updated>2011-03-04T04:22:42+00:00</updated>
-    <id>http://rich.k3r.me/blog/2011/03/04/content-management-with-perch</id>
-    <content type="html"><![CDATA[<blockquote><p>This is a repost of <a href="http://dogma.co.uk/blog/1-content-management-with-perch">http://dogma.co.uk/blog/1-content-management-with-perch</a></p></blockquote>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/03/04/content-management-with-perch/">Content Management With Perch</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-03-04T04:22:42+00:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2011</span></span> <span class='time'>4:22 am</span></time>
+        
+           | <a href="/blog/2011/03/04/content-management-with-perch/#disqus_thread"
+             data-disqus-identifier="http://rich.k3r.me/blog/2011/03/04/content-management-with-perch/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><blockquote><p>This is a repost of <a href="http://dogma.co.uk/blog/1-content-management-with-perch">http://dogma.co.uk/blog/1-content-management-with-perch</a></p></blockquote>
 
 <p>Perch, if you not already aware is a curious little PHP CMS by British design agency edgeofmyseat.com.  Curious because in an ecosystem dominated by feature rich, open source, free CMSs like WordPress and Drupal; Perch provides only one feature out of the box and costs about £40 per site including VAT. Curious because given this information, I&rsquo;m still overwhelming drawn to Perch for a lot of my projects.</p>
 
@@ -941,7 +781,7 @@ Once you have created an authors file (usually called authors.txt), run the foll
 
 <p>What happens is this; when you subsequently load that page. Perch queries the database to see if it has any content for page X called &lsquo;Dynamic Content&rsquo;. If Perch doesn&rsquo;t have a content region in that location, it creates one. The next time you log into Perch, you&rsquo;ll be provided with a content region called &lsquo;Dynamic Content&rsquo; flagged as new.</p>
 
-<p><img src="http://rich.k3r.me/images/content-manage-perch-1.png" alt="Dynamic Content" /></p>
+<p><img src="/images/content-manage-perch-1.png" alt="Dynamic Content" /></p>
 
 <p>Clicking on the region gives you the opportunity to define the content type from many built-in templates ranging from text to Google Analytics to images to blocks of code. If there isn&rsquo;t a template that suits your needs, create your own. You can also decide whether the content is recurring (like a list of posts) and whether content is to be shared between multiple pages.</p>
 
@@ -953,7 +793,154 @@ Once you have created an authors file (usually called authors.txt), run the foll
 
 
 <p>In summary, Perch is easy to setup (install process similar to WordPress) and makes it incredibly easy to add content management to existing sites on PHP capable web servers. Perch also contains an elegant API for extending the core functionality in the form of Apps. Apps available for download from the Perch site provide blogging functionality and dynamic page creation amongst other things. Hopefully I&rsquo;ll get a chance to cover Apps and App development in another post. If you regularly deal with legacy sites or just want to simplify things a bit, I recommend you check Perch out.</p>
-]]></content>
-  </entry>
+</div>
   
-</feed>
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/index.html">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/01/31/helpers-as-partial-controllers/">Helpers as Partial Controllers</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/01/31/casual-gaming/">Casual Gaming</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/01/22/shutting-the-world-out/">Shutting the World Out</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/01/22/railsinstaller-ruby-2-dot-1-on-windows-8-dot-1/">RailsInstaller (Ruby 2.1) on Windows 8.1</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/01/20/finding-a-pair-of-headphones/">Finding a Pair of Headphones</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/kim3er">@kim3er</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'kim3er',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/RichardKimber?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Richard Kimber -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'k3r';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
