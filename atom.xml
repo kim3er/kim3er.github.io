@@ -4,7 +4,7 @@
   <title><![CDATA[Adventures in brine]]></title>
   <link href="http://rich.k3r.me/atom.xml" rel="self"/>
   <link href="http://rich.k3r.me/"/>
-  <updated>2015-01-31T18:11:34+00:00</updated>
+  <updated>2015-01-31T18:24:43+00:00</updated>
   <id>http://rich.k3r.me/</id>
   <author>
     <name><![CDATA[Richard Kimber]]></name>
@@ -27,6 +27,9 @@
 <li>IDE (VS2010) > Smart text editor (TextMate at the time, now Sublime Text 3)</li>
 <li>Windows PC > Mac</li>
 </ol>
+
+
+<!--more-->
 
 
 <p>The one thing I remember missing most when transitioning from ASP.NET MVC to Rails, was not being able to <a href="http://haacked.com/archive/2009/11/18/aspnetmvc2-render-action.aspx/">render actions</a> within a view. I&rsquo;m not going to regurgitate Phil Haack&rsquo;s example here (by the way, when did he start working at Github? He was part of my MS dream team). Basically, what we&rsquo;re talking about is rendering a partial that is attached to a controller. This way the logic is as portable as the partial itself, without putting logic into the actual partial; something I used a lot in ASP.NET MVC.</p>
@@ -145,6 +148,9 @@
     <id>http://rich.k3r.me/blog/2015/01/31/casual-gaming</id>
     <content type="html"><![CDATA[<p>To say I am a casual gamer is probably overstating my position, but I do like a bit of inflight entertainment during a &ldquo;comfort break&rdquo;. This is a list of games I enjoy playing on the iPhone.</p>
 
+<!--more-->
+
+
 <p><img class="centre" src="http://rich.k3r.me/images/games/shades.png" width="175" height="175" title="Shades iOS Game Icon" ></p>
 
 <h2><a href="https://itunes.apple.com/gb/app/shades-a-simple-puzzle-game/id888683802?mt=8">Shades</a></h2>
@@ -204,6 +210,9 @@
     <id>http://rich.k3r.me/blog/2015/01/22/shutting-the-world-out</id>
     <content type="html"><![CDATA[<p>There is never enough time. Last year in particular, it always felt like there wasn&rsquo;t enough time in the day.  Running a company, where your work is also the primary source of income, is no easy task. I was always looking for ways of squeezing more hours out of day; tweaking processes, finding better tools, writing scripts. It&rsquo;s become a bit of an obsession for me, finding &ldquo;better&rdquo; ways to get more stuff done. I was pretty good at it, I think I still am. But as the end of last year drew in, it became clear that I was spreading myself too thin.</p>
 
+<!--more-->
+
+
 <p>I was a manager, a sales person, a support desk, a developer, and was switching these hats constantly throughout the day. My goal on any given day, was to get to the end of the day without any major mishaps. If I managed to progress at all, in terms of significant progression of a project or a more efficient way of doing something, well that was amazing.</p>
 
 <p>The problem was concentration, I couldn&rsquo;t stay focused on a single task, without being distracted by someone or something craving my attention. We experimented with a few different ways of tackling this:</p>
@@ -232,6 +241,9 @@
     <updated>2015-01-22T19:53:44+00:00</updated>
     <id>http://rich.k3r.me/blog/2015/01/22/railsinstaller-ruby-2-dot-1-on-windows-8-dot-1</id>
     <content type="html"><![CDATA[<p>I&rsquo;ve recently had to get Rails and Capistrano up and running on a Windows 8.1 machine. These are the problems I encountered and how I fixed them. All issues were encountered after trying to run an existing Rails 4 project.</p>
+
+<!--more-->
+
 
 <p>My first step was to install Rails using <a href="http://railsinstaller.org">RailsInstaller</a>. This is a great first step for Windows users, as you also get Ruby, Git and DevKit (which is important for building gems that contain native code). I elected to install the Ruby 2.1 version, which at the time of install, was sporting Ruby 2.1.5.</p>
 
@@ -316,6 +328,9 @@
     <id>http://rich.k3r.me/blog/2015/01/20/finding-a-pair-of-headphones</id>
     <content type="html"><![CDATA[<p>When looking for a pair of headphones, it was important to me that they shut out as much outside noise as possible and be comfortable for long periods of time. I&rsquo;ve never spent more than £15 on a pair of earphones (typically in ear), so when you type in those requirements into a search engine, you should expect quite a shock!</p>
 
+<!--more-->
+
+
 <p>I&rsquo;d read on a couple of developer blogs, that &ldquo;around ear&rdquo; design was the way to go for comfort. Also, that <a href="http://www.audio-technica.com/cms/headphones/99aff89488ddd6b1/">Audio Technica ATH-M50X</a>s were a good choice for the money, at around £100. I&rsquo;m a long time fan of Sennheiser, and came across the <a href="http://en-uk.sennheiser.com/over-ear-headphone-momentum-stereo">Momentum</a> range under my own steam. The &ldquo;around ear&rdquo; Momentum&rsquo;s are around £200 and are far and away the most gorgeous looking headphones I&rsquo;ve ever seen.</p>
 
 <p>Feeling out of my depth though, I asked around a couple of friends. The response was unanimous. If you want to block out sound, it has to be the Bose Quiet Comfort range. The <a href="https://www.bose.co.uk/GB/en/home-and-personal-audio/headphones-and-headsets/acoustic-noise-cancelling-headphones/quietcomfort-25-headphones/">QC25</a> model is the latest and cost £270! Holy floor Batman, that was not going to be an off-the-cuff decision!</p>
@@ -356,6 +371,9 @@
     <updated>2015-01-14T23:14:12+00:00</updated>
     <id>http://rich.k3r.me/blog/2015/01/14/flexible-index-pages-in-perch</id>
     <content type="html"><![CDATA[<p>It&rsquo;s pretty easy to knock up an index page in Perch. By &lsquo;index page&rsquo;, I mean a page that summarises the content of a sub folder. For instance, you have a collection of projects, implemented as sub pages of a directory called &lsquo;projects&rsquo;. You could provide a link to each of these projects on an index page.</p>
+
+<!--more-->
+
 
 <p>The typical structure would be:</p>
 
@@ -687,6 +705,9 @@
     <id>http://rich.k3r.me/blog/2015/01/13/the-funniest-men-of-all-time-rebuttal</id>
     <content type="html"><![CDATA[<p>When I saw the post <a href="http://thechive.com/2015/01/03/the-funniest-men-of-all-time-15-photos/">The funniest men of all time</a> pop up on my feed the other day, I was interested to see the awesome caliber of comic genius that would appear on such a strongly titled list.</p>
 
+<!--more-->
+
+
 <p><em>I think we can all safely assume going into this post, that the use of the word &lsquo;men&rsquo; is used strictly in the non-specific gender meaning of the word. Definitely.</em></p>
 
 <p>Well that was weird. Let me take you through thought process, step by step:</p>
@@ -785,6 +806,9 @@
 
 <p>I really had no idea, which is irritating because it makes perfect sense. It makes perfect sense, because even in my ignorance, I have already seen the benefits yielded from breaking up my work. Having unwittingly lost half a stone this year, without changing my diet (next year&rsquo;s resolution).</p>
 
+<!--more-->
+
+
 <p>The tips in the second video are insightful, but didn&rsquo;t really speak to my specific situation. So, I&rsquo;ve come up with a few ideas for how I might tackle the issue.</p>
 
 <h2>Use a Timer</h2>
@@ -855,6 +879,11 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
+
+
+<!--more-->
+
+
 <p>You can list as many users in this file as you like, duplicating the GIT details if required. To generate a list of the SVN author&rsquo;s run the following with the SVN repo:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -916,6 +945,9 @@ Once you have created an authors file (usually called authors.txt), run the foll
     <content type="html"><![CDATA[<blockquote><p>This is a repost of <a href="http://dogma.co.uk/blog/1-content-management-with-perch">http://dogma.co.uk/blog/1-content-management-with-perch</a></p></blockquote>
 
 <p>Perch, if you not already aware is a curious little PHP CMS by British design agency edgeofmyseat.com.  Curious because in an ecosystem dominated by feature rich, open source, free CMSs like WordPress and Drupal; Perch provides only one feature out of the box and costs about £40 per site including VAT. Curious because given this information, I&rsquo;m still overwhelming drawn to Perch for a lot of my projects.</p>
+
+<!--more-->
+
 
 <p>Why I&rsquo;m drawn to Perch is the simplicity of the CMS itself. <a href="http://edgeofmyseat.com/">edgeofmyseat.com</a> have found niche between the handful of static HTML files in a directory and site built from the ground up to be content managed.</p>
 

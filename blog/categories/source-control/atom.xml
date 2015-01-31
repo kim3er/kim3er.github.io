@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Source Control | Adventures in brine]]></title>
   <link href="http://rich.k3r.me/blog/categories/source-control/atom.xml" rel="self"/>
   <link href="http://rich.k3r.me/"/>
-  <updated>2015-01-31T18:11:34+00:00</updated>
+  <updated>2015-01-31T18:24:43+00:00</updated>
   <id>http://rich.k3r.me/</id>
   <author>
     <name><![CDATA[Richard Kimber]]></name>
@@ -26,6 +26,9 @@
 
 <pre><code class="bash">svn_username = GIT User Name &lt;user@dogma.co.uk&gt;
 </code></pre>
+
+<!--more-->
+
 
 <p>You can list as many users in this file as you like, duplicating the GIT details if required. To generate a list of the SVN author&rsquo;s run the following with the SVN repo:</p>
 

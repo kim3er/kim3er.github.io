@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Partials | Adventures in brine]]></title>
   <link href="http://rich.k3r.me/blog/categories/partials/atom.xml" rel="self"/>
   <link href="http://rich.k3r.me/"/>
-  <updated>2015-01-31T18:11:34+00:00</updated>
+  <updated>2015-01-31T18:24:43+00:00</updated>
   <id>http://rich.k3r.me/</id>
   <author>
     <name><![CDATA[Richard Kimber]]></name>
@@ -27,6 +27,9 @@
 <li>IDE (VS2010) > Smart text editor (TextMate at the time, now Sublime Text 3)</li>
 <li>Windows PC > Mac</li>
 </ol>
+
+
+<!--more-->
 
 
 <p>The one thing I remember missing most when transitioning from ASP.NET MVC to Rails, was not being able to <a href="http://haacked.com/archive/2009/11/18/aspnetmvc2-render-action.aspx/">render actions</a> within a view. I&rsquo;m not going to regurgitate Phil Haack&rsquo;s example here (by the way, when did he start working at Github? He was part of my MS dream team). Basically, what we&rsquo;re talking about is rendering a partial that is attached to a controller. This way the logic is as portable as the partial itself, without putting logic into the actual partial; something I used a lot in ASP.NET MVC.</p>

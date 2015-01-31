@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Php | Adventures in brine]]></title>
   <link href="http://rich.k3r.me/blog/categories/php/atom.xml" rel="self"/>
   <link href="http://rich.k3r.me/"/>
-  <updated>2015-01-31T18:11:34+00:00</updated>
+  <updated>2015-01-31T18:24:43+00:00</updated>
   <id>http://rich.k3r.me/</id>
   <author>
     <name><![CDATA[Richard Kimber]]></name>
@@ -19,6 +19,9 @@
     <updated>2015-01-14T23:14:12+00:00</updated>
     <id>http://rich.k3r.me/blog/2015/01/14/flexible-index-pages-in-perch</id>
     <content type="html"><![CDATA[<p>It&rsquo;s pretty easy to knock up an index page in Perch. By &lsquo;index page&rsquo;, I mean a page that summarises the content of a sub folder. For instance, you have a collection of projects, implemented as sub pages of a directory called &lsquo;projects&rsquo;. You could provide a link to each of these projects on an index page.</p>
+
+<!--more-->
+
 
 <p>The typical structure would be:</p>
 
@@ -245,6 +248,9 @@ Your resulting index page will look something like:
     <content type="html"><![CDATA[<blockquote><p>This is a repost of <a href="http://dogma.co.uk/blog/1-content-management-with-perch">http://dogma.co.uk/blog/1-content-management-with-perch</a></p></blockquote>
 
 <p>Perch, if you not already aware is a curious little PHP CMS by British design agency edgeofmyseat.com.  Curious because in an ecosystem dominated by feature rich, open source, free CMSs like WordPress and Drupal; Perch provides only one feature out of the box and costs about £40 per site including VAT. Curious because given this information, I&rsquo;m still overwhelming drawn to Perch for a lot of my projects.</p>
+
+<!--more-->
+
 
 <p>Why I&rsquo;m drawn to Perch is the simplicity of the CMS itself. <a href="http://edgeofmyseat.com/">edgeofmyseat.com</a> have found niche between the handful of static HTML files in a directory and site built from the ground up to be content managed.</p>
 
