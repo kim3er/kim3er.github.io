@@ -8,6 +8,8 @@ published: true
 ---
 It's pretty easy to knock up an index page in Perch. By 'index page', I mean a page that summarises the content of a sub folder. For instance, you have a collection of projects, implemented as sub pages of a directory called 'projects'. You could provide a link to each of these projects on an index page.
 
+<!--more-->
+
 The typical structure would be:
 
 ```

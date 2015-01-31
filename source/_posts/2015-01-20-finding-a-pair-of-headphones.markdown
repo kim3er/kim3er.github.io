@@ -7,6 +7,8 @@ categories: [ Headphones, Distraction ]
 ---
 When looking for a pair of headphones, it was important to me that they shut out as much outside noise as possible and be comfortable for long periods of time. I've never spent more than £15 on a pair of earphones (typically in ear), so when you type in those requirements into a search engine, you should expect quite a shock!
 
+<!--more-->
+
 I'd read on a couple of developer blogs, that "around ear" design was the way to go for comfort. Also, that [Audio Technica ATH-M50X](http://www.audio-technica.com/cms/headphones/99aff89488ddd6b1/)s were a good choice for the money, at around £100. I'm a long time fan of Sennheiser, and came across the [Momentum](http://en-uk.sennheiser.com/over-ear-headphone-momentum-stereo) range under my own steam. The "around ear" Momentum's are around £200 and are far and away the most gorgeous looking headphones I've ever seen.
 
 Feeling out of my depth though, I asked around a couple of friends. The response was unanimous. If you want to block out sound, it has to be the Bose Quiet Comfort range. The [QC25](https://www.bose.co.uk/GB/en/home-and-personal-audio/headphones-and-headsets/acoustic-noise-cancelling-headphones/quietcomfort-25-headphones/) model is the latest and cost £270! Holy floor Batman, that was not going to be an off-the-cuff decision!

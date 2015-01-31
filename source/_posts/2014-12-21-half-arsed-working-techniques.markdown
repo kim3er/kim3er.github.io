@@ -14,6 +14,8 @@ I recently watched this video [Are You Sitting Too Much?](http://youtu.be/uiKg6J
 
 I really had no idea, which is irritating because it makes perfect sense. It makes perfect sense, because even in my ignorance, I have already seen the benefits yielded from breaking up my work. Having unwittingly lost half a stone this year, without changing my diet (next year's resolution).
 
+<!--more-->
+
 The tips in the second video are insightful, but didn't really speak to my specific situation. So, I've come up with a few ideas for how I might tackle the issue. 
 
 ##Use a Timer

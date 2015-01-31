@@ -8,6 +8,8 @@ published: true
 ---
 When I saw the post [The funniest men of all time](http://thechive.com/2015/01/03/the-funniest-men-of-all-time-15-photos/) pop up on my feed the other day, I was interested to see the awesome caliber of comic genius that would appear on such a strongly titled list.
 
+<!--more-->
+
 _I think we can all safely assume going into this post, that the use of the word 'men' is used strictly in the non-specific gender meaning of the word. Definitely._
 
 Well that was weird. Let me take you through thought process, step by step:

@@ -13,6 +13,8 @@ Page Attributes allow you to add editable content at the page level, rather than
 <perch:pages id="description" label="Description" type="textarea" size="xs" escape="true" count="chars" />
 ```
 
+<!--more-->
+
 _If you're not already familiar with how to implement Page Attributes, I urge you follow the link above. The implementation is simple, and as the builtin example suggests, very effective for SEO._
 
 We can use Page Attributes to fresh out our index page, with an image and an excerpt.

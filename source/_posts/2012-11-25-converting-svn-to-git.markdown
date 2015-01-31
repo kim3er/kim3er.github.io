@@ -16,6 +16,8 @@ Every revision in a SVN repository has an author, these authors need to be migra
 svn_username = GIT User Name <user@dogma.co.uk>
 ```
 
+<!--more-->
+
 You can list as many users in this file as you like, duplicating the GIT details if required. To generate a list of the SVN author's run the following with the SVN repo:
 
 ``` bash

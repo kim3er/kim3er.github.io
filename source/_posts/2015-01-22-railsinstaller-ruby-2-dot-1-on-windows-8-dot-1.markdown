@@ -7,6 +7,8 @@ categories: [ Rails, Windows, Node, Tips ]
 ---
 I've recently had to get Rails and Capistrano up and running on a Windows 8.1 machine. These are the problems I encountered and how I fixed them. All issues were encountered after trying to run an existing Rails 4 project.
 
+<!--more-->
+
 My first step was to install Rails using [RailsInstaller](http://railsinstaller.org). This is a great first step for Windows users, as you also get Ruby, Git and DevKit (which is important for building gems that contain native code). I elected to install the Ruby 2.1 version, which at the time of install, was sporting Ruby 2.1.5.
 
 ##Invalid Certificate

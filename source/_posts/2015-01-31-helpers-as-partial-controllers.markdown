@@ -14,6 +14,8 @@ I came to Rails from ASP.NET MVC (have I told you about my [book](http://www.ama
 2. IDE (VS2010) > Smart text editor (TextMate at the time, now Sublime Text 3)
 3. Windows PC > Mac
 
+<!--more-->
+
 The one thing I remember missing most when transitioning from ASP.NET MVC to Rails, was not being able to [render actions](http://haacked.com/archive/2009/11/18/aspnetmvc2-render-action.aspx/) within a view. I'm not going to regurgitate Phil Haack's example here (by the way, when did he start working at Github? He was part of my MS dream team). Basically, what we're talking about is rendering a partial that is attached to a controller. This way the logic is as portable as the partial itself, without putting logic into the actual partial; something I used a lot in ASP.NET MVC.
 
 ##Where there's a will there's a gem
