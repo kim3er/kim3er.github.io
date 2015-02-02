@@ -15,9 +15,15 @@ Page Attributes allow you to add editable content at the page level, rather than
 
 <!--more-->
 
-_If you're not already familiar with how to implement Page Attributes, I urge you follow the link above. The implementation is simple, and as the builtin example suggests, very effective for SEO._
+_If you're not already familiar with how to implement Page Attributes, I urge you to check out Perch's [docs](http://docs.grabaperch.com/docs/pages/page-attributes/). The implementation is simple, and as the builtin example suggests, very effective for SEO._
 
-We can use Page Attributes to fresh out our index page, with an image and an excerpt.
+This is a somewhat contrived example, but should hopefully demonstrate the flexibility that page attributes add to Perch. Imagine a website that contains a list of projects. The home page contains a list of the titles of those projects, and a link to view more information. The list is generated using the [perch_pages_navigation](http://docs.grabaperch.com/docs/navigation/perch-pages-navigation/) function.
+
+``` php
+<?php perch_pages_navigation(array( 'from-path' => '*' )); ?>
+```
+
+We'd like the list to include a thumbnail and a small excerpt of the project description. I've already provided a [tutorial](/blog/2015/01/14/flexible-index-pages-in-perch/) of a flexible technique for achieving this, but perhaps it's a bit overkill for the immediate needs of the client. With Page Attributes we can fresh out our index page, with an image and an excerpt, with very little effort.
 
 Adding the following to `perch/templates/pages/attributes/default.html`:
 
@@ -26,11 +32,11 @@ Adding the following to `perch/templates/pages/attributes/default.html`:
 <perch:pages id="excerpt" label="Excerpt" type="textarea" />
 ```
 
-Would add two additional fields in the Page Details section of all pages.
+Adds two additional fields in the Page Details section of all pages.
 
 ![Page Attributes added](/images/page-attributes-1.png)
 
-This new content is saved at a page level, so it can now be exposed in our index page. By modifying 'perch/templates/navigation/item.html' to the following:
+This new content is saved at a page level, so it can now be exposed in our index page using our existing `perch_pages_navigation` implementation. By modifying 'perch/templates/navigation/item.html' to the following:
 
 ``` html
 <perch:before>
@@ -71,7 +77,7 @@ The outputted HTML of our index page would resemble:
 </ul>
 ```
 
-This definitely a leap forward in the way we can expose page level content, but it's not ideal in a couple of respects:
+You can see how quickly we can expose, and gain access to, page level content with Page Attributes. This technique may well fit the bill for you immediate requirements. Before committing to this course of action over, say my previously mentioned tutorial, you should be aware of the following aspects of Page Attributes:
 
-1. The new fields are hidden away in the Page Details tab. The content we enter for the index page, may have overlap with content destined for the detail page.
-2. Page Attributes are shared across all pages, not just a targeted few. The Page Details could get awfully crowded with fields that are only applicable in niche circumstances.
+1. The new fields are hidden away in the Page Details tab. The content we enter for the index page, may have overlap with content being created for the project page. In this case it more sense to group all the content into content regions.
+2. Page Attributes are shared across all pages, not just a targeted few. The Page Details could get awfully crowded with fields that are only applicable in niche circumstances. For instance, you also have a list of staff that require a job title field. This field would also be visible in the Page Details tab of a our project pages.

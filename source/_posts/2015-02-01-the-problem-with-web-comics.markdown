@@ -50,4 +50,4 @@ The thing that has stopped me from creating such a service in the past (time asi
 * Once the content is packaged in such a way, has it jumped ahead of its intended published form?
 * Are all those bloody adverts actually critical to the creator's original decision to publish in the first place?
 
-I don't know, maybe I'll have stab at that system in the future. If you've made it to bottom of this post, I'd be interested to hear how you manage your web comic reading. If you're creator, I'd be really interested in hearing about the thought process that goes into publishing a web comic, and whether you see a need for a better delivery system.
+I don't know, maybe I'll have stab at that system in the future. If you've made it to bottom of this post, I'd be interested to hear how you manage your web comic reading. If you're a creator, I'd be really interested in hearing about the thought process that goes into publishing a web comic, and whether you see a need for a better delivery system.
