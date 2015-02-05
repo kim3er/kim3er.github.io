@@ -1,10 +1,10 @@
 ---
 layout: post
 title: "The problem with web comics"
-date: 2015-02-01 09:26:56 +0000
+date: 2015-02-05 21:26:56 +0000
 comments: true
 categories: [ Comics ]
-published: false
+published: true
 ---
 That's right, I'm going to have quick whinge about web comics. You know, comics of (more often than not) an incredibly high quality, provided for free by their talented creators. It seems like an entirely justifiable premise doesn't it? Well, maybe... Let's give it a go and see where we end up.
 
@@ -22,7 +22,7 @@ Enter web comics. Thank goodness, I thought we'd never get there.
 
 Not a totally altruistic endeavour on the part of the creator; web comics are a great way to demonstrate a new talent or get different ideas out there. Regardless of motive, 'free to read' material is a win for the reader. It has led me personally to discover creators that I may not have found otherwise, and to purchases of those creator's commercial offerings. A memorable example of this happening, was after finding [Friends With Boys](http://www.friendswithboys.com/) by [Faith Erin Hicks](http://www.faitherinhicks.com/), which led me to discovering books like The War at Ellsmere and Adventures of Superhero Girl.
 
-With Friends With Boys, I started reading roughly halfway through the run. Having so much content already available got me hooked. I obsessively finished the rest of the story, ensuring to log on each of Faith's designated publishing days. In this instance web comics really worked for me.
+With Friends With Boys, I started reading roughly halfway through the run. Having so much content already available got me hooked. I obsessively finished the rest of the story, ensuring to log on to the site for new content, the moment it was published. In this instance web comics really worked for me.
 
 In other instances, web comics have also worked for me in the short strip format, like with [Oglaf](http://oglaf.com/) (NSFW). Oglaf works, because a) the name is very easy to remember and b) the stories are very short and funny (and rude).
 
