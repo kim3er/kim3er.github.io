@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Comics | Adventures in brine]]></title>
+  <link href="http://rich.k3r.me/blog/categories/comics/atom.xml" rel="self"/>
+  <link href="http://rich.k3r.me/"/>
+  <updated>2015-02-05T21:27:49+00:00</updated>
+  <id>http://rich.k3r.me/</id>
+  <author>
+    <name><![CDATA[Richard Kimber]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[The Problem With Web Comics]]></title>
+    <link href="http://rich.k3r.me/blog/2015/02/05/the-problem-with-web-comics/"/>
+    <updated>2015-02-05T21:26:56+00:00</updated>
+    <id>http://rich.k3r.me/blog/2015/02/05/the-problem-with-web-comics</id>
+    <content type="html"><![CDATA[<p>That&rsquo;s right, I&rsquo;m going to have quick whinge about web comics. You know, comics of (more often than not) an incredibly high quality, provided for free by their talented creators. It seems like an entirely justifiable premise doesn&rsquo;t it? Well, maybe&hellip; Let&rsquo;s give it a go and see where we end up.</p>
+
+<!-- more -->
+
+
+<p>You pick up a book, you read a chapter or two, stick a bookmark in, then set it down on you bedside table. The next time you pick that book up, you go straight to the bookmark and continue reading. I haven&rsquo;t done that for a while mind. I&rsquo;m a hoarder by nature, without the space to truly exercise the talent. So I made the decision a few years ago to go digital with all of my printed media, books, magazines and comics. It makes my inability to throw anything away, less of an issue.</p>
+
+<p>The kindle makes reading a book very easy as a digital medium. I was more sceptical about whether I&rsquo;d get on with comics on a bright iPad screen, but the transition took and I&rsquo;m almost exclusively digital now. Don&rsquo;t get me wrong, paper is best - there is nothing like the smell of an old book - but digital is a good compromise. The only real issue I have with digital (as format) is that I am always scrabbling for something to read in the bath.</p>
+
+<p>Okay, I&rsquo;m slowly getting off the point. The point I am trying to make is that, it took my a little while to buy into comics in a digital format, but once I was there, my appetite became insatiable. &ldquo;Need more input.&rdquo;</p>
+
+<p>My taste in comics has changed quite a lot over the years. At the peak of my print comic reading, it was almost exclusively DC/Marvel cape books. Now, I read almost (there&rsquo;s that word again) no superhero books; my tastes are more fringe. I&rsquo;m looking for stories that surprise me in some way.</p>
+
+<p>Enter web comics. Thank goodness, I thought we&rsquo;d never get there.</p>
+
+<p>Not a totally altruistic endeavour on the part of the creator; web comics are a great way to demonstrate a new talent or get different ideas out there. Regardless of motive, &lsquo;free to read&rsquo; material is a win for the reader. It has led me personally to discover creators that I may not have found otherwise, and to purchases of those creator&rsquo;s commercial offerings. A memorable example of this happening, was after finding <a href="http://www.friendswithboys.com/">Friends With Boys</a> by <a href="http://www.faitherinhicks.com/">Faith Erin Hicks</a>, which led me to discovering books like The War at Ellsmere and Adventures of Superhero Girl.</p>
+
+<p>With Friends With Boys, I started reading roughly halfway through the run. Having so much content already available got me hooked. I obsessively finished the rest of the story, ensuring to log on to the site for new content, the moment it was published. In this instance web comics really worked for me.</p>
+
+<p>In other instances, web comics have also worked for me in the short strip format, like with <a href="http://oglaf.com/">Oglaf</a> (NSFW). Oglaf works, because a) the name is very easy to remember and b) the stories are very short and funny (and rude).</p>
+
+<p>I&rsquo;m discussing virtues, when I should be discussing problems.</p>
+
+<h2>Discoverability</h2>
+
+<p>Really the only reliable way I&rsquo;ve had to find new web comics is by recommendation through <a href="http://io9.com/">io9</a>. I&rsquo;ve attempted to find other sources, but all too often the sites are outdated in style and content.</p>
+
+<h2>Bookmarks</h2>
+
+<p>If I&rsquo;m reading a purchased comic, I&rsquo;ll use <a href="https://www.comixology.co.uk/">Comixology</a> or <a href="http://www.bitolithic.com/comic-zeal/">Comic Zeal</a>. These apps are my &ldquo;easy reach&rdquo;, they&rsquo;re my bookmark.</p>
+
+<p>Some web comics are published in blogs, some in more purpose built sites. Some web comics are published as little more than Javascript slideshows with no thought to browser history. Some sites read backwards (chronologically), some forwards.</p>
+
+<p>Man, it&rsquo;s a mess if you just want to pick something up every now and then. It&rsquo;s enough to switch me off to most of them.</p>
+
+<h2>Possible Solution</h2>
+
+<p>The problem with web comics, I&rsquo;ve discovered while writing this post, is me (the reader). I expect too much I think, from something that is a) free and b) created by someone(s) who don&rsquo;t want spend their lives worrying over usability. I suspect they mainly want to write comics.</p>
+
+<p>The solution, I&rsquo;ve often wondered, might be to have an episodic web comic publishing framework. A service that allowed content creators to upload at whatever frequency they liked, which would then be collected into an entity that could be navigated and bookmarked by the reader, through an app or a website.</p>
+
+<p>The thing that has stopped me from creating such a service in the past (time aside), is the creator&rsquo;s original motive in uploading the comic in the first place.</p>
+
+<ul>
+<li>Would a delivery system such as the one I&rsquo;ve described, go against principles of the creator?</li>
+<li>Does it remove the human element that encompasses a web comic?</li>
+<li>Once the content is packaged in such a way, has it jumped ahead of its intended published form?</li>
+<li>Are all those bloody adverts actually critical to the creator&rsquo;s original decision to publish in the first place?</li>
+</ul>
+
+
+<p>I don&rsquo;t know, maybe I&rsquo;ll have stab at that system in the future. If you&rsquo;ve made it to bottom of this post, I&rsquo;d be interested to hear how you manage your web comic reading. If you&rsquo;re a creator, I&rsquo;d be really interested in hearing about the thought process that goes into publishing a web comic, and whether you see a need for a better delivery system.</p>
+]]></content>
+  </entry>
+  
+</feed>
