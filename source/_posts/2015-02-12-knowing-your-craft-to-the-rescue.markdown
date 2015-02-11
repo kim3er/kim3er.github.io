@@ -1,10 +1,10 @@
 ---
 layout: post
 title: "Knowing your craft to the rescue!"
-date: 2015-02-08 08:01:23 +0000
+date: 2015-02-12 08:01:23 +0000
 comments: true
 categories: [ Preprocessors, Rebuttal, Transpilers ]
-published: false
+published: true
 ---
 Just finished reading [What Will Save Us from the Dark Side of CSS Pre-Processors?](http://alistapart.com/column/what-will-save-us-from-the-dark-side-of-pre-processors) on [A List Apart](http://alistapart.com/). I found the title and initial tone of the post confounding. And well, I probably read the post in the first instance, to shout down the wildly unfair negative connotations attached to preprocessors.
 
