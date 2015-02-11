@@ -54,7 +54,9 @@ Page Content
 		- some_content <-- Can't access this
 ```
 
-As of Perch 2.4, you can extend the amount content saved at a page level, using [Page Attributes](http://docs.grabaperch.com/docs/pages/page-attributes/). Page Attributes can be very useful, but they can't be used to be target a sub-sect of pages (like our project pages), so are not ideal for what we're trying to achieve. I.E You can only add fields that will be available to all pages.
+As of Perch 2.4, you can extend the amount content saved at a page level, using [Page Attributes](/blog/2015/02/18/page-attributes-in-perch/). Page Attributes can be very useful, but they can't be used to be target a sub-sect of pages (like our project pages), so are not ideal for what we're trying to achieve. I.E You can only add fields that will be available to all pages.
+
+_Update: This is not entirely true. You can set an 'Attribute template' per page, in 'Page Options'. Attribute templates allow you to decide which attributes are configurable at a page level. There is a draw back back though; the 'Attribute template' is not saved in a Master page. So it would be down to the user to configure the 'Attribute template' each page. Checkout my post of Page Attributes [here](/blog/2015/02/18/page-attributes-in-perch/)._
 
 What is needed is a mechanism, whereby the page order is retrieved from the Navigation part of Perch and the content, from a region designed with our projects in mind.
 

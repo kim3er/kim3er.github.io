@@ -1,10 +1,10 @@
 ---
 layout: post
 title: "Page Attributes in Perch"
-date: 2015-01-10 22:52:05 +0000
+date: 2015-02-18 22:52:05 +0000
 comments: true
 categories: [ Perch, PHP ]
-published: false
+published: true
 ---
 
 Page Attributes allow you to add editable content at the page level, rather than on a content level. The syntax is almost identical to that of a standard content region. Below is an extract of `perch/templates/pages/attributes/seo.html`:
@@ -80,4 +80,6 @@ The outputted HTML of our index page would resemble:
 You can see how quickly we can expose, and gain access to, page level content with Page Attributes. This technique may well fit the bill for you immediate requirements. Before committing to this course of action over, say my previously mentioned tutorial, you should be aware of the following aspects of Page Attributes:
 
 1. The new fields are hidden away in the Page Details tab. The content we enter for the index page, may have overlap with content being created for the project page. In this case it more sense to group all the content into content regions.
-2. Page Attributes are shared across all pages, not just a targeted few. The Page Details could get awfully crowded with fields that are only applicable in niche circumstances. For instance, you also have a list of staff that require a job title field. This field would also be visible in the Page Details tab of a our project pages.
+2. Through the use of 'Attribute templates', the user can select which attributes are configurable at a page level. However, there is no way for a new page to infer which template it should us. Which means that it is down to the user to make this decision each time, which in my opinion, limits the dropdown's usefulness.
+
+So there you are, Page Attributes. A pretty neat way to add a bit more oomph to your index pages.
