@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Knowing your craft to the rescue!"
-date: 2015-02-12 08:01:23 +0000
+date: 2015-02-12 07:21:23 +0000
 comments: true
 categories: [ Preprocessors, Rebuttal, Transpilers ]
 published: true
