@@ -73,7 +73,7 @@ _NOTE: The PC has two sets of SSH keys setup, one through Pageant, the other thr
 I'm not aware of any dependancy on Pageant by RailsInstaller. So I wonder whether I wouldn't have this dependancy now, if I didn't already have Pageant on the system. Or possibly, I'd have struggled getting Capistrano working at all, not appreciating the need for Pageant.
 
 ##Line Endings
-I'm still not 100% clear what happened here. We manage a number of GIT repos on Windows & Mac, and have not had this issue before. Upon committing changes to a project, from the Windows machine, all the line endings were converted to CRLF. This caused problems with Rake (the project in question was built in Rails). My inital attempts to fix the issue on a Mac resulted in me corrupting the Sqlite3 development database, so for the remainder of this fix, assume I've temporarily moved the db (along with all other binary files, i.e. images) out of the directory structure.
+I'm still not 100% clear what happened here. We manage a number of GIT repos on Windows & Mac, and have not had this issue before. Upon committing changes to a project, from the Windows machine, all the line endings were converted to CRLF. This caused problems with Rake. My inital attempts to fix the issue on a Mac resulted in me corrupting the Sqlite3 development database, so for the remainder of this fix, assume I've temporarily moved the db (along with all other binary files, i.e. images) out of the directory structure.
 
 From the project root, on a Mac, I ran the following:
 
