@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Node | Adventures in brine]]></title>
   <link href="http://rich.k3r.me/blog/categories/node/atom.xml" rel="self"/>
   <link href="http://rich.k3r.me/"/>
-  <updated>2015-02-12T07:21:48+00:00</updated>
+  <updated>2015-02-12T22:02:38+00:00</updated>
   <id>http://rich.k3r.me/</id>
   <author>
     <name><![CDATA[Richard Kimber]]></name>
@@ -84,6 +84,29 @@
 <p><em>NOTE: The PC has two sets of SSH keys setup, one through Pageant, the other through <a href="https://msysgit.github.io/">Msysgit</a>. I thought I&rsquo;d been using the Msysgit key, but I suspect I was using the Pageant one all along. For Capistrano at least, Git works from the command line, regardless of the status of Pageant.</em></p>
 
 <p>I&rsquo;m not aware of any dependancy on Pageant by RailsInstaller. So I wonder whether I wouldn&rsquo;t have this dependancy now, if I didn&rsquo;t already have Pageant on the system. Or possibly, I&rsquo;d have struggled getting Capistrano working at all, not appreciating the need for Pageant.</p>
+
+<h2>Line Endings</h2>
+
+<p>I&rsquo;m still not 100% clear what happened here. We manage a number of GIT repos on Windows &amp; Mac, and have not had this issue before. Upon committing changes to a project, from the Windows machine, all the line endings were converted to CRLF. This caused problems with Rake (the project in question was built in Rails). My inital attempts to fix the issue on a Mac resulted in me corrupting the Sqlite3 development database, so for the remainder of this fix, assume I&rsquo;ve temporarily moved the db (along with all other binary files, i.e. images) out of the directory structure.</p>
+
+<p>From the project root, on a Mac, I ran the following:</p>
+
+<pre><code class="bash">find . -type f -not -path "./.git/*" -exec perl -pi -e 's/\r\n|\n|\r/\n/g' {} \;
+</code></pre>
+
+<p>From Linux, you can run:</p>
+
+<pre><code class="bash">find . -type f -not -path "./.git/*" -exec dos2unix {} \;
+</code></pre>
+
+<p>The above, replaces CRLF with LF for all files in the GIT repo.</p>
+
+<p>After readding the database, I ran <code>rails server</code> to check for obvious issues; all seemed well. As per this <a href="https://help.github.com/articles/dealing-with-line-endings/#platform-windows">Github article</a>, I ran the following on the Windows machine:</p>
+
+<pre><code class="bat">git config --global core.autocrlf true
+</code></pre>
+
+<p>The above, gets GIT to manage line endings on Windows machines, to keep them in sync with GIT&rsquo;s base line ending (LF).</p>
 ]]></content>
   </entry>
   
