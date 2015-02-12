@@ -4,6 +4,7 @@ title: "RailsInstaller (Ruby 2.1) on Windows 8.1"
 date: 2015-01-22 19:53:44 +0000
 comments: true
 categories: [ Rails, Windows, Node, Tips ]
+published: true
 ---
 I've recently had to get Rails and Capistrano up and running on a Windows 8.1 machine. These are the problems I encountered and how I fixed them. All issues were encountered after trying to run an existing Rails 4 project.
 
@@ -72,26 +73,26 @@ _NOTE: The PC has two sets of SSH keys setup, one through Pageant, the other thr
 I'm not aware of any dependancy on Pageant by RailsInstaller. So I wonder whether I wouldn't have this dependancy now, if I didn't already have Pageant on the system. Or possibly, I'd have struggled getting Capistrano working at all, not appreciating the need for Pageant.
 
 ##Line Endings
-I'm still not 100% clear what happened here. We manage a number of GIT repos on Windows & Mac and have not had this issue before. Upon committing changes to a project, from the Windows machine, all the line endings were converted to CRLF. This caused problems with Rake (the project in question was built in Rails). My inital attempts to fix the issue on a Mac resulted in me corrupting the Sqlite3 development database, so for the remainder of this fix, assume I've temporarily moved the db out of the directory structure.
+I'm still not 100% clear what happened here. We manage a number of GIT repos on Windows & Mac, and have not had this issue before. Upon committing changes to a project, from the Windows machine, all the line endings were converted to CRLF. This caused problems with Rake (the project in question was built in Rails). My inital attempts to fix the issue on a Mac resulted in me corrupting the Sqlite3 development database, so for the remainder of this fix, assume I've temporarily moved the db (along with all other binary files, i.e. images) out of the directory structure.
 
 From the project root, on a Mac, I ran the following:
 
-``` shell
+``` bash
 find . -type f -not -path "./.git/*" -exec perl -pi -e 's/\r\n|\n|\r/\n/g' {} \;
 ```
 
 From Linux, you can run:
 
-``` shell
+``` bash
 find . -type f -not -path "./.git/*" -exec dos2unix {} \;
 ```
 
 The above, replaces CRLF with LF for all files in the GIT repo.
 
-After readding the database, I ran `rails server` to check for obvious issues and all seemed well. As per this [Github article](https://help.github.com/articles/dealing-with-line-endings/#platform-windows), I ran the following on the Windows machine:
+After readding the database, I ran `rails server` to check for obvious issues; all seemed well. As per this [Github article](https://help.github.com/articles/dealing-with-line-endings/#platform-windows), I ran the following on the Windows machine:
 
 ``` bat
 git config --global core.autocrlf true
 ```
 
-The above, gets GIT to manage linee ndings on Windows machines, to keep them in sync with GIT's base line ending (LF).
+The above, gets GIT to manage line endings on Windows machines, to keep them in sync with GIT's base line ending (LF).
