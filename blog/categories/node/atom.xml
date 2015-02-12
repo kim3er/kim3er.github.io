@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Node | Adventures in brine]]></title>
   <link href="http://rich.k3r.me/blog/categories/node/atom.xml" rel="self"/>
   <link href="http://rich.k3r.me/"/>
-  <updated>2015-02-12T22:02:38+00:00</updated>
+  <updated>2015-02-12T22:06:07+00:00</updated>
   <id>http://rich.k3r.me/</id>
   <author>
     <name><![CDATA[Richard Kimber]]></name>
@@ -87,7 +87,7 @@
 
 <h2>Line Endings</h2>
 
-<p>I&rsquo;m still not 100% clear what happened here. We manage a number of GIT repos on Windows &amp; Mac, and have not had this issue before. Upon committing changes to a project, from the Windows machine, all the line endings were converted to CRLF. This caused problems with Rake (the project in question was built in Rails). My inital attempts to fix the issue on a Mac resulted in me corrupting the Sqlite3 development database, so for the remainder of this fix, assume I&rsquo;ve temporarily moved the db (along with all other binary files, i.e. images) out of the directory structure.</p>
+<p>I&rsquo;m still not 100% clear what happened here. We manage a number of GIT repos on Windows &amp; Mac, and have not had this issue before. Upon committing changes to a project, from the Windows machine, all the line endings were converted to CRLF. This caused problems with Rake. My inital attempts to fix the issue on a Mac resulted in me corrupting the Sqlite3 development database, so for the remainder of this fix, assume I&rsquo;ve temporarily moved the db (along with all other binary files, i.e. images) out of the directory structure.</p>
 
 <p>From the project root, on a Mac, I ran the following:</p>
 
