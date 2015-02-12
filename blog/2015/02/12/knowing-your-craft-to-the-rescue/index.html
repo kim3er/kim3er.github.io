@@ -1,0 +1,337 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Knowing Your Craft to the Rescue! - Adventures in brine</title>
+  <meta name="author" content="Richard Kimber">
+
+  
+  <meta name="description" content="Just finished reading What Will Save Us from the Dark Side of CSS Pre-Processors? on A List Apart. I found the title and initial tone of the post &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://rich.k3r.me/blog/2015/02/12/knowing-your-craft-to-the-rescue">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Adventures in brine" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-56802309-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Adventures in brine</a></h1>
+  
+    <h2>A blog about code and coding.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="rich.k3r.me">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Knowing Your Craft to the Rescue!</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-02-12T07:21:23+00:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>7:21 am</span></time>
+        
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://rich.k3r.me">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Just finished reading <a href="http://alistapart.com/column/what-will-save-us-from-the-dark-side-of-pre-processors">What Will Save Us from the Dark Side of CSS Pre-Processors?</a> on <a href="http://alistapart.com/">A List Apart</a>. I found the title and initial tone of the post confounding. And well, I probably read the post in the first instance, to shout down the wildly unfair negative connotations attached to preprocessors.</p>
+
+<!-- more -->
+
+
+<p>The thing is, I love preprocessors. I love them so much that I&rsquo;m currently brewing a series of posts extolling the virtues of preprocessors. Then I&rsquo;m faced by a post by A List Apart (a site I have a lot of respect for), apparently prophesying the demise of these little wonders. I couldn&rsquo;t let the post go, what if they were right?</p>
+
+<p>After all, its up to all of us to constantly question everything we believe to be true. Right? Right.</p>
+
+<p>The arguments set forth for the problems with preprocessors are:</p>
+
+<ol>
+<li><a href="http://alistapart.com/column/what-will-save-us-from-the-dark-side-of-pre-processors#section2">Unmindful use of preprocessors creates bloated output.</a></li>
+<li><a href="http://alistapart.com/column/what-will-save-us-from-the-dark-side-of-pre-processors#section3">By adding a layer of abstraction on the base syntax, you&rsquo;re essentially locking yourself into it&rsquo;s Domain-Specific Language (DSL).</a></li>
+</ol>
+
+
+<p>Blaming the use of a preprocessor on the coder&rsquo;s own bad habits, is like blaming traffic cameras for speeding. To get the best out of a tool, you must use it correctly. I&rsquo;m no shining example of this! I frequently try to nail pictures to the wall with a screwdriver; I&rsquo;m forever using an unnecessary amount of nesting in my <a href="http://thesassway.com/intermediate/avoid-nested-selectors-for-more-modular-css">Sass</a>.</p>
+
+<p>You can&rsquo;t deny &lsquo;lock-in&rsquo; effort of adding a preprocessor to a project. In much the same way, you could argue that choosing to write an application in a language like <a href="http://en.wikipedia.org/wiki/Ruby_(programming_language">Ruby</a>), locks the future development to the that language over say the base languages that Ruby is built on, like C or Java.</p>
+
+<p>Well, that&rsquo;s not quite right, you could write a native extension for Ruby in C, if you wanted. Actually, this is why I use the SCSS syntax of Sass over SASS, and why I favour <a href="https://6to5.org/">6to5</a> over <a href="http://coffeescript.org/">CoffeeScript</a>. In both examples you can make use of all the wonderful syntactic sugar that the preprocessors provide, or ignore all of it and write in the base syntax. Let us not forget that we&rsquo;re never ever actually locked in by a good preprocessor, as its sole purpose is to generate the base syntax, so you can opt out at any time. &ldquo;Hey man, I don&rsquo;t need your syntactic goodness anymore, I&rsquo;m going to carry on with the base file&rdquo;.</p>
+
+<p>A couple of issues are raised by my last paragraph:</p>
+
+<ol>
+<li><p><strong>I love Ruby for the same reason that I don&rsquo;t like CoffeeScript.</strong> This is a weirdness that actually Lyza (the original post&rsquo;s author) will be helping me with later in this post. I have no interest in writing a line of C. I adore JavaScript and have never warmed to CoffeeScript as an alternative.</p></li>
+<li><p><strong>Why would you ever just  use the base syntax, if you&rsquo;d gone to the trouble of adding a preprocessor in the first place?</strong> I&rsquo;m completely non-dismissive of Lyza&rsquo;s arguments about the &lsquo;lock-in&rsquo; effect, or as I&rsquo;ve always thought of &lsquo;barrier to entry&rsquo; or &lsquo;learning curve&rsquo;. I work in a very talented dev team. We each come from different technological backgrounds and have our own preferences for tooling &amp; technology. If I&rsquo;m going to add a dependancy to the project, it better not be at the expense of a co-worker&rsquo;s ability to jump in.</p></li>
+</ol>
+
+
+<p>Its at the point where Lyza starts talking about post-processors, that my angst starts to wain. I&rsquo;d never heard of <a href="https://github.com/postcss/postcss">PostCSS</a> or <a href="http://www.myth.io/">Myth</a> and I&rsquo;m pretty excited about both. I use <a href="http://compass-style.org/">Compass</a> a lot; the moment that hooked me was realising that I didn&rsquo;t  have to hack around with nonsense bits of CSS, to add cross browser support for <code>inline-block</code>. Maybe though its time for a slightly different approach, in much the same way that I write ES6 compliant JavaScript and have a &ldquo;preprocessor&rdquo; called 6to5 convert it into something most browsers can work with (I realise I&rsquo;m talking about ES5). Perhaps I should be writing compliant CSS3 and have one of these &ldquo;post-processors&rdquo; add all the &ldquo;make it work in older browser&rdquo; stuff.</p>
+
+<p><em>Note: I&rsquo;ve used some of those double quotes divisively, I wonder if you noticed. It seems to me that the use of &ldquo;pre&rdquo; and &ldquo;post&rdquo; refers to the point at which the code is compliant to a standard. So, 6to5 is actually a post-processor. I went to the site for clarification. 6to5 actually refers to itself as a <a href="http://en.wikipedia.org/wiki/Source-to-source_compiler">transpiler</a>, which is a marvellous way of avoiding a distinction that I care very little about.</em></p>
+
+<p>In summation, Lyza&rsquo;s point (I believe) is that transpilers aren&rsquo;t there to cover up poor code, that diversity in one&rsquo;s approach (especially within a team) is good. If I&rsquo;m right, then I agree with her wholeheartedly in both regards. I don&rsquo;t agree with the negative connotations of so-called preprocessors &amp; post-proprocessors to get to these points though.</p>
+
+<p>For my own part, Lyza&rsquo;s post is identified the different tacks I have been taking in my usage of transpilers in JavaScript and CSS. Its time to harmonise, where possible, starting with standards code and have the transpiler make it dirty. I won&rsquo;t be giving up my nesting anytime soon though.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Richard Kimber</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-02-12T07:21:23+00:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>7:21 am</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/preprocessors/'>preprocessors</a>, <a class='category' href='/blog/categories/rebuttal/'>rebuttal</a>, <a class='category' href='/blog/categories/transpilers/'>transpilers</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://rich.k3r.me/blog/2015/02/12/knowing-your-craft-to-the-rescue/" data-via="kim3er" data-counturl="http://rich.k3r.me/blog/2015/02/12/knowing-your-craft-to-the-rescue/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/02/05/the-problem-with-web-comics/" title="Previous Post: The problem with web comics">&laquo; The problem with web comics</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/02/12/knowing-your-craft-to-the-rescue/">Knowing Your Craft to the Rescue!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/02/05/the-problem-with-web-comics/">The Problem With Web Comics</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/01/31/helpers-as-partial-controllers/">Helpers as Partial Controllers</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/01/31/casual-gaming/">Casual Gaming</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/01/22/shutting-the-world-out/">Shutting the World Out</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/kim3er">@kim3er</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'kim3er',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/RichardKimber?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Richard Kimber -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'k3r';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://rich.k3r.me/blog/2015/02/12/knowing-your-craft-to-the-rescue/';
+        var disqus_url = 'http://rich.k3r.me/blog/2015/02/12/knowing-your-craft-to-the-rescue/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

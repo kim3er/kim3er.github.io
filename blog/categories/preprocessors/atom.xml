@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Rebuttal | Adventures in brine]]></title>
-  <link href="http://rich.k3r.me/blog/categories/rebuttal/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Preprocessors | Adventures in brine]]></title>
+  <link href="http://rich.k3r.me/blog/categories/preprocessors/atom.xml" rel="self"/>
   <link href="http://rich.k3r.me/"/>
   <updated>2015-02-12T07:21:48+00:00</updated>
   <id>http://rich.k3r.me/</id>
@@ -56,99 +56,6 @@
 <p>In summation, Lyza&rsquo;s point (I believe) is that transpilers aren&rsquo;t there to cover up poor code, that diversity in one&rsquo;s approach (especially within a team) is good. If I&rsquo;m right, then I agree with her wholeheartedly in both regards. I don&rsquo;t agree with the negative connotations of so-called preprocessors &amp; post-proprocessors to get to these points though.</p>
 
 <p>For my own part, Lyza&rsquo;s post is identified the different tacks I have been taking in my usage of transpilers in JavaScript and CSS. Its time to harmonise, where possible, starting with standards code and have the transpiler make it dirty. I won&rsquo;t be giving up my nesting anytime soon though.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[The Funniest Men of All Time - Rebuttal]]></title>
-    <link href="http://rich.k3r.me/blog/2015/01/13/the-funniest-men-of-all-time-rebuttal/"/>
-    <updated>2015-01-13T17:20:21+00:00</updated>
-    <id>http://rich.k3r.me/blog/2015/01/13/the-funniest-men-of-all-time-rebuttal</id>
-    <content type="html"><![CDATA[<p>When I saw the post <a href="http://thechive.com/2015/01/03/the-funniest-men-of-all-time-15-photos/">The funniest men of all time</a> pop up on my feed the other day, I was interested to see the awesome caliber of comic genius that would appear on such a strongly titled list.</p>
-
-<!--more-->
-
-
-<p><em>I think we can all safely assume going into this post, that the use of the word &lsquo;men&rsquo; is used strictly in the non-specific gender meaning of the word. Definitely.</em></p>
-
-<p>Well that was weird. Let me take you through thought process, step by step:</p>
-
-<ol>
-<li>I don&rsquo;t know who half these people are.</li>
-<li>After some research, they all appear to be North American.</li>
-<li>I suspect, this is not a definitive list and heavily biased towards an american audience.</li>
-<li>Richard Pryor would definitely make my list.</li>
-<li>I&rsquo;m gonna make a list.</li>
-<li>Aren&rsquo;t there any funny North American women?</li>
-<li>I&rsquo;m sure there is, I just can&rsquo;t think of their names at the moment.</li>
-</ol>
-
-
-<p>With my brain stuck on point 5, my own list must be heard! So my, nay THE list of funnest <del>men</del> humans of ALL TIME, with every chance that it may or may not be factually accurate, is:</p>
-
-<h2>Richard Pryor</h2>
-
-<p>The Chive got this one right, holy cow this man was funny. I first encountered Prior, as every good nerd only could have, in Superman 3.</p>
-
-<h2>John Cleese</h2>
-
-<p>Of all the Brits not to make any american list of funny people, it&rsquo;s John Cleese I&rsquo;m amazed was missing. He&rsquo;s done so much it&rsquo;s hard to name favourite, but I&rsquo;m going to try; Fawlty Towers. Or maybe Life of Brian.</p>
-
-<p>Mr. Cleese also has a lot of interesting to say about creativity. He has certainly helped me look how I work creatively.</p>
-
-<iframe width="560" height="315" src="//www.youtube.com/embed/yAwDWe7OIF8" frameborder="0" allowfullscreen></iframe>
-
-
-<p><img src="" alt="" /></p>
-
-<h2>Sarah Silverman</h2>
-
-<p>The Sarah Silverman Show has made me cry why laughter on more than one occasion. She does a surreal, irreverent style of comedy that&hellip; I wish there was more of it. (North American funny lady)</p>
-
-<h2>Dylan Moran</h2>
-
-<p>I&rsquo;ve been in love with this man&rsquo;s comedy since Black Books. I like to believe it&rsquo;s actually how Dylan Moran lives his life.</p>
-
-<h2>Dawn French</h2>
-
-<p>Dawn French is an absolute must for this list, for so many reasons; from Comic Strip to Vicar of Dibley.</p>
-
-<h2>Sean Lock</h2>
-
-<p>I find Sean Lock&rsquo;s view of the world hysterical.</p>
-
-<h2>Robin Williams</h2>
-
-<p>He had me a Mork. I&rsquo;ve not stopped laughing since.</p>
-
-<h2>Reginald D. Hunter</h2>
-
-<p>I love what I perceive to be British humour, and struggle with a lot of &lsquo;established&rsquo; American comedians. Reginald D. Hunter just seems to get it.</p>
-
-<h2>Morecambe &amp; Wise</h2>
-
-<p>Is it fair to have a double act? If this was a countdown, there&rsquo;d be my number one.</p>
-
-<h2>Eddie Izzard</h2>
-
-<p>He was the comedy soundtrack to my twenties. It&rsquo;s the bird flying by the plane that gets me every time.</p>
-
-<h2>Tommy Cooper</h2>
-
-<p>&ldquo;What&rsquo;s this?&rdquo;
-&ldquo;A dead one of these.&rdquo;</p>
-
-<p>There is a lot of pressure writing a list like this. I&rsquo;ve given up trying to find CC images for them. I don&rsquo;t know how other people do it. Billy Crystal and Bill Bailey certainly belong on the list as well, I&rsquo;m not sure why I haven&rsquo;t added them.</p>
-
-<p>Stephen Fry, who I find immensely funny, also isn&rsquo;t on the list. A travesty.</p>
-
-<p>I love Richard Ayoade&rsquo;s dry sense of humour. Which reminds me, Katherine Parkinson makes The IT Crowd for me.</p>
-
-<p>I think there is actually loads of people of missed out and I&rsquo;m also uncomfortable with the lack of order. It&rsquo;s not well presented list and you probably shouldn&rsquo;t take it too seriously.</p>
-
-<p>I also find Adam Buxton extremely funny. I hope there is a new series of Bug in the works.</p>
-
-<p>What would your list of funny people look like? I&rsquo;d love to hear.</p>
 ]]></content>
   </entry>
   
