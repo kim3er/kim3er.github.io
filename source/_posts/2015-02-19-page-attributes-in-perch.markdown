@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Page Attributes in Perch"
-date: 2015-02-18 22:52:05 +0000
+date: 2015-02-19 07:52:05 +0000
 comments: true
 categories: [ Perch, PHP ]
 published: true
@@ -23,7 +23,7 @@ This is a somewhat contrived example, but should hopefully demonstrate the flexi
 <?php perch_pages_navigation(array( 'from-path' => '*' )); ?>
 ```
 
-We'd like the list to include a thumbnail and a small excerpt of the project description. I've already provided a [tutorial](/blog/2015/01/14/flexible-index-pages-in-perch/) of a flexible technique for achieving this, but perhaps it's a bit overkill for the immediate needs of the client. With Page Attributes we can fresh out our index page, with an image and an excerpt, with very little effort.
+We'd like the list to include a thumbnail and a small excerpt of the project description. I've already provided a [tutorial](/blog/2015/01/14/flexible-index-pages-in-perch/) on a flexible approach for achieving this, but perhaps it's a bit overkill for the immediate needs of the client. With Page Attributes we can fresh out our index page, with an image and an excerpt, with very little effort.
 
 Adding the following to `perch/templates/pages/attributes/default.html`:
 
@@ -77,7 +77,7 @@ The outputted HTML of our index page would resemble:
 </ul>
 ```
 
-You can see how quickly we can expose, and gain access to, page level content with Page Attributes. This technique may well fit the bill for you immediate requirements. Before committing to this course of action over, say my previously mentioned tutorial, you should be aware of the following aspects of Page Attributes:
+You can see how quickly we can expose, and gain access to, page level content with Page Attributes. This technique may well fit the bill for you immediate requirements. Before committing to this course of action though, see my previously mentioned [tutorial](/blog/2015/01/14/flexible-index-pages-in-perch/), you should be aware of the following aspects of Page Attributes:
 
 1. The new fields are hidden away in the Page Details tab. The content we enter for the index page, may have overlap with content being created for the project page. In this case it more sense to group all the content into content regions.
 2. Through the use of 'Attribute templates', the user can select which attributes are configurable at a page level. However, there is no way for a new page to infer which template it should us. Which means that it is down to the user to make this decision each time, which in my opinion, limits the dropdown's usefulness.
