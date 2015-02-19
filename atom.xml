@@ -4,7 +4,7 @@
   <title><![CDATA[Adventures in brine]]></title>
   <link href="http://rich.k3r.me/atom.xml" rel="self"/>
   <link href="http://rich.k3r.me/"/>
-  <updated>2015-02-12T22:06:07+00:00</updated>
+  <updated>2015-02-19T07:57:25+00:00</updated>
   <id>http://rich.k3r.me/</id>
   <author>
     <name><![CDATA[Richard Kimber]]></name>
@@ -12,6 +12,131 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Page Attributes in Perch]]></title>
+    <link href="http://rich.k3r.me/blog/2015/02/19/page-attributes-in-perch/"/>
+    <updated>2015-02-19T07:52:05+00:00</updated>
+    <id>http://rich.k3r.me/blog/2015/02/19/page-attributes-in-perch</id>
+    <content type="html"><![CDATA[<p>Page Attributes allow you to add editable content at the page level, rather than on a content level. The syntax is almost identical to that of a standard content region. Below is an extract of <code>perch/templates/pages/attributes/seo.html</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;perch:pages</span> <span class="na">id=</span><span class="s">&quot;description&quot;</span> <span class="na">label=</span><span class="s">&quot;Description&quot;</span> <span class="na">type=</span><span class="s">&quot;textarea&quot;</span> <span class="na">size=</span><span class="s">&quot;xs&quot;</span> <span class="na">escape=</span><span class="s">&quot;true&quot;</span> <span class="na">count=</span><span class="s">&quot;chars&quot;</span> <span class="nt">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!--more-->
+
+
+<p><em>If you&rsquo;re not already familiar with how to implement Page Attributes, I urge you to check out Perch&rsquo;s <a href="http://docs.grabaperch.com/docs/pages/page-attributes/">docs</a>. The implementation is simple, and as the builtin example suggests, very effective for SEO.</em></p>
+
+<p>This is a somewhat contrived example, but should hopefully demonstrate the flexibility that page attributes add to Perch. Imagine a website that contains a list of projects. The home page contains a list of the titles of those projects, and a link to view more information. The list is generated using the <a href="http://docs.grabaperch.com/docs/navigation/perch-pages-navigation/">perch_pages_navigation</a> function.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span> <span class="nx">perch_pages_navigation</span><span class="p">(</span><span class="k">array</span><span class="p">(</span> <span class="s1">&#39;from-path&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;*&#39;</span> <span class="p">));</span> <span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We&rsquo;d like the list to include a thumbnail and a small excerpt of the project description. I&rsquo;ve already provided a <a href="http://rich.k3r.me/blog/2015/01/14/flexible-index-pages-in-perch/">tutorial</a> on a flexible approach for achieving this, but perhaps it&rsquo;s a bit overkill for the immediate needs of the client. With Page Attributes we can fresh out our index page, with an image and an excerpt, with very little effort.</p>
+
+<p>Adding the following to <code>perch/templates/pages/attributes/default.html</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;perch:pages</span> <span class="na">id=</span><span class="s">&quot;image&quot;</span> <span class="na">label=</span><span class="s">&quot;Image&quot;</span> <span class="na">type=</span><span class="s">&quot;image&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'><span class="nt">&lt;perch:pages</span> <span class="na">id=</span><span class="s">&quot;excerpt&quot;</span> <span class="na">label=</span><span class="s">&quot;Excerpt&quot;</span> <span class="na">type=</span><span class="s">&quot;textarea&quot;</span> <span class="nt">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Adds two additional fields in the Page Details section of all pages.</p>
+
+<p><img src="http://rich.k3r.me/images/page-attributes-1.png" alt="Page Attributes added" /></p>
+
+<p>This new content is saved at a page level, so it can now be exposed in our index page using our existing <code>perch_pages_navigation</code> implementation. By modifying &lsquo;perch/templates/navigation/item.html&rsquo; to the following:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;perch:before&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;ul&gt;</span>
+</span><span class='line'><span class="nt">&lt;/perch:before&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;li</span><span class="err">&lt;</span><span class="na">perch:if</span> <span class="na">exists=</span><span class="s">&quot;current_page&quot;</span><span class="nt">&gt;</span> class=&quot;selected&quot;<span class="nt">&lt;/perch:if&gt;&lt;perch:if</span> <span class="na">exists=</span><span class="s">&quot;ancestor_page&quot;</span><span class="nt">&gt;</span> class=&quot;ancestor&quot;<span class="nt">&lt;/perch:if&gt;</span>&gt;
+</span><span class='line'>            <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;&lt;perch:pages id=&quot;</span><span class="na">pagePath</span><span class="err">&quot;</span> <span class="nt">/&gt;</span>&quot;&gt;
+</span><span class='line'>              <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;&lt;perch:pages id=&quot;</span><span class="na">image</span><span class="err">&quot;</span> <span class="nt">/&gt;</span>&quot; alt=&quot;<span class="nt">&lt;perch:pages</span> <span class="na">id=</span><span class="s">&quot;pageNavText&quot;</span> <span class="nt">/&gt;</span>&quot;&gt;
+</span><span class='line'>              <span class="nt">&lt;h1&gt;</span>
+</span><span class='line'>                  <span class="nt">&lt;perch:pages</span> <span class="na">id=</span><span class="s">&quot;pageNavText&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;/h1&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;p&gt;</span>
+</span><span class='line'>                  <span class="nt">&lt;perch:pages</span> <span class="na">id=</span><span class="s">&quot;excerpt&quot;</span> <span class="na">label=</span><span class="s">&quot;Excerpt&quot;</span> <span class="na">type=</span><span class="s">&quot;textarea&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/a&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;perch:pages</span> <span class="na">id=</span><span class="s">&quot;subitems&quot;</span> <span class="na">encode=</span><span class="s">&quot;false&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/li&gt;</span>
+</span><span class='line'><span class="nt">&lt;perch:after&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/ul&gt;</span>
+</span><span class='line'><span class="nt">&lt;/perch:after&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The outputted HTML of our index page would resemble:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;ul&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;li&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;/industries/project-1.php&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;/perch/resources/project-thumb.jpg&quot;</span> <span class="na">alt=</span><span class="s">&quot;Project 1&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;h1&gt;</span>
+</span><span class='line'>              Project 1
+</span><span class='line'>          <span class="nt">&lt;/h1&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;p&gt;</span>
+</span><span class='line'>              Project Excerpt
+</span><span class='line'>          <span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/a&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/li&gt;</span>
+</span><span class='line'><span class="nt">&lt;/ul&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You can see how quickly we can expose, and gain access to, page level content with Page Attributes. This technique may well fit the bill for you immediate requirements. Before committing to this course of action though, see my previously mentioned <a href="http://rich.k3r.me/blog/2015/01/14/flexible-index-pages-in-perch/">tutorial</a>, you should be aware of the following aspects of Page Attributes:</p>
+
+<ol>
+<li>The new fields are hidden away in the Page Details tab. The content we enter for the index page, may have overlap with content being created for the project page. In this case it more sense to group all the content into content regions.</li>
+<li>Through the use of &lsquo;Attribute templates&rsquo;, the user can select which attributes are configurable at a page level. However, there is no way for a new page to infer which template it should us. Which means that it is down to the user to make this decision each time, which in my opinion, limits the dropdown&rsquo;s usefulness.</li>
+</ol>
+
+
+<p>So there you are, Page Attributes. A pretty neat way to add a bit more oomph to your index pages.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Knowing Your Craft to the Rescue!]]></title>
@@ -571,7 +696,9 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>As of Perch 2.4, you can extend the amount content saved at a page level, using <a href="http://docs.grabaperch.com/docs/pages/page-attributes/">Page Attributes</a>. Page Attributes can be very useful, but they can&rsquo;t be used to be target a sub-sect of pages (like our project pages), so are not ideal for what we&rsquo;re trying to achieve. I.E You can only add fields that will be available to all pages.</p>
+<p>As of Perch 2.4, you can extend the amount content saved at a page level, using <a href="http://rich.k3r.me/blog/2015/02/18/page-attributes-in-perch/">Page Attributes</a>. Page Attributes can be very useful, but they can&rsquo;t be used to be target a sub-sect of pages (like our project pages), so are not ideal for what we&rsquo;re trying to achieve. I.E You can only add fields that will be available to all pages.</p>
+
+<p><em>Update: This is not entirely true. You can set an &lsquo;Attribute template&rsquo; per page, in &lsquo;Page Options&rsquo;. Attribute templates allow you to decide which attributes are configurable at a page level. There is a draw back back though; the &lsquo;Attribute template&rsquo; is not saved in a Master page. So it would be down to the user to configure the &lsquo;Attribute template&rsquo; each page. Checkout my post of Page Attributes <a href="http://rich.k3r.me/blog/2015/02/18/page-attributes-in-perch/">here</a>.</em></p>
 
 <p>What is needed is a mechanism, whereby the page order is retrieved from the Navigation part of Perch and the content, from a region designed with our projects in mind.</p>
 

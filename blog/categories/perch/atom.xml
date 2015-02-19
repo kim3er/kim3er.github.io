@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Perch | Adventures in brine]]></title>
   <link href="http://rich.k3r.me/blog/categories/perch/atom.xml" rel="self"/>
   <link href="http://rich.k3r.me/"/>
-  <updated>2015-02-12T22:06:07+00:00</updated>
+  <updated>2015-02-19T07:57:25+00:00</updated>
   <id>http://rich.k3r.me/</id>
   <author>
     <name><![CDATA[Richard Kimber]]></name>
@@ -12,6 +12,93 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Page Attributes in Perch]]></title>
+    <link href="http://rich.k3r.me/blog/2015/02/19/page-attributes-in-perch/"/>
+    <updated>2015-02-19T07:52:05+00:00</updated>
+    <id>http://rich.k3r.me/blog/2015/02/19/page-attributes-in-perch</id>
+    <content type="html"><![CDATA[<p>Page Attributes allow you to add editable content at the page level, rather than on a content level. The syntax is almost identical to that of a standard content region. Below is an extract of <code>perch/templates/pages/attributes/seo.html</code>:</p>
+
+<pre><code class="html">&lt;perch:pages id="description" label="Description" type="textarea" size="xs" escape="true" count="chars" /&gt;
+</code></pre>
+
+<!--more-->
+
+
+<p><em>If you&rsquo;re not already familiar with how to implement Page Attributes, I urge you to check out Perch&rsquo;s <a href="http://docs.grabaperch.com/docs/pages/page-attributes/">docs</a>. The implementation is simple, and as the builtin example suggests, very effective for SEO.</em></p>
+
+<p>This is a somewhat contrived example, but should hopefully demonstrate the flexibility that page attributes add to Perch. Imagine a website that contains a list of projects. The home page contains a list of the titles of those projects, and a link to view more information. The list is generated using the <a href="http://docs.grabaperch.com/docs/navigation/perch-pages-navigation/">perch_pages_navigation</a> function.</p>
+
+<pre><code class="php">&lt;?php perch_pages_navigation(array( 'from-path' =&gt; '*' )); ?&gt;
+</code></pre>
+
+<p>We&rsquo;d like the list to include a thumbnail and a small excerpt of the project description. I&rsquo;ve already provided a <a href="/blog/2015/01/14/flexible-index-pages-in-perch/">tutorial</a> on a flexible approach for achieving this, but perhaps it&rsquo;s a bit overkill for the immediate needs of the client. With Page Attributes we can fresh out our index page, with an image and an excerpt, with very little effort.</p>
+
+<p>Adding the following to <code>perch/templates/pages/attributes/default.html</code>:</p>
+
+<pre><code class="html">&lt;perch:pages id="image" label="Image" type="image" /&gt;
+&lt;perch:pages id="excerpt" label="Excerpt" type="textarea" /&gt;
+</code></pre>
+
+<p>Adds two additional fields in the Page Details section of all pages.</p>
+
+<p><img src="/images/page-attributes-1.png" alt="Page Attributes added" /></p>
+
+<p>This new content is saved at a page level, so it can now be exposed in our index page using our existing <code>perch_pages_navigation</code> implementation. By modifying &lsquo;perch/templates/navigation/item.html&rsquo; to the following:</p>
+
+<pre><code class="html">&lt;perch:before&gt;
+    &lt;ul&gt;
+&lt;/perch:before&gt;
+        &lt;li&lt;perch:if exists="current_page"&gt; class="selected"&lt;/perch:if&gt;&lt;perch:if exists="ancestor_page"&gt; class="ancestor"&lt;/perch:if&gt;&gt;
+            &lt;a href="&lt;perch:pages id="pagePath" /&gt;"&gt;
+                &lt;img src="&lt;perch:pages id="image" /&gt;" alt="&lt;perch:pages id="pageNavText" /&gt;"&gt;
+                &lt;h1&gt;
+                    &lt;perch:pages id="pageNavText" /&gt;
+                &lt;/h1&gt;
+                &lt;p&gt;
+                    &lt;perch:pages id="excerpt" label="Excerpt" type="textarea" /&gt;
+                &lt;/p&gt;
+            &lt;/a&gt;   
+            &lt;perch:pages id="subitems" encode="false" /&gt;
+        &lt;/li&gt;
+&lt;perch:after&gt;
+    &lt;/ul&gt;
+&lt;/perch:after&gt;
+</code></pre>
+
+<p>The outputted HTML of our index page would resemble:</p>
+
+<p>&#8220;` html</p>
+
+<ul>
+    <li>
+        <a href="http://rich.k3r.me/industries/project-1.php">
+            <img src="http://rich.k3r.me/perch/resources/project-thumb.jpg" alt="Project 1">
+            <h1>
+                Project 1
+            </h1>
+            <p>
+                Project Excerpt
+            </p>
+        </a>
+    </li>
+</ul>
+
+
+<p>&#8220;`</p>
+
+<p>You can see how quickly we can expose, and gain access to, page level content with Page Attributes. This technique may well fit the bill for you immediate requirements. Before committing to this course of action though, see my previously mentioned <a href="/blog/2015/01/14/flexible-index-pages-in-perch/">tutorial</a>, you should be aware of the following aspects of Page Attributes:</p>
+
+<ol>
+<li>The new fields are hidden away in the Page Details tab. The content we enter for the index page, may have overlap with content being created for the project page. In this case it more sense to group all the content into content regions.</li>
+<li>Through the use of &lsquo;Attribute templates&rsquo;, the user can select which attributes are configurable at a page level. However, there is no way for a new page to infer which template it should us. Which means that it is down to the user to make this decision each time, which in my opinion, limits the dropdown&rsquo;s usefulness.</li>
+</ol>
+
+
+<p>So there you are, Page Attributes. A pretty neat way to add a bit more oomph to your index pages.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Flexible Index Pages in Perch]]></title>
@@ -67,7 +154,9 @@ You're restricted in the content that can be displayed in this template. This is
         - some_content &lt;&ndash; Can&rsquo;t access this
 &#8220;`</p>
 
-<p>As of Perch 2.4, you can extend the amount content saved at a page level, using <a href="http://docs.grabaperch.com/docs/pages/page-attributes/">Page Attributes</a>. Page Attributes can be very useful, but they can&rsquo;t be used to be target a sub-sect of pages (like our project pages), so are not ideal for what we&rsquo;re trying to achieve. I.E You can only add fields that will be available to all pages.</p>
+<p>As of Perch 2.4, you can extend the amount content saved at a page level, using <a href="/blog/2015/02/18/page-attributes-in-perch/">Page Attributes</a>. Page Attributes can be very useful, but they can&rsquo;t be used to be target a sub-sect of pages (like our project pages), so are not ideal for what we&rsquo;re trying to achieve. I.E You can only add fields that will be available to all pages.</p>
+
+<p><em>Update: This is not entirely true. You can set an &lsquo;Attribute template&rsquo; per page, in &lsquo;Page Options&rsquo;. Attribute templates allow you to decide which attributes are configurable at a page level. There is a draw back back though; the &lsquo;Attribute template&rsquo; is not saved in a Master page. So it would be down to the user to configure the &lsquo;Attribute template&rsquo; each page. Checkout my post of Page Attributes <a href="/blog/2015/02/18/page-attributes-in-perch/">here</a>.</em></p>
 
 <p>What is needed is a mechanism, whereby the page order is retrieved from the Navigation part of Perch and the content, from a region designed with our projects in mind.</p>
 
