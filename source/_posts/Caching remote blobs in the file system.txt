@@ -1,0 +1,27 @@
+# Caching remote blobs in the file system
+
+At the moment, I find myself building a lot of "offline first" apps, that rely on a web based CMS for content. These apps are typically iOS & Android, but I have been dabbling with Chrome Apps as well. One thing that invariably comes up in the architecture of these apps, is "how to store the binary assets?"
+
+Storage in general is a bit of a tricky one in hybrid development. There are three main types of storage (excluding bespoke implementations and filesystem) you potentially have access to in a web based development:
+
+## localStorage
+Until recently, my "go to guy" for app storage. localStorage is really easy to use key-value storage, that is at the time of writing, the only consistent cross-platform storage mechanism. The problem with localStorage though, is that you typically only get access to 5MB. This has always been sufficient for my needs in the past, but you can't help thinking that's a scalability problem waiting to happen.
+
+[Compatibility](http://caniuse.com/#feat=namevalue-storage)
+
+## WebSQL
+WebSQL is an implementation of Sqlite, which is great, because I love Sqlite. What is not so great is that there is no support for IE/Firefox, and non seemingly on the horizon. I suspect it due to the lack of involvement from two major vendors, that [W3C ceased working on the specification in November 2010](http://en.wikipedia.org/wiki/Web_SQL_Database).
+
+[Compatibility](http://caniuse.com/#feat=sql-storage)
+
+## IndexedDB
+Certainly, the most promising of the three storage mechanisms, IndexedDB has gained [greater platform support of late](http://www.girliemac.com/blog/2014/07/03/indexeddb/). The Blob support is really interesting. But actually, I don't know too much about IndexedDB, I've never used it.
+
+So, which storage mechanism am I using? Well, I'm probably using IndexedDB in most cases. Sorry, I'm using the confusion as a story telling device. I recently had call to convert a Cordova app to a Chrome App. The app in question was using localStorage. Trick is, Chrome Apps don't support standard localStorage. They have their own version that is very similar, but is asynchronous. I didn't really want to rewrite the whole data layer specifically to work with Chrome app, but I found the idea of making it  asynchronous appealing . Maybe it was time to break my reliance on localStorage.
+
+I found [localForage](https://mozilla.github.io/localForage/), a Mozilla library that wraps localStorage, WebSQL and IndexedDB into asynchronous localStorage API. Perfect! The library basically uses what is available; You can even set or of precedence and write your own adapters (so chrome.sync.storage becomes an real option).
+
+[Compatibility](http://caniuse.com/#feat=indexeddb)
+
+CORS
+database blobs
