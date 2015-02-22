@@ -9,14 +9,23 @@ Storage in general is a bit of a tricky one in hybrid development. There are thr
 ## localStorage
 Until recently, my "go to guy" for app storage. localStorage is really easy to use key-value storage, that is at the time of writing, the only consistent cross-platform storage mechanism. The problem with localStorage though, is that you typically only get access to 5MB. This has always been sufficient for my needs in the past, but you can't help thinking that's a scalability problem waiting to happen. The limit speaks to then intended use for this sort of storage; if you've a lot of data, look somewhere else.
 
-***EXAMPLE***
+``` javascript
+localStorage.setItem('key', 'value');
+```
 
 [Compatibility](http://caniuse.com/#feat=namevalue-storage)
 
 ## WebSQL
 WebSQL is an implementation of Sqlite, which is great, because I love Sqlite. What is not so great is that there is no support for IE/Firefox, and non seemingly on the horizon. I suspect it's due to the lack of involvement from two major vendors, that [W3C ceased working on the specification in November 2010](http://en.wikipedia.org/wiki/Web_SQL_Database). No more to be said.
 
-***EXAMPLE***
+``` javascript
+
+var database = openDatabase('testDB', '1.0', 'Test Database', 1024 * 1024);
+database.transaction(function (transaction) {
+   transaction.executeSql('CREATE TABLE IF NOT EXISTS entries (id INTEGER PRIMARY KEY, value VARCHAR)');
+   transaction.executeSql('INSERT INTO entries (value) VALUES ("value")');
+});
+```
 
 [Compatibility](http://caniuse.com/#feat=sql-storage)
 
