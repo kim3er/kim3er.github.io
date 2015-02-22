@@ -4,18 +4,26 @@ _TL;DR You should be using [localForage](https://mozilla.github.io/localForage/)
 
 Storage in general is a bit of a tricky one in hybrid development. There are three main types of storage (excluding bespoke implementations and filesystem) you potentially have access to in a web based development:
 
+<!-- more -->
+
 ## localStorage
 Until recently, my "go to guy" for app storage. localStorage is really easy to use key-value storage, that is at the time of writing, the only consistent cross-platform storage mechanism. The problem with localStorage though, is that you typically only get access to 5MB. This has always been sufficient for my needs in the past, but you can't help thinking that's a scalability problem waiting to happen. The limit speaks to then intended use for this sort of storage; if you've a lot of data, look somewhere else.
+
+***EXAMPLE***
 
 [Compatibility](http://caniuse.com/#feat=namevalue-storage)
 
 ## WebSQL
 WebSQL is an implementation of Sqlite, which is great, because I love Sqlite. What is not so great is that there is no support for IE/Firefox, and non seemingly on the horizon. I suspect it's due to the lack of involvement from two major vendors, that [W3C ceased working on the specification in November 2010](http://en.wikipedia.org/wiki/Web_SQL_Database). No more to be said.
 
+***EXAMPLE***
+
 [Compatibility](http://caniuse.com/#feat=sql-storage)
 
 ## IndexedDB
-Certainly, the most promising of the three storage mechanisms, IndexedDB has gained [greater platform support of late](http://www.girliemac.com/blog/2014/07/03/indexeddb/). The Blob support is really interesting. But actually, I don't know too much about IndexedDB, I've never used it.
+Certainly, the most promising of the three storage mechanisms, IndexedDB has gained [greater platform support of late](http://www.girliemac.com/blog/2014/07/03/indexeddb/). Even so, with support having only just been implemented in iOS & Android, legacy support is an issue. The Blob support is really interesting. But actually, beyond what I've read, I don't know too much about IndexedDB, I've never really used it.
+
+***EXAMPLE***
 
 [Compatibility](http://caniuse.com/#feat=indexeddb)
 

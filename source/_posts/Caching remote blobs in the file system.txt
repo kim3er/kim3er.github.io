@@ -1,8 +1,19 @@
-# Caching remote blobs in the file system
+# Caching remote blobs in your hybrid app
 
-At the moment, I find myself building a lot of "offline first" apps, that rely on a web based CMS for content. These apps are typically iOS & Android, but I have been dabbling with Chrome Apps as well. One thing that invariably comes up in the architecture of these apps, is "how to store the binary assets?"
+"Offline first" apps is a big part of what we do at [Pathway](http://www.pathwaysoftware.com/); apps that typically rely on a web based CMS for content. These apps are primarily iOS & Android, but we have been dabbling with Windows (8.1 & Phone) & Chrome apps as well. One thing that invariably comes up in the architecture of these apps, is "how to store the binary assets?"
+
+The way I see it, you have two options:
+
+## IndexedDB
+
+http://caniuse.com/#feat=indexeddb <-- Legacy support, other DBs aren't really up to the challenge.
 
 
+## FileSystem
+
+http://www.html5rocks.com/en/tutorials/file/filesystem/ <-- Now Defunt
+http://plugins.cordova.io/#/package/org.apache.cordova.file
+https://developer.mozilla.org/en-US/docs/Web/API/LocalFileSystem
 
 CORS
 database blobs
