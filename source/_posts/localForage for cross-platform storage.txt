@@ -1,6 +1,6 @@
 # localForage for cross-platform storage
 
-_TL;DR You should be using [localForage](https://mozilla.github.io/localForage/) for all your web based local storage needs. It's wonderful._
+_TL;DR: You should be using [localForage](https://mozilla.github.io/localForage/) for all your web based local storage needs. It's wonderful._
 
 Storage in general is a bit of a tricky one in hybrid development. There are three main types of storage (excluding bespoke implementations and filesystem) you potentially have access to in a web based development:
 
@@ -30,9 +30,9 @@ database.transaction(function (transaction) {
 [Compatibility](http://caniuse.com/#feat=sql-storage)
 
 ## IndexedDB
-Certainly, the most promising of the three storage mechanisms, IndexedDB has gained [greater platform support of late](http://www.girliemac.com/blog/2014/07/03/indexeddb/). Even so, with support having only just been implemented in iOS & Android, legacy support is an issue. The Blob support is really interesting. But actually, beyond what I've read, I don't know too much about IndexedDB, I've never really used it.
+IndexedDB has gained [greater platform support of late](http://www.girliemac.com/blog/2014/07/03/indexeddb/). Even so, with support having only just been implemented in iOS & Android, legacy support is an issue. The Blob support is really interesting. But actually, beyond what I've read, I don't know too much about IndexedDB, I've never really used it.
 
-***EXAMPLE***
+_NOTE: I went hunting around for an example for IndexedDB, the best article I came across was [this one](http://code.tutsplus.com/tutorials/working-with-indexeddb--net-34673).  Wow, is IndexedDB long winded or what?!_
 
 [Compatibility](http://caniuse.com/#feat=indexeddb)
 
