@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Storage | Adventures in brine]]></title>
+  <link href="http://rich.k3r.me/blog/categories/storage/atom.xml" rel="self"/>
+  <link href="http://rich.k3r.me/"/>
+  <updated>2015-02-28T09:36:49+00:00</updated>
+  <id>http://rich.k3r.me/</id>
+  <author>
+    <name><![CDATA[Richard Kimber]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[localForage for Cross-platform Storage]]></title>
+    <link href="http://rich.k3r.me/blog/2015/02/28/localforage-for-cross-platform-storage/"/>
+    <updated>2015-02-28T09:30:05+00:00</updated>
+    <id>http://rich.k3r.me/blog/2015/02/28/localforage-for-cross-platform-storage</id>
+    <content type="html"><![CDATA[<p><em>TL;DR: You should be using <a href="https://mozilla.github.io/localForage/">localForage</a> for all your web based local storage needs. It&rsquo;s wonderful.</em></p>
+
+<p>Storage in general is a bit of a tricky one in hybrid development. There are three main types of storage (excluding bespoke implementations and filesystem) you potentially have access to in a web based development:</p>
+
+<!-- more -->
+
+
+<h2>localStorage</h2>
+
+<p>Until recently, my &ldquo;go to guy&rdquo; for app storage. localStorage is really easy to use key-value storage, that is at the time of writing, the only consistent cross-platform storage mechanism. The problem with localStorage though, is that you typically only get access to 5MB. This has always been sufficient for my needs in the past, but you can&rsquo;t help thinking that&rsquo;s a scalability problem waiting to happen. The limit speaks to the intended use for this sort of storage; if you&rsquo;ve a lot of data, look somewhere else.</p>
+
+<pre><code class="javascript">localStorage.setItem('key', 'value');
+</code></pre>
+
+<p><a href="http://caniuse.com/#feat=namevalue-storage">Compatibility</a></p>
+
+<h2>WebSQL</h2>
+
+<p>WebSQL is an implementation of Sqlite, which is great, because I love Sqlite. What is not so great is that there is no support for IE/Firefox, and non seemingly on the horizon. I suspect it&rsquo;s due to the lack of involvement from two major vendors, that <a href="http://en.wikipedia.org/wiki/Web_SQL_Database">W3C ceased working on the specification in November 2010</a>. No more to be said.</p>
+
+<pre><code class="javascript">
+var database = openDatabase('testDB', '1.0', 'Test Database', 1024 * 1024);
+database.transaction(function (transaction) {
+   transaction.executeSql('CREATE TABLE IF NOT EXISTS entries (id INTEGER PRIMARY KEY, value VARCHAR)');
+   transaction.executeSql('INSERT INTO entries (value) VALUES ("value")');
+});
+</code></pre>
+
+<p><a href="http://caniuse.com/#feat=sql-storage">Compatibility</a></p>
+
+<h2>IndexedDB</h2>
+
+<p>IndexedDB has gained <a href="http://www.girliemac.com/blog/2014/07/03/indexeddb/">greater platform support of late</a>. Even so, with support having only just been implemented in iOS &amp; Android, legacy support is an issue. The Blob support is really interesting. But actually, beyond what I&rsquo;ve read, I don&rsquo;t know too much about IndexedDB, I&rsquo;ve never really used it.</p>
+
+<p><em>NOTE: I went hunting around for an example for IndexedDB, the best article I came across was <a href="http://code.tutsplus.com/tutorials/working-with-indexeddb--net-34673">this one</a>.  Wow, is IndexedDB long winded or what?!</em></p>
+
+<p><a href="http://caniuse.com/#feat=indexeddb">Compatibility</a></p>
+
+<p>So, which storage mechanism am I using? Well, I&rsquo;m probably using IndexedDB in most cases. Ehh? I recently had call to convert a Cordova app to a Chrome app. The app in question was using localStorage. Trick is, Chrome apps don&rsquo;t support standard localStorage. They have their own version (called <a href="https://developer.chrome.com/apps/storage">chrome.storage</a>) that is very similar to localStorage, but is asynchronous nature. I didn&rsquo;t really want to rewrite the whole data layer specifically to work with Chrome app, but I found the idea of making it  asynchronous appealing . Maybe it was time to break my reliance on localStorage.</p>
+
+<p>I found <a href="https://mozilla.github.io/localForage/">localForage</a>, a Mozilla library that wraps localStorage, WebSQL and IndexedDB into asynchronous localStorage API. Perfect! The library basically uses whatever is available; You can even set or of precedence and write your own adapters (I&rsquo;m thinking <a href="https://developer.chrome.com/apps/storage#property-sync">chrome.storage.sync</a>).</p>
+
+<p>Below is a fragment of the code I&rsquo;ve converted to use localForage. The JavaScript is written using ES6.</p>
+
+<pre><code class="javascript">class InternalStorage {
+
+    constructor(key) {
+        this._storage = localStorage;
+    }
+
+    _serialize(data) {
+        return JSON.stringify(data);
+    }
+
+    _deserialize(value) {
+        return JSON.parse(value);
+    }
+
+    _getIndexKey() {
+        return this._key + '-index';
+    }
+
+    getIndex() {
+        var value = this._storage.getItem(this._getIndexKey());
+
+        if (value) {
+            return this._deserialize(value);
+        }
+        else {
+            return [];
+        }
+    }
+
+    setIndex(array=[]) {
+        var obj = this._serialize(array);
+        return this._storage.setItem(this._getIndexKey(), obj);
+    }
+
+}
+</code></pre>
+
+<p>Here is the converted code, using localForage:</p>
+
+<pre><code class="javascript">class InternalStorage {
+
+    constructor(key) {
+        this._storage = localforage;
+    }
+
+    _serialize(data) {
+        return data;
+    }
+
+    _deserialize(value) {
+        return value;
+    }
+
+    _getIndexKey() {
+        return this._key + '-index';
+    }
+
+    getIndex() {
+        var self = this;
+
+        return new Promise(function(resolve, reject) {
+            self._storage.getItem(self._getIndexKey())
+                .then((value) =&gt; { resolve(self._deserialize(value)); });
+        });
+    }
+
+    setIndex(array=[]) {
+        var obj = this._serialize(array);
+        return this._storage.setItem(this._getIndexKey(), obj);
+    }
+
+}
+</code></pre>
+
+<p>The things to notice with the transition to localForage are:</p>
+
+<ul>
+<li>No requirement to serialise/deserialise, as localForage deals with this.</li>
+<li>localForage returns an ES6 Promise, so, so does <code>setIndex</code>.</li>
+<li>I&rsquo;ve wrapped the logic for <code>getIndex</code> in a Promise, so I can keep my <code>_serialize</code> method in place. Well, you never know.</li>
+</ul>
+
+
+<p>ES6 is a big thing for me at the moment, so the fact that localForage supports ES6 compliant promises, was very appealing. The ability to write additional adapters adds future proofing. My one gripe, which isn&rsquo;t an issue with localForage, is that we don&rsquo;t have a robust solution for relational storage in our web based development at the moment.</p>
+]]></content>
+  </entry>
+  
+</feed>
