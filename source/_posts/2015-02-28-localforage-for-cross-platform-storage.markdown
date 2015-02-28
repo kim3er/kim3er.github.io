@@ -1,4 +1,10 @@
-# localForage for cross-platform storage
+---
+layout: post
+title: "localForage for cross-platform storage"
+date: 2015-02-28 09:30:05 +0000
+comments: true
+categories: [ JavaScript, Storage, Web ]
+---
 
 _TL;DR: You should be using [localForage](https://mozilla.github.io/localForage/) for all your web based local storage needs. It's wonderful._
 
@@ -7,7 +13,7 @@ Storage in general is a bit of a tricky one in hybrid development. There are thr
 <!-- more -->
 
 ## localStorage
-Until recently, my "go to guy" for app storage. localStorage is really easy to use key-value storage, that is at the time of writing, the only consistent cross-platform storage mechanism. The problem with localStorage though, is that you typically only get access to 5MB. This has always been sufficient for my needs in the past, but you can't help thinking that's a scalability problem waiting to happen. The limit speaks to then intended use for this sort of storage; if you've a lot of data, look somewhere else.
+Until recently, my "go to guy" for app storage. localStorage is really easy to use key-value storage, that is at the time of writing, the only consistent cross-platform storage mechanism. The problem with localStorage though, is that you typically only get access to 5MB. This has always been sufficient for my needs in the past, but you can't help thinking that's a scalability problem waiting to happen. The limit speaks to the intended use for this sort of storage; if you've a lot of data, look somewhere else.
 
 ``` javascript
 localStorage.setItem('key', 'value');
