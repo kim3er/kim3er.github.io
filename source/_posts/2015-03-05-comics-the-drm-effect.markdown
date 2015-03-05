@@ -1,22 +1,22 @@
 ---
 layout: post
 title: "Comics: The DRM effect"
-date: 2015-02-28 09:06:41 +0000
+date: 2015-03-05 07:42:41 +0000
 comments: true
 categories: [ Comics, DRM, Digital ]
-published: false
+published: true
 ---
-When I transitioned from paper to digital, I didn't just reclaim floor space in my loft, I picked up quite an eclectic taste in reading material as well. I'm not entirely sure why this is, maybe it's just a happenstance of maturity in tastes and storage reclamation.
+When I transitioned from paper to digital, I didn't just reclaim floor space in my loft, I picked up a more eclectic taste in reading material as well. For the most part, I suspect happenstance of maturity in tastes and storage reclamation. One factor, that at least in part, can be attributed to my personal comic book renaissance, is DRM. Which is funny, because I bloody hate DRM.
 
 <!-- more -->
 
-One factor, that at least in part, can be attributed to my personal comic book renaissance, is DRM. Which is funny, because I bloody hate DRM. It exposes the shame that we don't really own anything. Buy "A New Hope" of VHS, then wait for the format to become obselete. Buy it DRM through iTunes, has it really got any less of a shelf life. How many times have we bought the original Star Wars trilogy (to own), throughout our lives. I've bought it three times, twice on VHS, once on DVD. I will not replace the DVDs, unless the movie industry goes DRM free or Disney release a irresistible boxset. Ah, shit.
+DRM exposes the shame that we don't really own anything. Buy "A New Hope" of VHS, then wait for the format to become obsolete. Buy it DRM through iTunes, has it really got any less of a shelf life. How many times have we bought the original Star Wars trilogy (to own), throughout our lives. I've bought it three times, twice on VHS, once on DVD. I will not replace the DVDs, unless the movie industry goes DRM free or Disney release an irresistible boxset. Ah, shit.
 
 At first, I took the approach with comics, that I still take with my digital movie collection, that DRM is a fact of life. If you want to see the movie, it's either DRM or a hard copy. I don't want a hard copy. As a side issue, this is why I have not seen Twelve Monkeys in such a long time (not available in the UK to stream, is never on the TV).
 
-With comics, there is a third option that has just become a lot more popular. DRM-free comics. Look, I'm not saying they're new, just that your options have recently increased, albeit at the sacrifice of other ethical issues. What am I talking about? Comixology a firm favourite of mine for reading digital comics, made the monumental step of allowing creators to offer their comics DRM-free. This is a truly amazing step forward in my view. So, what about the ethics? Man it's annoying that they've been taken over by (the UK tax dodging poster boys) Amazon.
+With comics, there is a third option that has just become a lot more popular. DRM-free comics. Look, I'm not saying they're new, just that your options have recently increased, albeit at the sacrifice of other ethical issues. What am I talking about? Comixology, a firm favourite of mine for reading digital comics, made the monumental step of allowing creators to offer their comics DRM-free. This is a truly amazing step forward in my view. So, what about the ethics? Man it's annoying that they've been taken over by (the UK tax dodging poster boys) Amazon.
 
-I hate that I'm so invested in this unscrupulous company.
+I hate that I'm so invested in this company.
 
 - I use Amazon Prime, because they have some great streaming options. DRM protected.
 - I use Audible. Amazon & DRM protected! But the best source of audio books I've found.
