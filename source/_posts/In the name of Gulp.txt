@@ -1,0 +1,131 @@
+#In the name of Gulp
+
+The release of Gulp 4.0 is right around the corner, but you can already use it on the 4.0 branch. Here is why you should.
+
+When [Grunt](http://gruntjs.com/) gained popularity, I was excited by the premise, but underwhelmed by the execution. I feel this is more due to a deficiency on my part, rather than an actual problem with Grunt, given the team behind it. Just looking at the Getting Started page provokes renditions of 'blar, blar, blar' to course through my brain. 'Too... much... thinking... Not enough doing.'
+
+This feeling of inadequacy stayed with my until I found Gulp. Gulp's barrier to entry seems a lot lower than Grunt's, it's really a tool you can just run with. Now I feel great about myself, no that I've found 'my people'. Amen brothers and sisters, this is the house of Gulp.
+
+It's not all roses in the garden of Gulp 3.0 though, well maybe it is, but those roses have thorns. And those thorns all bare the words 'async callbacks'. If you've ever considered Gulp tasks to be modular, building blocks of larger tasks, then you've probably faced the same disappointment that I have, that they're not.
+
+Take this simple gulpfile:
+
+``` js
+var gulp = require('gulp')
+	sass = require('gulp-sass'),
+	babel = require('gulp-babel'),
+	del = require('del');
+
+var DEST = './dest',
+	SRC = './src';
+
+gulp.task('clean', function(cb) {
+	del(DEST, cb);
+});
+
+gulp.task('stylesheets', function() {
+	return gulp.src(SRC + '/app.scss')
+		.pipe(sass())
+		.pipe(gulp.dest(DEST));
+});
+
+gulp.task('javascripts', function() {
+	return gulp.src(SRC + '/app.js')
+		.pipe(babel({ blacklist: [ 'useStrict' ] }))
+		.pipe(gulp.dest(DEST));
+});
+
+gulp.task('html', function() {
+	return gulp.src(SRC + '/app.html')
+		.pipe(gulp.dest(DEST));
+});
+
+gulp.task('default', [ 'clean', 'stylesheets', 'javascripts', 'html' ], function() {
+
+});
+```
+
+The script above takes the contents of `src` and sticks it in `dest`. There is a problem with the script above, that becomes apparent when you check the output:
+
+``` shell
+[22:02:10] Starting 'clean'...
+[22:02:10] Starting 'stylesheets'...
+[22:02:10] Starting 'javascripts'...
+[22:02:10] Starting 'html'...
+[22:02:10] Finished 'clean' after 23 ms
+[22:02:10] Finished 'javascripts' after 48 ms
+[22:02:10] Finished 'html' after 45 ms
+[22:02:10] Finished 'stylesheets' after 55 ms
+[22:02:10] Starting 'default'...
+[22:02:10] Finished 'default' after 12 μs
+```
+
+Check out the fifth entry, it's the `clean` task finishing after 23 milliseconds, after all the other tasks have already started. So the clean script is still deleting stuff after the other tasks have started moving their stuff across; a conflict's paradise if ever I saw one.
+
+Okay, so how could we sort this?
+
+``` js
+gulp.task('default', [ 'clean' ], function() {
+	[ 'stylesheets', 'javascripts', 'html' ].forEach(function(taskName) {
+		gulp.start(taskName);
+	});
+});
+```
+
+With the `default` task above, the `clean` task will complete before any other task starts; no more conflict. Thing is though, looking at the output, the `default` task is the first to finish after `clean`. Because Gulp tasks are asynchronous, the `default` task has no reason to hang around waiting for all the tasks in the `forEach` to complete; the code is only interested in starting each task. This isn't a big deal in our example, but what if you then needed to add a third step?
+
+``` js
+gulp.task('build', [ 'clean' ], function(cb) {
+	[ 'stylesheets', 'javascripts', 'html' ].forEach(function(taskName) {
+		gulp.start(taskName);
+	});
+	cb();
+});
+
+gulp.task('deploy', [ 'build' ], function() {
+	console.log('deploy!');
+});
+
+gulp.task('default', [ 'deploy' ], function() {
+
+});
+```
+
+Check out the output:
+
+``` shell
+[22:28:20] Starting 'clean'...
+[22:28:20] Finished 'clean' after 8.59 ms
+[22:28:20] Starting 'build'...
+[22:28:20] Starting 'stylesheets'...
+[22:28:20] Starting 'javascripts'...
+[22:28:20] Starting 'html'...
+[22:28:20] Finished 'build' after 10 ms
+[22:28:20] Starting 'deploy'...
+deploy!
+[22:28:20] Finished 'deploy' after 59 μs
+[22:28:20] Starting 'default'...
+[22:28:20] Finished 'default' after 2.89 μs
+[22:28:20] Finished 'html' after 42 ms
+[22:28:20] Finished 'javascripts' after 45 ms
+[22:28:20] Finished 'stylesheets' after 52 ms
+```
+
+The `deploy` task finishes before the `build` tasks have completed, which is obviously not ideal! What can we do? Well, I hadn't expected to find that the `start` function would support a callback or even an event emitter, meaning we could do something like:
+
+``` js
+	async
+		.eachSeries(
+			[ 'stylesheets', 'javascripts', 'html' ],
+			function(taskName, callback) {
+				gulp.start(taskName, function() { callback(); });
+				// or
+				// gulp.start(taskName).on('end', callback);
+			},
+			function(err) {
+				cb()
+			}
+		);
+```
+
+But alas, not. 
