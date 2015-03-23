@@ -4,7 +4,7 @@
   <title><![CDATA[Adventures in brine]]></title>
   <link href="http://rich.k3r.me/atom.xml" rel="self"/>
   <link href="http://rich.k3r.me/"/>
-  <updated>2015-03-05T07:45:25+00:00</updated>
+  <updated>2015-03-23T23:21:18+00:00</updated>
   <id>http://rich.k3r.me/</id>
   <author>
     <name><![CDATA[Richard Kimber]]></name>
@@ -12,6 +12,381 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[In the Name of Gulp]]></title>
+    <link href="http://rich.k3r.me/blog/2015/03/23/in-the-name-of-gulp/"/>
+    <updated>2015-03-23T22:41:47+00:00</updated>
+    <id>http://rich.k3r.me/blog/2015/03/23/in-the-name-of-gulp</id>
+    <content type="html"><![CDATA[<p><em><strong>TL;DR:</strong> Use Gulp 4 if you care about task management. If you can&rsquo;t use Gulp 4, use Gulp 3 with &lsquo;runSequence&rsquo;. Also, I need to start reading documentation more and assuming less.</em></p>
+
+<p><em><strong>NOTE:</strong> You see the code over at <a href="https://github.com/kim3er/gulp-4-demo">Github</a>.</em></p>
+
+<p>The release of Gulp 4 is right around the corner, but you can already use it on the <a href="https://github.com/gulpjs/gulp/tree/4.0">4.0 branch</a>. Here is why you should.</p>
+
+<!-- more -->
+
+
+<h2>Feelings of inadequacy</h2>
+
+<p>When <a href="http://gruntjs.com/">Grunt</a> gained popularity, I was excited by the premise, but underwhelmed by the execution. I feel this is more due to a deficiency on my part, rather than an actual problem with Grunt, given the <a href="http://gruntjs.com/development-team">team</a> behind it. Just looking at the <a href="http://gruntjs.com/getting-started">Getting Started</a> page causes static to course through my brain. #brains</p>
+
+<p>This feeling of inadequacy stayed with me until I found <a href="https://github.com/gulpjs/gulp">Gulp</a>. Gulp&rsquo;s barrier to entry seems a lot lower than Grunt&rsquo;s, it&rsquo;s really a tool you can just run with. Now I feel great about myself, now that I&rsquo;ve found &lsquo;my people&rsquo;. Amen brothers and sisters, this is the house of Gulp.</p>
+
+<h2>Asynchronous shrubs</h2>
+
+<p>It&rsquo;s not all roses in the garden of Gulp 3 though, well maybe it is, but those roses have thorns. And those thorns all bare the words &lsquo;async callbacks&rsquo;. If you&rsquo;ve ever considered Gulp tasks to be modular, building blocks of larger tasks, then you&rsquo;ve probably faced the same disappointment that I have, that they&rsquo;re not.</p>
+
+<p>Take this simple gulpfile:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">sass</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-sass&#39;</span><span class="p">),</span>
+</span><span class='line'>  <span class="nx">babel</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-babel&#39;</span><span class="p">),</span>
+</span><span class='line'>  <span class="nx">del</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;del&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">DEST</span> <span class="o">=</span> <span class="s1">&#39;./dest&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">SRC</span> <span class="o">=</span> <span class="s1">&#39;./src&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;clean&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">del</span><span class="p">(</span><span class="nx">DEST</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;stylesheets&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="nx">SRC</span> <span class="o">+</span> <span class="s1">&#39;/app.scss&#39;</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">sass</span><span class="p">())</span>
+</span><span class='line'>      <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="nx">DEST</span><span class="p">));</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;javascripts&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="nx">SRC</span> <span class="o">+</span> <span class="s1">&#39;/app.js&#39;</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">babel</span><span class="p">({</span> <span class="nx">blacklist</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;useStrict&#39;</span> <span class="p">]</span> <span class="p">}))</span>
+</span><span class='line'>      <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="nx">DEST</span><span class="p">));</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;html&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="nx">SRC</span> <span class="o">+</span> <span class="s1">&#39;/app.html&#39;</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="nx">DEST</span><span class="p">));</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s1">&#39;clean&#39;</span><span class="p">,</span> <span class="s1">&#39;stylesheets&#39;</span><span class="p">,</span> <span class="s1">&#39;javascripts&#39;</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span> <span class="p">],</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The script above takes the contents of <code>src</code> and sticks it in <code>dest</code>. There is a problem with the script above, that becomes apparent when you check the output:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>22:02:10<span class="o">]</span> Starting <span class="s1">&#39;clean&#39;</span>...
+</span><span class='line'><span class="o">[</span>22:02:10<span class="o">]</span> Starting <span class="s1">&#39;stylesheets&#39;</span>...
+</span><span class='line'><span class="o">[</span>22:02:10<span class="o">]</span> Starting <span class="s1">&#39;javascripts&#39;</span>...
+</span><span class='line'><span class="o">[</span>22:02:10<span class="o">]</span> Starting <span class="s1">&#39;html&#39;</span>...
+</span><span class='line'><span class="o">[</span>22:02:10<span class="o">]</span> Finished <span class="s1">&#39;clean&#39;</span> after <span class="m">23</span> ms
+</span><span class='line'><span class="o">[</span>22:02:10<span class="o">]</span> Finished <span class="s1">&#39;javascripts&#39;</span> after <span class="m">48</span> ms
+</span><span class='line'><span class="o">[</span>22:02:10<span class="o">]</span> Finished <span class="s1">&#39;html&#39;</span> after <span class="m">45</span> ms
+</span><span class='line'><span class="o">[</span>22:02:10<span class="o">]</span> Finished <span class="s1">&#39;stylesheets&#39;</span> after <span class="m">55</span> ms
+</span><span class='line'><span class="o">[</span>22:02:10<span class="o">]</span> Starting <span class="s1">&#39;default&#39;</span>...
+</span><span class='line'><span class="o">[</span>22:02:10<span class="o">]</span> Finished <span class="s1">&#39;default&#39;</span> after <span class="m">12</span> μs
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Look at the fifth entry, it&rsquo;s the <code>clean</code> task finishing after 23 milliseconds, after all the other tasks have already started. So the clean script is still deleting stuff after the other tasks have started moving their stuff across.</p>
+
+<h2>Something funny about iteration</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s1">&#39;clean&#39;</span> <span class="p">],</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="p">[</span> <span class="s1">&#39;stylesheets&#39;</span><span class="p">,</span> <span class="s1">&#39;javascripts&#39;</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span> <span class="p">].</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">taskName</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">gulp</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="nx">taskName</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>With the <code>default</code> task above, the <code>clean</code> task will complete before any other task starts; no more conflict. Thing is though, looking at the output, the <code>default</code> task is the first to finish after <code>clean</code>. Because Gulp tasks are asynchronous (non blocking), the <code>default</code> task has no reason to hang around waiting for all the tasks in the <code>forEach</code> to complete; the code is only interested in starting each task. This isn&rsquo;t a big deal in our example, but what if you then needed to add a third step?</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;build&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s1">&#39;clean&#39;</span> <span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="p">[</span> <span class="s1">&#39;stylesheets&#39;</span><span class="p">,</span> <span class="s1">&#39;javascripts&#39;</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span> <span class="p">].</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">taskName</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">gulp</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="nx">taskName</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'>  <span class="nx">cb</span><span class="p">();</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;deploy&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s1">&#39;build&#39;</span> <span class="p">],</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;deploy!&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s1">&#39;deploy&#39;</span> <span class="p">],</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Check out the output:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>22:28:20<span class="o">]</span> Starting <span class="s1">&#39;clean&#39;</span>...
+</span><span class='line'><span class="o">[</span>22:28:20<span class="o">]</span> Finished <span class="s1">&#39;clean&#39;</span> after 8.59 ms
+</span><span class='line'><span class="o">[</span>22:28:20<span class="o">]</span> Starting <span class="s1">&#39;build&#39;</span>...
+</span><span class='line'><span class="o">[</span>22:28:20<span class="o">]</span> Starting <span class="s1">&#39;stylesheets&#39;</span>...
+</span><span class='line'><span class="o">[</span>22:28:20<span class="o">]</span> Starting <span class="s1">&#39;javascripts&#39;</span>...
+</span><span class='line'><span class="o">[</span>22:28:20<span class="o">]</span> Starting <span class="s1">&#39;html&#39;</span>...
+</span><span class='line'><span class="o">[</span>22:28:20<span class="o">]</span> Finished <span class="s1">&#39;build&#39;</span> after <span class="m">10</span> ms
+</span><span class='line'><span class="o">[</span>22:28:20<span class="o">]</span> Starting <span class="s1">&#39;deploy&#39;</span>...
+</span><span class='line'>deploy!
+</span><span class='line'><span class="o">[</span>22:28:20<span class="o">]</span> Finished <span class="s1">&#39;deploy&#39;</span> after <span class="m">59</span> μs
+</span><span class='line'><span class="o">[</span>22:28:20<span class="o">]</span> Starting <span class="s1">&#39;default&#39;</span>...
+</span><span class='line'><span class="o">[</span>22:28:20<span class="o">]</span> Finished <span class="s1">&#39;default&#39;</span> after 2.89 μs
+</span><span class='line'><span class="o">[</span>22:28:20<span class="o">]</span> Finished <span class="s1">&#39;html&#39;</span> after <span class="m">42</span> ms
+</span><span class='line'><span class="o">[</span>22:28:20<span class="o">]</span> Finished <span class="s1">&#39;javascripts&#39;</span> after <span class="m">45</span> ms
+</span><span class='line'><span class="o">[</span>22:28:20<span class="o">]</span> Finished <span class="s1">&#39;stylesheets&#39;</span> after <span class="m">52</span> ms
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The <code>deploy</code> task finishes before the <code>build</code> tasks have completed, which is obviously not ideal!</p>
+
+<h2>My &lsquo;go to&rsquo; for async code (given up on the &lsquo;humor&rsquo;)</h2>
+
+<p>I had expected to find that the <code>start</code> function would support a callback or even an event emitter. That being the case, we could use something like <a href="https://github.com/caolan/async">async</a> (a neat package for dealing with asynchronous code) to do something like:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">async</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">eachSeries</span><span class="p">(</span>
+</span><span class='line'>      <span class="p">[</span> <span class="s1">&#39;stylesheets&#39;</span><span class="p">,</span> <span class="s1">&#39;javascripts&#39;</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span> <span class="p">],</span>
+</span><span class='line'>      <span class="kd">function</span><span class="p">(</span><span class="nx">taskName</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">gulp</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="nx">taskName</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">callback</span><span class="p">();</span> <span class="p">});</span>
+</span><span class='line'>          <span class="c1">// or</span>
+</span><span class='line'>          <span class="c1">// gulp.start(taskName).on(&#39;end&#39;, callback);</span>
+</span><span class='line'>      <span class="p">},</span>
+</span><span class='line'>      <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">cb</span><span class="p">()</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>But alas, not. The <code>start</code> function is fire and forget. In the example above, crazy stuff happens in the output:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>20:34:15<span class="o">]</span> Starting <span class="s1">&#39;clean&#39;</span>...
+</span><span class='line'><span class="o">[</span>20:34:15<span class="o">]</span> Finished <span class="s1">&#39;clean&#39;</span> after 8.25 ms
+</span><span class='line'><span class="o">[</span>20:34:15<span class="o">]</span> Starting <span class="s1">&#39;build&#39;</span>...
+</span><span class='line'><span class="o">[</span>20:34:15<span class="o">]</span> Starting <span class="s1">&#39;stylesheets&#39;</span>...
+</span><span class='line'><span class="o">[</span>20:34:15<span class="o">]</span> Finished <span class="s1">&#39;stylesheets&#39;</span> after <span class="m">25</span> ms
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>&lsquo;runSequence&rsquo;, a beautiful stopgap</h2>
+
+<p>What you need, is an unassuming, wicked little plugin called <a href="https://www.npmjs.com/package/run-sequence">run-sequence</a>. Using &lsquo;run-sequence&rsquo;, you can do something like:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;build&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s1">&#39;clean&#39;</span> <span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">runSequence</span><span class="p">(</span>
+</span><span class='line'>      <span class="p">[</span> <span class="s1">&#39;stylesheets&#39;</span><span class="p">,</span> <span class="s1">&#39;javascripts&#39;</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span> <span class="p">],</span>
+</span><span class='line'>      <span class="nx">cb</span>
+</span><span class='line'>  <span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You can see from the output that we get exactly what we want:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>20:41:34<span class="o">]</span> Starting <span class="s1">&#39;clean&#39;</span>...
+</span><span class='line'><span class="o">[</span>20:41:34<span class="o">]</span> Finished <span class="s1">&#39;clean&#39;</span> after 8.18 ms
+</span><span class='line'><span class="o">[</span>20:41:34<span class="o">]</span> Starting <span class="s1">&#39;build&#39;</span>...
+</span><span class='line'><span class="o">[</span>20:41:34<span class="o">]</span> Starting <span class="s1">&#39;stylesheets&#39;</span>...
+</span><span class='line'><span class="o">[</span>20:41:34<span class="o">]</span> Starting <span class="s1">&#39;javascripts&#39;</span>...
+</span><span class='line'><span class="o">[</span>20:41:34<span class="o">]</span> Starting <span class="s1">&#39;html&#39;</span>...
+</span><span class='line'><span class="o">[</span>20:41:34<span class="o">]</span> Finished <span class="s1">&#39;html&#39;</span> after <span class="m">44</span> ms
+</span><span class='line'><span class="o">[</span>20:41:34<span class="o">]</span> Finished <span class="s1">&#39;stylesheets&#39;</span> after <span class="m">54</span> ms
+</span><span class='line'><span class="o">[</span>20:41:34<span class="o">]</span> Finished <span class="s1">&#39;javascripts&#39;</span> after <span class="m">49</span> ms
+</span><span class='line'><span class="o">[</span>20:41:34<span class="o">]</span> Finished <span class="s1">&#39;build&#39;</span> after <span class="m">56</span> ms
+</span><span class='line'><span class="o">[</span>20:41:34<span class="o">]</span> Starting <span class="s1">&#39;deploy&#39;</span>...
+</span><span class='line'>deploy!
+</span><span class='line'><span class="o">[</span>20:41:34<span class="o">]</span> Finished <span class="s1">&#39;deploy&#39;</span> after <span class="m">81</span> μs
+</span><span class='line'><span class="o">[</span>20:41:34<span class="o">]</span> Starting <span class="s1">&#39;default&#39;</span>...
+</span><span class='line'><span class="o">[</span>20:41:34<span class="o">]</span> Finished <span class="s1">&#39;default&#39;</span> after 3.88 μs
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>&lsquo;run-sequence&rsquo; is cool, but there is a better way.</p>
+
+<h2>The point of the post</h2>
+
+<p>Gulp 4 uses <a href="https://github.com/phated/undertaker">undertaker</a> for task management. This is significant because &lsquo;undertaker&rsquo; supports the chaining of series and parallel tasks. In order to make use of this functionality, you need to install the prerelease version of Gulp, which is easily done by following this <a href="http://demisx.github.io/gulp4/2015/01/15/install-gulp4.html">guide</a>.</p>
+
+<p>You can see examples of series and parallel functionality, <a href="https://github.com/gulpjs/gulp/blob/4/docs/recipes/running-tasks-in-series.md">here</a>, but check this out:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;build&#39;</span><span class="p">,</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">series</span><span class="p">(</span><span class="s1">&#39;clean&#39;</span><span class="p">,</span> <span class="s1">&#39;stylesheets&#39;</span><span class="p">,</span> <span class="s1">&#39;javascripts&#39;</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span><span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;deploy&#39;</span><span class="p">,</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">series</span><span class="p">(</span><span class="s1">&#39;build&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;deploy!&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="nx">cb</span><span class="p">();</span>
+</span><span class='line'><span class="p">}));</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">series</span><span class="p">(</span><span class="s1">&#39;deploy&#39;</span><span class="p">));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The difference here is that the dependancies array and callback have been replaced with chain-able <code>series</code> functions. You can see from the output below that, while the <code>deploy</code> task appears to start too early, the <code>console.log</code> demonstrates that the meat and veg of the task runs when it needs to.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Starting <span class="s1">&#39;default&#39;</span>...
+</span><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Starting <span class="s1">&#39;deploy&#39;</span>...
+</span><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Starting <span class="s1">&#39;build&#39;</span>...
+</span><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Starting <span class="s1">&#39;clean&#39;</span>...
+</span><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Finished <span class="s1">&#39;clean&#39;</span> after 8.95 ms
+</span><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Starting <span class="s1">&#39;stylesheets&#39;</span>...
+</span><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Finished <span class="s1">&#39;stylesheets&#39;</span> after <span class="m">17</span> ms
+</span><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Starting <span class="s1">&#39;javascripts&#39;</span>...
+</span><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Finished <span class="s1">&#39;javascripts&#39;</span> after <span class="m">32</span> ms
+</span><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Starting <span class="s1">&#39;html&#39;</span>...
+</span><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Finished <span class="s1">&#39;html&#39;</span> after 2.98 ms
+</span><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Finished <span class="s1">&#39;build&#39;</span> after <span class="m">62</span> ms
+</span><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Starting <span class="s1">&#39;&lt;anonymous&gt;&#39;</span>...
+</span><span class='line'>deploy!
+</span><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Finished <span class="s1">&#39;&lt;anonymous&gt;&#39;</span> after <span class="m">222</span> μs
+</span><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Finished <span class="s1">&#39;deploy&#39;</span> after <span class="m">63</span> ms
+</span><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Finished <span class="s1">&#39;default&#39;</span> after <span class="m">65</span> ms
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To sum up. Gulp 4 is a huge step forward in terms of task management. I&rsquo;ve had no problems with v4 so far, but if you need to hang with v3 for a little while longer, &lsquo;run-sequence&rsquo; is a good option.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Comics: The DRM Effect]]></title>
