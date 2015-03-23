@@ -197,7 +197,7 @@ deploy!
 
 Gulp 4 uses [undertaker](https://github.com/phated/undertaker) for task management. This is significant because 'undertaker' supports the chaining of series and parallel tasks. In order to make use of this functionality, you need to install the prerelease version of Gulp, which is easily done by following this [guide](http://demisx.github.io/gulp4/2015/01/15/install-gulp4.html).
 
-You can see examples of series and parallel functionality, [here](https://github.com/gulpjs/gulp/blob/4/docs/recipes/running-tasks-in-series.md), but check this out:
+You can see examples of series and parallel functionality, [here](https://github.com/gulpjs/gulp/blob/4.0/docs/recipes/running-tasks-in-series.md), but check this out:
 
 ``` js
 gulp.task('build', gulp.series('clean', 'stylesheets', 'javascripts', 'html'));
