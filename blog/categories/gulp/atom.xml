@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Gulp | Adventures in brine]]></title>
   <link href="http://rich.k3r.me/blog/categories/gulp/atom.xml" rel="self"/>
   <link href="http://rich.k3r.me/"/>
-  <updated>2015-03-23T23:35:17+00:00</updated>
+  <updated>2015-04-02T22:41:53+01:00</updated>
   <id>http://rich.k3r.me/</id>
   <author>
     <name><![CDATA[Richard Kimber]]></name>
@@ -12,6 +12,148 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Controlling Cordova From Gulp]]></title>
+    <link href="http://rich.k3r.me/blog/2015/04/02/controlling-cordova-from-gulp/"/>
+    <updated>2015-04-02T22:39:27+01:00</updated>
+    <id>http://rich.k3r.me/blog/2015/04/02/controlling-cordova-from-gulp</id>
+    <content type="html"><![CDATA[<p>It&rsquo;s a story as old as time. Girl meets boy, boy has an annoying two step build process, spread across two directories. Of course I&rsquo;m talking about having an awesome <a href="http://gulpjs.com/">Gulp</a> workflow, with a Cordova project clumsily tacked on the side. Well, no more, now you can integrate <a href="http://cordova.apache.org/">Cordova</a>! into Gulp! Yay!</p>
+
+<!-- more -->
+
+
+<p><em><strong>NOTE:</strong> You see the code over at <a href="https://github.com/kim3er/cordova-gulp">Github</a>.</em></p>
+
+<p>Let&rsquo;s discuss the problem first. Until recently, Gulp and Cordova were two separate Node based, command line powered worlds to me, with seemingly nothing in common. In the given scenario, I&rsquo;d typically have a two directory structure:</p>
+
+<pre><code>app             &lt;-- Source files for the project
+cordova         &lt;-- Cordova root directory
+    - www       &lt;-- Cordova app directory
+gulpfile.js
+</code></pre>
+
+<p>Gulp would take care of transpiling the code in the <code>app</code> directory and transferring the spoils to <code>cordova/www</code>. Cordova is then responsible for building the Cordova project and delivering the app to an emulator.  Something like:</p>
+
+<pre><code class="bash">gulp
+cd ./cordova
+cordova emulate
+cd ../
+</code></pre>
+
+<p>Before switching to Gulp, I used to use Middleman for a lot of the transpiling tasks, where I&rsquo;d maintain a number of bash scripts to create the illusion of cohesion. It didn&rsquo;t feel right when I switched to Gulp though. There must be some similarity between these disparate Node based, command line tools. What was I missing?</p>
+
+<p>You know what I realised? That Gulp is based on Node and so is Cordova; so I can probably access Cordova directly from within my Gulp task. It&rsquo;s never going to be that easy, is it?</p>
+
+<p>Well, it&rsquo;ll be a disappointment if it wasn&rsquo;t that easy. So long story short, it almost is. To demonstrate, I&rsquo;m going to cook up a quick project, to demonstrate the integration:</p>
+
+<pre><code class="bash">npm init
+touch gulpfile.js
+npm install -g cordova gulp ios-deploy
+npm install --save-dev gulp cordova-lib del
+cordova create ./cordova me.k3r.cordgulp CordovaGulp
+</code></pre>
+
+<p>Accept all the defaults on <code>npm install</code>, if you&rsquo;re not sure how to answer. All it does is create your <code>package.json</code> and settings can be easily changed at any time.</p>
+
+<p>The <code>-g</code> means install globally, and the <code>--save-dev</code> will save the packages as development dependancies within the <code>package.json</code>. Have a look, you&rsquo;ll see what I mean.</p>
+
+<p><a href="https://github.com/phonegap/ios-deploy">ios-deploy</a> is neat if you&rsquo;re on a Mac and want to deploy from script or command line to iOS.</p>
+
+<p>The last line scaffolds a basic Cordova project.</p>
+
+<p>Paste in the following to your newly created <code>gulpfile.js</code>, but don&rsquo;t run anything yet!</p>
+
+<pre><code class="js">var gulp = require('gulp')
+    del = require('del'),
+    cordova = require('cordova-lib').cordova.raw;
+
+var APP_PATH = './app',
+    CORDOVA_PATH = './cordova/www';
+
+gulp.task('del-cordova', function(cb) {
+    del([ CORDOVA_PATH + '/*' ], function() {
+        cb();
+    });
+});
+
+gulp.task('compile', [ 'del-cordova' ], function(cb) {
+    return gulp.src([ APP_PATH + '/**/*' ])
+        .pipe(gulp.dest(CORDOVA_PATH));
+});
+
+gulp.task('build', [ 'compile' ], function(cb) {
+    process.chdir(__dirname + '/cordova');
+    cordova
+        .build()
+        .then(function() {
+            process.chdir('../');
+            cb();
+        });
+});
+
+gulp.task('emulate', [ 'compile' ], function(cb) {
+    process.chdir(__dirname + '/cordova');
+    cordova
+        .run({ platforms: [ 'ios' ] })
+        .then(function() {
+            process.chdir('../');
+            cb();
+        });
+});
+</code></pre>
+
+<p>If you ran anything at the point, you&rsquo;d replace the default Cordova <code>www</code> directory with that stark emptiness of your nonexistent <code>app</code> directory. Remedy that with the following, which moves the contents of <code>cordova/www</code> to <code>app</code>.</p>
+
+<pre><code class="bash">mv ./cordova/www ./app
+</code></pre>
+
+<p>You now have the almost complete example. If you type in <code>gulp compile</code>, <code>cordova/www</code> will be recreated with the contents of <code>app</code>. Nothing else is going on here at the moment, but think of the possibilities.</p>
+
+<p>We haven&rsquo;t quite finished yet. Type in the following, to add iOS and/or Android as platforms to your new project.</p>
+
+<pre><code class="bash">cd cordova
+cordova platform add ios
+cd ../
+</code></pre>
+
+<p>While you&rsquo;re in the <code>cordova</code> directory, you could have also run <code>cordova build</code> or <code>cordova emulate ios</code>, but that&rsquo;s for losers.</p>
+
+<p>Within in the project root, run either of these bad boys:</p>
+
+<pre><code class="bash">gulp build
+gulp emulate
+</code></pre>
+
+<p>That&rsquo;s right, one command to rule them all. <code>gulp emulate</code> transpiles the code, moves it to <code>cordova/www</code> then kicks off the Cordova <code>build</code> and <code>emulate</code> commands.</p>
+
+<p>&ldquo;But how does this sorcery work?&rdquo; I hear you cry. Cordova developers will mostly recognise Cordova&rsquo;s <a href="https://www.npmjs.com/">NPM</a> package as a command line tool, but as such a package, we should also be able to require it within a Node script (or in this case, Gulp). The reference here, <code>cordova = require('cordova-lib').cordova.raw</code>, provides access to the Cordova&rsquo;s underlying API, exposing stuff like <code>build</code> and <code>emulate</code>.</p>
+
+<p>It&rsquo;s not all unicorns mind; the API has auto-detection routine in place that works out the project&rsquo;s root directory. This only works however, if you&rsquo;re within Cordova&rsquo;s project structure. I&rsquo;m positive this can be overcome by &lsquo;cleaner&rsquo; methods of API abstraction, but for the moment I&rsquo;ve circumvented the issue by introducing two calls to <code>process.chdir</code>. <code>chdir</code> changes the working directory of running script. The second call resets the directory, for the purposes of possible task chaining.</p>
+
+<p>See here:</p>
+
+<pre><code class="js">gulp.task('emulate', [ 'compile' ], function(cb) {
+    process.chdir(__dirname + '/cordova');
+    cordova
+        .run({ platforms: [ 'ios' ] })
+        .then(function() {
+            process.chdir('../');
+            cb();
+        });
+});
+</code></pre>
+
+<ol>
+<li>We change the directory.</li>
+<li>We call <code>run</code>. <code>emulate</code> is an alias for <code>run</code>.</li>
+<li>When the <code>run</code> process completes, the directory is reset.</li>
+</ol>
+
+
+<p>So there you have it, in a single Gulp command you can, transpile, populate, build and emulate. For me, this little nugget has sped up my workflow, and has made the build task more approachable to other developers working on the project.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[In the Name of Gulp]]></title>

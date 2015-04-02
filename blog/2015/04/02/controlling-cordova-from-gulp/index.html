@@ -1,0 +1,505 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Controlling Cordova From Gulp - Adventures in brine</title>
+  <meta name="author" content="Richard Kimber">
+
+  
+  <meta name="description" content="It&rsquo;s a story as old as time. Girl meets boy, boy has an annoying two step build process, spread across two directories. Of course I&rsquo;m &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://rich.k3r.me/blog/2015/04/02/controlling-cordova-from-gulp">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Adventures in brine" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-56802309-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Adventures in brine</a></h1>
+  
+    <h2>A blog about code and coding.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="rich.k3r.me">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Controlling Cordova From Gulp</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-04-02T22:39:27+01:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>10:39 pm</span></time>
+        
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://rich.k3r.me">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>It&rsquo;s a story as old as time. Girl meets boy, boy has an annoying two step build process, spread across two directories. Of course I&rsquo;m talking about having an awesome <a href="http://gulpjs.com/">Gulp</a> workflow, with a Cordova project clumsily tacked on the side. Well, no more, now you can integrate <a href="http://cordova.apache.org/">Cordova</a>! into Gulp! Yay!</p>
+
+<!-- more -->
+
+
+<p><em><strong>NOTE:</strong> You see the code over at <a href="https://github.com/kim3er/cordova-gulp">Github</a>.</em></p>
+
+<p>Let&rsquo;s discuss the problem first. Until recently, Gulp and Cordova were two separate Node based, command line powered worlds to me, with seemingly nothing in common. In the given scenario, I&rsquo;d typically have a two directory structure:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>app              &lt;-- Source files for the project
+</span><span class='line'>cordova           &lt;-- Cordova root directory
+</span><span class='line'>  - www       &lt;-- Cordova app directory
+</span><span class='line'>gulpfile.js</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Gulp would take care of transpiling the code in the <code>app</code> directory and transferring the spoils to <code>cordova/www</code>. Cordova is then responsible for building the Cordova project and delivering the app to an emulator.  Something like:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>gulp
+</span><span class='line'><span class="nb">cd</span> ./cordova
+</span><span class='line'>cordova emulate
+</span><span class='line'><span class="nb">cd</span> ../
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Before switching to Gulp, I used to use Middleman for a lot of the transpiling tasks, where I&rsquo;d maintain a number of bash scripts to create the illusion of cohesion. It didn&rsquo;t feel right when I switched to Gulp though. There must be some similarity between these disparate Node based, command line tools. What was I missing?</p>
+
+<p>You know what I realised? That Gulp is based on Node and so is Cordova; so I can probably access Cordova directly from within my Gulp task. It&rsquo;s never going to be that easy, is it?</p>
+
+<p>Well, it&rsquo;ll be a disappointment if it wasn&rsquo;t that easy. So long story short, it almost is. To demonstrate, I&rsquo;m going to cook up a quick project, to demonstrate the integration:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm init
+</span><span class='line'>touch gulpfile.js
+</span><span class='line'>npm install -g cordova gulp ios-deploy
+</span><span class='line'>npm install --save-dev gulp cordova-lib del
+</span><span class='line'>cordova create ./cordova me.k3r.cordgulp CordovaGulp
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Accept all the defaults on <code>npm install</code>, if you&rsquo;re not sure how to answer. All it does is create your <code>package.json</code> and settings can be easily changed at any time.</p>
+
+<p>The <code>-g</code> means install globally, and the <code>--save-dev</code> will save the packages as development dependancies within the <code>package.json</code>. Have a look, you&rsquo;ll see what I mean.</p>
+
+<p><a href="https://github.com/phonegap/ios-deploy">ios-deploy</a> is neat if you&rsquo;re on a Mac and want to deploy from script or command line to iOS.</p>
+
+<p>The last line scaffolds a basic Cordova project.</p>
+
+<p>Paste in the following to your newly created <code>gulpfile.js</code>, but don&rsquo;t run anything yet!</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">del</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;del&#39;</span><span class="p">),</span>
+</span><span class='line'>  <span class="nx">cordova</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;cordova-lib&#39;</span><span class="p">).</span><span class="nx">cordova</span><span class="p">.</span><span class="nx">raw</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">APP_PATH</span> <span class="o">=</span> <span class="s1">&#39;./app&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">CORDOVA_PATH</span> <span class="o">=</span> <span class="s1">&#39;./cordova/www&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;del-cordova&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">del</span><span class="p">([</span> <span class="nx">CORDOVA_PATH</span> <span class="o">+</span> <span class="s1">&#39;/*&#39;</span> <span class="p">],</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">cb</span><span class="p">();</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;compile&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s1">&#39;del-cordova&#39;</span> <span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">([</span> <span class="nx">APP_PATH</span> <span class="o">+</span> <span class="s1">&#39;/**/*&#39;</span> <span class="p">])</span>
+</span><span class='line'>      <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="nx">CORDOVA_PATH</span><span class="p">));</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;build&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s1">&#39;compile&#39;</span> <span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">process</span><span class="p">.</span><span class="nx">chdir</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">&#39;/cordova&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="nx">cordova</span>
+</span><span class='line'>      <span class="p">.</span><span class="nx">build</span><span class="p">()</span>
+</span><span class='line'>      <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">process</span><span class="p">.</span><span class="nx">chdir</span><span class="p">(</span><span class="s1">&#39;../&#39;</span><span class="p">);</span>
+</span><span class='line'>          <span class="nx">cb</span><span class="p">();</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;emulate&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s1">&#39;compile&#39;</span> <span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">process</span><span class="p">.</span><span class="nx">chdir</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">&#39;/cordova&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="nx">cordova</span>
+</span><span class='line'>      <span class="p">.</span><span class="nx">run</span><span class="p">({</span> <span class="nx">platforms</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;ios&#39;</span> <span class="p">]</span> <span class="p">})</span>
+</span><span class='line'>      <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">process</span><span class="p">.</span><span class="nx">chdir</span><span class="p">(</span><span class="s1">&#39;../&#39;</span><span class="p">);</span>
+</span><span class='line'>          <span class="nx">cb</span><span class="p">();</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you ran anything at the point, you&rsquo;d replace the default Cordova <code>www</code> directory with that stark emptiness of your nonexistent <code>app</code> directory. Remedy that with the following, which moves the contents of <code>cordova/www</code> to <code>app</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mv ./cordova/www ./app
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You now have the almost complete example. If you type in <code>gulp compile</code>, <code>cordova/www</code> will be recreated with the contents of <code>app</code>. Nothing else is going on here at the moment, but think of the possibilities.</p>
+
+<p>We haven&rsquo;t quite finished yet. Type in the following, to add iOS and/or Android as platforms to your new project.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd </span>cordova
+</span><span class='line'>cordova platform add ios
+</span><span class='line'><span class="nb">cd</span> ../
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>While you&rsquo;re in the <code>cordova</code> directory, you could have also run <code>cordova build</code> or <code>cordova emulate ios</code>, but that&rsquo;s for losers.</p>
+
+<p>Within in the project root, run either of these bad boys:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>gulp build
+</span><span class='line'>gulp emulate
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&rsquo;s right, one command to rule them all. <code>gulp emulate</code> transpiles the code, moves it to <code>cordova/www</code> then kicks off the Cordova <code>build</code> and <code>emulate</code> commands.</p>
+
+<p>&ldquo;But how does this sorcery work?&rdquo; I hear you cry. Cordova developers will mostly recognise Cordova&rsquo;s <a href="https://www.npmjs.com/">NPM</a> package as a command line tool, but as such a package, we should also be able to require it within a Node script (or in this case, Gulp). The reference here, <code>cordova = require('cordova-lib').cordova.raw</code>, provides access to the Cordova&rsquo;s underlying API, exposing stuff like <code>build</code> and <code>emulate</code>.</p>
+
+<p>It&rsquo;s not all unicorns mind; the API has auto-detection routine in place that works out the project&rsquo;s root directory. This only works however, if you&rsquo;re within Cordova&rsquo;s project structure. I&rsquo;m positive this can be overcome by &lsquo;cleaner&rsquo; methods of API abstraction, but for the moment I&rsquo;ve circumvented the issue by introducing two calls to <code>process.chdir</code>. <code>chdir</code> changes the working directory of running script. The second call resets the directory, for the purposes of possible task chaining.</p>
+
+<p>See here:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;emulate&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s1">&#39;compile&#39;</span> <span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">process</span><span class="p">.</span><span class="nx">chdir</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">&#39;/cordova&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="nx">cordova</span>
+</span><span class='line'>      <span class="p">.</span><span class="nx">run</span><span class="p">({</span> <span class="nx">platforms</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;ios&#39;</span> <span class="p">]</span> <span class="p">})</span>
+</span><span class='line'>      <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">process</span><span class="p">.</span><span class="nx">chdir</span><span class="p">(</span><span class="s1">&#39;../&#39;</span><span class="p">);</span>
+</span><span class='line'>          <span class="nx">cb</span><span class="p">();</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>We change the directory.</li>
+<li>We call <code>run</code>. <code>emulate</code> is an alias for <code>run</code>.</li>
+<li>When the <code>run</code> process completes, the directory is reset.</li>
+</ol>
+
+
+<p>So there you have it, in a single Gulp command you can, transpile, populate, build and emulate. For me, this little nugget has sped up my workflow, and has made the build task more approachable to other developers working on the project.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Richard Kimber</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-04-02T22:39:27+01:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>10:39 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cordova/'>cordova</a>, <a class='category' href='/blog/categories/gulp/'>gulp</a>, <a class='category' href='/blog/categories/javascript/'>javascript</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://rich.k3r.me/blog/2015/04/02/controlling-cordova-from-gulp/" data-via="kim3er" data-counturl="http://rich.k3r.me/blog/2015/04/02/controlling-cordova-from-gulp/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/03/23/in-the-name-of-gulp/" title="Previous Post: In the name of Gulp">&laquo; In the name of Gulp</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/04/02/controlling-cordova-from-gulp/">Controlling Cordova From Gulp</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/03/23/in-the-name-of-gulp/">In the Name of Gulp</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/03/05/comics-the-drm-effect/">Comics: The DRM Effect</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/02/28/localforage-for-cross-platform-storage/">localForage for Cross-platform Storage</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/02/19/page-attributes-in-perch/">Page Attributes in Perch</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/kim3er">@kim3er</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'kim3er',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/RichardKimber?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Richard Kimber -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'k3r';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://rich.k3r.me/blog/2015/04/02/controlling-cordova-from-gulp/';
+        var disqus_url = 'http://rich.k3r.me/blog/2015/04/02/controlling-cordova-from-gulp/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
