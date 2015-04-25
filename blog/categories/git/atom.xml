@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Git | Adventures in brine]]></title>
+  <link href="http://rich.k3r.me/blog/categories/git/atom.xml" rel="self"/>
+  <link href="http://rich.k3r.me/"/>
+  <updated>2015-04-25T10:14:12+01:00</updated>
+  <id>http://rich.k3r.me/</id>
+  <author>
+    <name><![CDATA[Richard Kimber]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[A Punnet Size Guide to Git Cherry Picking]]></title>
+    <link href="http://rich.k3r.me/blog/2015/04/25/a-punnet-size-guide-to-git-cherry-picking/"/>
+    <updated>2015-04-25T10:10:55+01:00</updated>
+    <id>http://rich.k3r.me/blog/2015/04/25/a-punnet-size-guide-to-git-cherry-picking</id>
+    <content type="html"><![CDATA[<p>I&rsquo;d just finished a load of work on a project. I&rsquo;d made my commit and was a about to push to origin, when I noticed I was on the wrong branch.</p>
+
+<p><em>What a numpty.</em></p>
+
+<p>Why this happened, is probably a good subject for another post. What I want to talk about is how I resolved the issue.</p>
+
+<!-- More -->
+
+
+<h2>Sitrep</h2>
+
+<p>The situation was that I had two branches; <code>develop</code>, my intended branch and <code>wrong-branch</code>, the branch I actually committed to. <code>wrong-branch</code> was the product of bad practice on my part, luckily it was up-to-date with <code>develop</code>, give or take a couple of small amends. <code>wrong-branch</code> had itself a number of commits, in amongst merges from the <code>develop</code>, that I didn&rsquo;t want merging back into <code>develop</code>.</p>
+
+<pre><code>----------------        develop
+    \----\-----\---     wrong-branch
+</code></pre>
+
+<p>Ideally, I wanted to pick the very last commit on <code>wrong-branch</code> and append it to end of <code>develop</code>. The contents of the commit was mostly in isolation of the rest of the project, so I didn&rsquo;t expect any conflicts.</p>
+
+<h2>Precautions</h2>
+
+<p>So, what did I do? Firstly, I took two precautionary steps:</p>
+
+<h3>1. Update <code>wrong-branch</code> with <code>develop</code></h3>
+
+<p>I wanted to reduce the risk of conflict, so I made sure <code>wrong-branch</code> had the latest updates from <code>develop</code>.</p>
+
+<pre><code class="bash">git checkout wrong-branch
+git merge develop
+</code></pre>
+
+<h3>2. Made a copy of <code>develop</code>, in case anything went wrong</h3>
+
+<pre><code class="bash">git checkout develop
+git checkout develop-tmp
+</code></pre>
+
+<h2>First crack</h2>
+
+<p>Did I mention, that this is the first time I&rsquo;ve attempted a cherry pick? In order to perform a cherry pick, you need the hash of the commit you want to grab. The hash will look something like  <code>d736fa95b41a36f5c59074afdbc773d60ca5a99b</code>, or the shortened version <code>d736fa9</code>. You can get this from <code>git log</code>.</p>
+
+<pre><code class="bash">git checkout develop-tmp
+git cherry-pick d736fa9
+</code></pre>
+
+<p>The second line of the example above resulted in the following error:</p>
+
+<pre><code class="bash">... is a merge but no -m option was given.
+</code></pre>
+
+<h2>Getting it right</h2>
+
+<p>The <code>-m</code> option allows for a parent number. A commit&rsquo;s parent is essentially the commit&rsquo;s predecessor, usually the commit that spawned the current commit. On a branch, the parent number starts at 1, and increases as you go back along the tree. So, if you wanted to append the commit to the end of the branch, use &lsquo;-m 1&rsquo;.</p>
+
+<p>Let&rsquo;s give it another go:</p>
+
+<pre><code class="bash">git checkout develop-tmp
+git cherry-pick -m 1 d736fa9
+</code></pre>
+
+<p>Huzzah! It worked. If you had any conflicts at this point, now is the time to resolve and commit. Then, all that is left, is to merge into the primary <code>develop</code> branch.</p>
+
+<pre><code class="bash">git checkout develop
+git merge develop-tmp
+git branch -D develop-tmp
+</code></pre>
+
+<p>The end.</p>
+]]></content>
+  </entry>
+  
+</feed>

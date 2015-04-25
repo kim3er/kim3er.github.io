@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Comics: The DRM Effect - Adventures in brine</title>
+  <title>A Punnet Size Guide to Git Cherry Picking - Adventures in brine</title>
   <meta name="author" content="Richard Kimber">
 
   
-  <meta name="description" content="When I transitioned from paper to digital, I didn&rsquo;t just reclaim floor space in my loft, I picked up a more eclectic taste in reading material &hellip;">
+  <meta name="description" content="I&rsquo;d just finished a load of work on a project. I&rsquo;d made my commit and was a about to push to origin, when I noticed I was on the wrong &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://rich.k3r.me/blog/2015/03/05/comics-the-drm-effect">
+  <link rel="canonical" href="http://rich.k3r.me/blog/2015/04/25/a-punnet-size-guide-to-git-cherry-picking">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Adventures in brine" type="application/atom+xml">
@@ -81,7 +81,7 @@
   
   <header>
     
-      <h1 class="entry-title">Comics: The DRM Effect</h1>
+      <h1 class="entry-title">A Punnet Size Guide to Git Cherry Picking</h1>
     
     
       <p class="meta">
@@ -90,7 +90,7 @@
 
 
 
-<time class='entry-date' datetime='2015-03-05T07:42:41+00:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>7:42 am</span></time>
+<time class='entry-date' datetime='2015-04-25T10:10:55+01:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:10 am</span></time>
         
            | <a href="#disqus_thread"
              data-disqus-identifier="http://rich.k3r.me">Comments</a>
@@ -100,51 +100,94 @@
   </header>
 
 
-<div class="entry-content"><p>When I transitioned from paper to digital, I didn&rsquo;t just reclaim floor space in my loft, I picked up a more eclectic taste in reading material as well. For the most part, I suspect happenstance of maturity in tastes and storage reclamation. One factor, that at least in part, can be attributed to my personal comic book renaissance, is DRM. Which is funny, because I bloody hate DRM.</p>
+<div class="entry-content"><p>I&rsquo;d just finished a load of work on a project. I&rsquo;d made my commit and was a about to push to origin, when I noticed I was on the wrong branch.</p>
 
-<!-- more -->
+<p><em>What a numpty.</em></p>
 
+<p>Why this happened, is probably a good subject for another post. What I want to talk about is how I resolved the issue.</p>
 
-<p>DRM exposes the shame that we don&rsquo;t really own anything. Buy &ldquo;A New Hope&rdquo; of VHS, then wait for the format to become obsolete. Buy it DRM through iTunes, has it really got any less of a shelf life. How many times have we bought the original Star Wars trilogy (to own), throughout our lives. I&rsquo;ve bought it three times, twice on VHS, once on DVD. I will not replace the DVDs, unless the movie industry goes DRM free or Disney release an irresistible boxset. Ah, shit.</p>
-
-<p>At first, I took the approach with comics, that I still take with my digital movie collection, that DRM is a fact of life. If you want to see the movie, it&rsquo;s either DRM or a hard copy. I don&rsquo;t want a hard copy. As a side issue, this is why I have not seen Twelve Monkeys in such a long time (not available in the UK to stream, is never on the TV).</p>
-
-<p>With comics, there is a third option that has just become a lot more popular. DRM-free comics. Look, I&rsquo;m not saying they&rsquo;re new, just that your options have recently increased, albeit at the sacrifice of other ethical issues. What am I talking about? Comixology, a firm favourite of mine for reading digital comics, made the monumental step of allowing creators to offer their comics DRM-free. This is a truly amazing step forward in my view. So, what about the ethics? Man it&rsquo;s annoying that they&rsquo;ve been taken over by (the UK tax dodging poster boys) Amazon.</p>
-
-<p>I hate that I&rsquo;m so invested in this company.</p>
-
-<ul>
-<li>I use Amazon Prime, because they have some great streaming options. DRM protected.</li>
-<li>I use Audible. Amazon &amp; DRM protected! But the best source of audio books I&rsquo;ve found.</li>
-<li>I have a Kindle, because it&rsquo;s easily the best device for reading, which also ties in with Audible. Also DRM protected.</li>
-<li>And now, now my comics are purchased through Amazon as well. Arrrgh. The one saving grace being that DRM is optional.</li>
-</ul>
+<!-- More -->
 
 
-<p>Let&rsquo;s save my ethical crises for another post. It&rsquo;s unlikely that Marvel or DC are going to be clicking the &ldquo;DRM-free&rdquo; button anytime soon. Dark Horse have their own service which is still disappointingly DRM protected. All of which means that if you want a DRM-free comic book library, you have to look at other publishers.</p>
+<h2>Sitrep</h2>
 
-<p>2000 AD have been selling their entire digital catalogue,  DRM-free for a good while now, and they deserve nothing but praise for it. Because of this, I&rsquo;ve rekindled my love of their periodical, as well as discovering some real classic gems. Halo Jones is the one that comes immediately to mind. If I have one gripe with 2000 AD, it&rsquo;s its clunky checkout process. No ability to save card details or use Paypal. If the process of buying comics was easier, I&rsquo;d regrettably be spending more. I know this is true because of in spite of my ethical crises, the Comixology checkout process is smooth like butter. So smooth, it&rsquo;s a little unsettling at times.</p>
+<p>The situation was that I had two branches; <code>develop</code>, my intended branch and <code>wrong-branch</code>, the branch I actually committed to. <code>wrong-branch</code> was the product of bad practice on my part, luckily it was up-to-date with <code>develop</code>, give or take a couple of small amends. <code>wrong-branch</code> had itself a number of commits, in amongst merges from the <code>develop</code>, that I didn&rsquo;t want merging back into <code>develop</code>.</p>
 
-<p>I don&rsquo;t just read DRM-free comics. I read a few titles, like Powers, Hellboy &amp; Atomic Robo that are so far not free of their DRM shackles. Here though, I end this post with some DRM-free recommendations.</p>
-
-<h2>2000 AD</h2>
-
-<ul>
-<li><a href="http://shop.2000adonline.com/products/ballad_of_halo_jones">The Ballad of Halo Jones</a> - I love this book so much. It&#8217;a true space opera in comic form. Reminiscent of Ender&rsquo;s Game and Forever War.</li>
-<li><a href="http://shop.2000adonline.com/digital/comics">2000 AD</a> - I&rsquo;m on #1679. So many stories, so much beautiful artwork. I couldn&rsquo;t hope to remember them all. Shakara!</li>
-</ul>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>----------------     develop
+</span><span class='line'>    \----\-----\---       wrong-branch</span></code></pre></td></tr></table></div></figure>
 
 
-<h2>Comixology</h2>
+<p>Ideally, I wanted to pick the very last commit on <code>wrong-branch</code> and append it to end of <code>develop</code>. The contents of the commit was mostly in isolation of the rest of the project, so I didn&rsquo;t expect any conflicts.</p>
 
-<ul>
-<li><a href="https://www.comixology.co.uk/Bitch-Planet/comics-series/30465">Bitch Planet</a> - I&rsquo;m three issues in, and it&rsquo;s really good. The art is so cool, very pulpy. The story has kicked off to a great start.</li>
-<li><a href="https://www.comixology.co.uk/Elephantmen/comics-series/654">Elephantmen</a> - I admit, I&rsquo;ve not read this one in a little while, but I was happy to see it go DRM-free. I&rsquo;m hovering around #28. It&rsquo;s a gritty piece of work and I like how the different threads work together.</li>
-<li><a href="https://www.comixology.co.uk/Morning-Glories/comics-series/4617">Morning Glories</a> - Not my usual bag, but the story is compelling. I&rsquo;m on #15.</li>
-<li><a href="https://www.comixology.co.uk/Jack-Staff/comics-series/686">Jack Staff</a> - The artwork is awesome. The stories for the most part are great, with a lot of funny references, familiar to those of a British upbringing.</li>
-<li><a href="https://www.comixology.co.uk/The-Life-After/comics-series/21882">The Life After</a> - I really love the art in this book. I&rsquo;m on #3, and so far, it&rsquo;s very original, very surreal.</li>
-</ul>
+<h2>Precautions</h2>
 
+<p>So, what did I do? Firstly, I took two precautionary steps:</p>
+
+<h3>1. Update <code>wrong-branch</code> with <code>develop</code></h3>
+
+<p>I wanted to reduce the risk of conflict, so I made sure <code>wrong-branch</code> had the latest updates from <code>develop</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git checkout wrong-branch
+</span><span class='line'>git merge develop
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>2. Made a copy of <code>develop</code>, in case anything went wrong</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git checkout develop
+</span><span class='line'>git checkout develop-tmp
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>First crack</h2>
+
+<p>Did I mention, that this is the first time I&rsquo;ve attempted a cherry pick? In order to perform a cherry pick, you need the hash of the commit you want to grab. The hash will look something like  <code>d736fa95b41a36f5c59074afdbc773d60ca5a99b</code>, or the shortened version <code>d736fa9</code>. You can get this from <code>git log</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git checkout develop-tmp
+</span><span class='line'>git cherry-pick d736fa9
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The second line of the example above resulted in the following error:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>... is a merge but no -m option was given.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Getting it right</h2>
+
+<p>The <code>-m</code> option allows for a parent number. A commit&rsquo;s parent is essentially the commit&rsquo;s predecessor, usually the commit that spawned the current commit. On a branch, the parent number starts at 1, and increases as you go back along the tree. So, if you wanted to append the commit to the end of the branch, use &lsquo;-m 1&rsquo;.</p>
+
+<p>Let&rsquo;s give it another go:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git checkout develop-tmp
+</span><span class='line'>git cherry-pick -m <span class="m">1</span> d736fa9
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Huzzah! It worked. If you had any conflicts at this point, now is the time to resolve and commit. Then, all that is left, is to merge into the primary <code>develop</code> branch.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git checkout develop
+</span><span class='line'>git merge develop-tmp
+</span><span class='line'>git branch -D develop-tmp
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The end.</p>
 </div>
 
 
@@ -160,12 +203,12 @@
 
 
 
-<time class='entry-date' datetime='2015-03-05T07:42:41+00:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>7:42 am</span></time>
+<time class='entry-date' datetime='2015-04-25T10:10:55+01:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:10 am</span></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/comics/'>comics</a>, <a class='category' href='/blog/categories/digital/'>digital</a>, <a class='category' href='/blog/categories/drm/'>drm</a>
+    <a class='category' href='/blog/categories/git/'>git</a>
   
 </span>
 
@@ -174,7 +217,7 @@
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://rich.k3r.me/blog/2015/03/05/comics-the-drm-effect/" data-via="kim3er" data-counturl="http://rich.k3r.me/blog/2015/03/05/comics-the-drm-effect/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://rich.k3r.me/blog/2015/04/25/a-punnet-size-guide-to-git-cherry-picking/" data-via="kim3er" data-counturl="http://rich.k3r.me/blog/2015/04/25/a-punnet-size-guide-to-git-cherry-picking/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -187,10 +230,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/02/28/localforage-for-cross-platform-storage/" title="Previous Post: localForage for cross-platform storage">&laquo; localForage for cross-platform storage</a>
+        <a class="basic-alignment left" href="/blog/2015/04/21/there-is-no-spoon/" title="Previous Post: There is no spoon">&laquo; There is no spoon</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2015/03/23/in-the-name-of-gulp/" title="Next Post: In the name of Gulp">In the name of Gulp &raquo;</a>
       
     </p>
   </footer>
@@ -294,8 +335,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://rich.k3r.me/blog/2015/03/05/comics-the-drm-effect/';
-        var disqus_url = 'http://rich.k3r.me/blog/2015/03/05/comics-the-drm-effect/';
+        var disqus_identifier = 'http://rich.k3r.me/blog/2015/04/25/a-punnet-size-guide-to-git-cherry-picking/';
+        var disqus_url = 'http://rich.k3r.me/blog/2015/04/25/a-punnet-size-guide-to-git-cherry-picking/';
         var disqus_script = 'embed.js';
       
     (function () {
