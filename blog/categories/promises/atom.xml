@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Promises | Adventures in brine]]></title>
+  <link href="http://rich.k3r.me/blog/categories/promises/atom.xml" rel="self"/>
+  <link href="http://rich.k3r.me/"/>
+  <updated>2015-04-29T22:20:27+01:00</updated>
+  <id>http://rich.k3r.me/</id>
+  <author>
+    <name><![CDATA[Richard Kimber]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Empty Promises: Dos and Don'ts of ES6 Promises]]></title>
+    <link href="http://rich.k3r.me/blog/2015/04/29/empty-promises-dos-and-donts-of-es6-promises/"/>
+    <updated>2015-04-29T22:10:03+01:00</updated>
+    <id>http://rich.k3r.me/blog/2015/04/29/empty-promises-dos-and-donts-of-es6-promises</id>
+    <content type="html"><![CDATA[<p>There is so much I love about the functionality and syntax coming through under the banner of ES6. One such piece of functionality, is the &lsquo;Promise&rsquo;. Promises are not something that needs to be transpiled, as of writing, <a href="http://caniuse.com/#feat=promises">all but IE and Opera Mini have support</a> out of the box. The stragglers can be polyfilled <a href="https://github.com/jakearchibald/es6-promise">quite</a> <a href="https://github.com/taylorhakes/promise-polyfill">easily</a>.</p>
+
+<p>What follows, are three tips for using promises more effectively.</p>
+
+<!-- More -->
+
+
+<h2>Chain, don&rsquo;t nest</h2>
+
+<p>When I first started playing with promises, I found myself nesting code blocks more than I would have liked. Code like:</p>
+
+<pre><code class="js">class Example {
+
+    saveData(data) {
+        return new Promise(function(resolve, reject) {
+            // Save Data
+            resolve(data);
+        });
+    }
+
+    getFromWeb(id) {
+        return new Promise(function(resolve, reject) {
+            // Get from web
+            resolve(data);
+        });
+    }
+
+    display(id) {
+        let self = this;
+        return new Promise(function(resolve, reject) {
+            self.getFromWeb(id)
+                .then(function(data) {
+                    self.saveData(data)
+                        .then(function(data) {
+                            // Display somewhere
+                            resolve();
+                        });
+                });
+        });
+    }
+}
+
+new Example().display(1);
+</code></pre>
+
+<p>Not very readable and not making great use of screen real estate, when you can actually do:</p>
+
+<pre><code class="js">display(id) {
+    let self = this;
+    return self.getFromWeb(id)
+        .then(function(data) {
+            return self.saveData(data);
+        })
+        .then(function(data) {
+            // Display somewhere
+            return new Promise((resolve) =&gt; { resolve(); });
+        });
+}
+</code></pre>
+
+<p>The <code>display</code> function is doing exactly the same, but now the promises are chained. The new <code>Promise</code> declaration in the second <code>then</code> callback, enables the <code>display</code> function to be chained itself:</p>
+
+<pre><code class="js">new Example().display(1).then(() =&gt; { console.log('async finished'); });
+</code></pre>
+
+<h2>Empty Promises</h2>
+
+<p>To expedite the example above, I&rsquo;ve started adding a helper function (similar to the example below) to my projects.</p>
+
+<pre><code class="js">class Util {
+
+    static emptyPromise(val = null) {
+        return new Promise((resolve) =&gt; { resolve(val); });
+    }
+
+}
+</code></pre>
+
+<p>The function is poorly names, because it can return a value. I just like the pun. An example of the pun in action:</p>
+
+<pre><code class="js">class Election {
+
+    fullOf() {
+        return Util.emptyPromise()
+            .then(() =&gt; { return Util.emptyPromise(); });
+    }
+
+}
+</code></pre>
+
+<h2>In all the right places</h2>
+
+<p>I&rsquo;ve certainly been guilty of overuse in the past; there is certainly a time and a place for promises. I&rsquo;d say if the function is clearly an async function (or at least has the potential to be), or provides some conversion functionality that would be useful in a chain, then the function should return a Promise.</p>
+
+<pre><code class="js">class Conversion {
+
+    static toJson(str) {
+        return Util.emptyPromise(JSON.parse(str));
+    }
+
+}
+
+class Proxy {
+
+    get(id) {
+        return Ajax.request(id)
+            .then((response) =&gt; { return Conversion.toJson(response.responseText); });
+    }
+
+}
+
+new Proxy().get(1).then((json) =&gt; { console.log(json); });
+</code></pre>
+
+<p>An example of when I wish I&rsquo;d used Promises earlier, would a data layer I wrote on top of <code>localStorage</code>, which itself is synchronous. When I wanted to apply the data layer to Chrome Apps, which only supports an asynchronous version of <code>localStorage</code>, I was not a happy bunny.</p>
+]]></content>
+  </entry>
+  
+</feed>

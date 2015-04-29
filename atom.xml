@@ -4,7 +4,7 @@
   <title><![CDATA[Adventures in brine]]></title>
   <link href="http://rich.k3r.me/atom.xml" rel="self"/>
   <link href="http://rich.k3r.me/"/>
-  <updated>2015-04-25T10:14:12+01:00</updated>
+  <updated>2015-04-29T22:20:27+01:00</updated>
   <id>http://rich.k3r.me/</id>
   <author>
     <name><![CDATA[Richard Kimber]]></name>
@@ -12,6 +12,212 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Empty Promises: Dos and Don'ts of ES6 Promises]]></title>
+    <link href="http://rich.k3r.me/blog/2015/04/29/empty-promises-dos-and-donts-of-es6-promises/"/>
+    <updated>2015-04-29T22:10:03+01:00</updated>
+    <id>http://rich.k3r.me/blog/2015/04/29/empty-promises-dos-and-donts-of-es6-promises</id>
+    <content type="html"><![CDATA[<p>There is so much I love about the functionality and syntax coming through under the banner of ES6. One such piece of functionality, is the &lsquo;Promise&rsquo;. Promises are not something that needs to be transpiled, as of writing, <a href="http://caniuse.com/#feat=promises">all but IE and Opera Mini have support</a> out of the box. The stragglers can be polyfilled <a href="https://github.com/jakearchibald/es6-promise">quite</a> <a href="https://github.com/taylorhakes/promise-polyfill">easily</a>.</p>
+
+<p>What follows, are three tips for using promises more effectively.</p>
+
+<!-- More -->
+
+
+<h2>Chain, don&rsquo;t nest</h2>
+
+<p>When I first started playing with promises, I found myself nesting code blocks more than I would have liked. Code like:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">class</span> <span class="nx">Example</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">saveData</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="c1">// Save Data</span>
+</span><span class='line'>          <span class="nx">resolve</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="nx">getFromWeb</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="c1">// Get from web</span>
+</span><span class='line'>          <span class="nx">resolve</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="nx">display</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="kd">let</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">return</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">self</span><span class="p">.</span><span class="nx">getFromWeb</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span>
+</span><span class='line'>              <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                  <span class="nx">self</span><span class="p">.</span><span class="nx">saveData</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
+</span><span class='line'>                      <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                          <span class="c1">// Display somewhere</span>
+</span><span class='line'>                          <span class="nx">resolve</span><span class="p">();</span>
+</span><span class='line'>                      <span class="p">});</span>
+</span><span class='line'>              <span class="p">});</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">new</span> <span class="nx">Example</span><span class="p">().</span><span class="nx">display</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Not very readable and not making great use of screen real estate, when you can actually do:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">display</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">let</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">getFromWeb</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">saveData</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">})</span>
+</span><span class='line'>      <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="c1">// Display somewhere</span>
+</span><span class='line'>          <span class="k">return</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">resolve</span><span class="p">();</span> <span class="p">});</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The <code>display</code> function is doing exactly the same, but now the promises are chained. The new <code>Promise</code> declaration in the second <code>then</code> callback, enables the <code>display</code> function to be chained itself:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="k">new</span> <span class="nx">Example</span><span class="p">().</span><span class="nx">display</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nx">then</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;async finished&#39;</span><span class="p">);</span> <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Empty Promises</h2>
+
+<p>To expedite the example above, I&rsquo;ve started adding a helper function (similar to the example below) to my projects.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">class</span> <span class="nx">Util</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kr">static</span> <span class="nx">emptyPromise</span><span class="p">(</span><span class="nx">val</span> <span class="o">=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">resolve</span><span class="p">(</span><span class="nx">val</span><span class="p">);</span> <span class="p">});</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The function is poorly names, because it can return a value. I just like the pun. An example of the pun in action:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">class</span> <span class="nx">Election</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">fullOf</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">Util</span><span class="p">.</span><span class="nx">emptyPromise</span><span class="p">()</span>
+</span><span class='line'>          <span class="p">.</span><span class="nx">then</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">Util</span><span class="p">.</span><span class="nx">emptyPromise</span><span class="p">();</span> <span class="p">});</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>In all the right places</h2>
+
+<p>I&rsquo;ve certainly been guilty of overuse in the past; there is certainly a time and a place for promises. I&rsquo;d say if the function is clearly an async function (or at least has the potential to be), or provides some conversion functionality that would be useful in a chain, then the function should return a Promise.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">class</span> <span class="nx">Conversion</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kr">static</span> <span class="nx">toJson</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">Util</span><span class="p">.</span><span class="nx">emptyPromise</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">str</span><span class="p">));</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">class</span> <span class="nx">Proxy</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">get</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">Ajax</span><span class="p">.</span><span class="nx">request</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span>
+</span><span class='line'>          <span class="p">.</span><span class="nx">then</span><span class="p">((</span><span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">Conversion</span><span class="p">.</span><span class="nx">toJson</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">responseText</span><span class="p">);</span> <span class="p">});</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">new</span> <span class="nx">Proxy</span><span class="p">().</span><span class="nx">get</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">json</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">json</span><span class="p">);</span> <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>An example of when I wish I&rsquo;d used Promises earlier, would a data layer I wrote on top of <code>localStorage</code>, which itself is synchronous. When I wanted to apply the data layer to Chrome Apps, which only supports an asynchronous version of <code>localStorage</code>, I was not a happy bunny.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[A Punnet Size Guide to Git Cherry Picking]]></title>
@@ -2994,57 +3200,6 @@ Once you have created an authors file (usually called authors.txt), run the foll
 
 
 <p>Providing all went well, you can now discard the temporary GIT repo and clone a fresh copy of your new remote GIT repo.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Content Management With Perch]]></title>
-    <link href="http://rich.k3r.me/blog/2011/03/04/content-management-with-perch/"/>
-    <updated>2011-03-04T04:22:42+00:00</updated>
-    <id>http://rich.k3r.me/blog/2011/03/04/content-management-with-perch</id>
-    <content type="html"><![CDATA[<blockquote><p>This is a repost of <a href="http://dogma.co.uk/blog/1-content-management-with-perch">http://dogma.co.uk/blog/1-content-management-with-perch</a></p></blockquote>
-
-<p>Perch, if you not already aware is a curious little PHP CMS by British design agency edgeofmyseat.com.  Curious because in an ecosystem dominated by feature rich, open source, free CMSs like WordPress and Drupal; Perch provides only one feature out of the box and costs about £40 per site including VAT. Curious because given this information, I&rsquo;m still overwhelming drawn to Perch for a lot of my projects.</p>
-
-<!--more-->
-
-
-<p>Why I&rsquo;m drawn to Perch is the simplicity of the CMS itself. <a href="http://edgeofmyseat.com/">edgeofmyseat.com</a> have found niche between the handful of static HTML files in a directory and site built from the ground up to be content managed.</p>
-
-<p>WordPress for instance, makes it very easy to create a very manageable site in minutes, literally. I dropped the folder on to my server, ran the installer and two minutes later I had a fully content managed site. Amazing, and with such a large community supporting WordPress I had customised the look, feel and function of my site with some of the thousands of free themes and plugins on offer.</p>
-
-<p>But what about the site I already have? The individual HTML pages, strung together with anchor tags and a splash of PHP or similar as the contact form required it. Or the client who is intimidated (or just disinterested) with admin screens filled with Posts, Comments, Plugins and Tools?</p>
-
-<p>If I was to content manage that static site with WordPress, I&rsquo;d have to extract a template from the many pages built by my predecessors and create a theme. Assuming that is the pages have retained a uniform appearance over time. Then I manually recreate each of the pages in the CMS and create (or find equivalent) plugins for all the little bits of bespoke functionality that WordPress doesn&rsquo;t quite deal with. The horrible feeling that developers get when retreading old ground.</p>
-
-<p>Or, you install Perch. Perch is designed to let you work the way you want. You create your pages, your structure, add your images and navigation. Out of the box, Perch does one thing really well. When you&rsquo;re creating your pages and you come across section that needs to be edited by the client, drop in a content tag.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span> <span class="nx">perch_content</span><span class="p">(</span><span class="s2">&quot;Dynamic Content&quot;</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x"></span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You also need to tell Perch to watch the page; you do this by adding the following line to the top of the page:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span> <span class="k">include</span><span class="p">(</span><span class="s2">&quot;../perch/runtime.php&quot;</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x"></span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>What happens is this; when you subsequently load that page. Perch queries the database to see if it has any content for page X called &lsquo;Dynamic Content&rsquo;. If Perch doesn&rsquo;t have a content region in that location, it creates one. The next time you log into Perch, you&rsquo;ll be provided with a content region called &lsquo;Dynamic Content&rsquo; flagged as new.</p>
-
-<p><img src="http://rich.k3r.me/images/content-manage-perch-1.png" alt="Dynamic Content" /></p>
-
-<p>Clicking on the region gives you the opportunity to define the content type from many built-in templates ranging from text to Google Analytics to images to blocks of code. If there isn&rsquo;t a template that suits your needs, create your own. You can also decide whether the content is recurring (like a list of posts) and whether content is to be shared between multiple pages.</p>
-
-<p>So to go back to the example of that static site. Your client just wants to change the text on the front page, or update the news feed themselves. Just add a couple of PHP tags to the desired page, set the content type in the CMS and away you go. Replicating the existing news feed is as easy as copying one of the existing news items and pasting it into a new template, replacing the content with perch tags.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;</span><span class="nx">perch</span><span class="o">:</span><span class="nx">content</span> <span class="nx">id</span><span class="o">=</span><span class="s2">&quot;heading&quot;</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;text&quot;</span> <span class="nx">label</span><span class="o">=</span><span class="s2">&quot;Heading&quot;</span> <span class="o">/&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In summary, Perch is easy to setup (install process similar to WordPress) and makes it incredibly easy to add content management to existing sites on PHP capable web servers. Perch also contains an elegant API for extending the core functionality in the form of Apps. Apps available for download from the Perch site provide blogging functionality and dynamic page creation amongst other things. Hopefully I&rsquo;ll get a chance to cover Apps and App development in another post. If you regularly deal with legacy sites or just want to simplify things a bit, I recommend you check Perch out.</p>
 ]]></content>
   </entry>
   
