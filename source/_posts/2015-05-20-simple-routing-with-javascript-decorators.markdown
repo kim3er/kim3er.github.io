@@ -3,7 +3,7 @@ layout: post
 title: "Simple routing with JavaScript Decorators"
 date: 2015-05-20 22:30:57 +0100
 comments: true
-categories: [ ES6, JavaScript, Decorators ]
+categories: [ ES6, JavaScript, Decorators, Routing, MVC ]
 ---
 
 ___TL;DR:__ I've used decorators to generate a bunch of routes from a class._
