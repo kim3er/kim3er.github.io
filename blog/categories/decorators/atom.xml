@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Decorators | Adventures in brine]]></title>
+  <link href="http://rich.k3r.me/blog/categories/decorators/atom.xml" rel="self"/>
+  <link href="http://rich.k3r.me/"/>
+  <updated>2015-05-20T23:00:11+01:00</updated>
+  <id>http://rich.k3r.me/</id>
+  <author>
+    <name><![CDATA[Richard Kimber]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Simple Routing With JavaScript Decorators]]></title>
+    <link href="http://rich.k3r.me/blog/2015/05/20/simple-routing-with-javascript-decorators/"/>
+    <updated>2015-05-20T22:30:57+01:00</updated>
+    <id>http://rich.k3r.me/blog/2015/05/20/simple-routing-with-javascript-decorators</id>
+    <content type="html"><![CDATA[<p><em><strong>TL;DR:</strong> I&rsquo;ve used decorators to generate a bunch of routes from a class.</em></p>
+
+<p>I can&rsquo;t decide whether this is a legitimate use for decorators, but I knew from the moment I saw this crazy syntax that this was want I wanted to achieve.</p>
+
+<!-- More -->
+
+
+<h2>What&rsquo;s what?</h2>
+
+<p>In a lot of my app projects, I chuck my actions into a series of classes which extend a simple class called <code>Controller</code>. My old code for <code>Controller</code> is below and as you can see, it exposes an empty array of actions.</p>
+
+<pre><code class="javascript">class Controller {
+
+    actions() {
+        return [];
+    }
+
+    constructor(app = {}) {
+        this.app = app;
+    }
+
+}
+</code></pre>
+
+<p>The idea is that in the extended class, you add &lsquo;action&rsquo; functions, that you then list in the overridden array. See the example <code>NotesController</code> below.</p>
+
+<pre><code class="javascript">class NotesController extends Controller {
+
+    actions() {
+        return [
+            { match: 'note', action: 'show' },
+            { match: 'notes/create', action: 'create' },
+            { match: 'notes/new', action: 'new' }
+        ];
+    }
+
+    show(id) {
+
+    }
+
+    create(params, data, $form) {
+
+    }
+
+    new() {
+
+    }
+
+    doSomethingUseful() {
+
+    }
+
+}
+</code></pre>
+
+<p><code>NotesController</code> now advertises which routes it&rsquo;s setup to listen to. Any function not listed n the array is ignored and assumed to be a helper method of some kind. This has alway felt a bit clunky, specifically I didn&rsquo;t like:</p>
+
+<ol>
+<li>Overriding a function, whose sole purpose to create and return a new array each time it&rsquo;s called. During the application lifecycle it&rsquo;s typically only called once, but that&rsquo;s not the point. I could have used class properties, but it&rsquo;s still quite a new feature for Babel. I could have used <a href="http://www.typescriptlang.org/">TypeScript</a> I guess, but <a href="http://www.sublimetext.com/3">Sublime Text</a> tooling for TS has not been a positive experience and I&rsquo;m not ready to switch to <a href="https://code.visualstudio.com/">Visual Studio Code</a>, yet.</li>
+<li>The repetition of writing a function, then list it in an array. #boring.</li>
+</ol>
+
+
+<h2>So, what&rsquo;s what now?</h2>
+
+<p>Glad you asked. I&rsquo;ve basically ripped off the <code>autobind</code> example from the <a href="http://babeljs.io/blog/2015/03/31/5.0.0/#stage-1:-decorators">Babel 5.0.0 blog post</a> and created  a new decorator called <code>route</code>. Checkout the code for <code>route</code> below.</p>
+
+<pre><code class="javascript">function route(route) {
+    return function(target, key, descriptor) {
+        var fn = descriptor.value;
+
+        delete descriptor.value;
+        delete descriptor.writable;
+
+        if (!route) {
+            route = key;
+        }
+
+        descriptor.get = function() {
+            var bound = fn.bind(this, route);
+
+            Object.defineProperty(this, key, {
+                configurable: true,
+                writable: true,
+                value: bound
+            });
+
+            return bound;
+        };
+
+        if (!target.routes) {
+            target.routes = [];
+        }
+
+        target.routes.push({ match: route, action: key });
+
+    };
+}
+</code></pre>
+
+<p>The differences between this decorator and the <code>autobind</code> example are:</p>
+
+<ol>
+<li><code>route</code> takes an optional parameter (also called <code>route</code>), that allows you to specify the route to be matched. Optional, in that if missed out, the decorator assumes the name of the action, is also the route.</li>
+<li>An array of the routes is managed on the instance of the controller, so the array is an instance property now.</li>
+<li>I&rsquo;m passing the <code>route</code> param to the function, as it&rsquo;s often useful to know the route in the function.</li>
+</ol>
+
+
+<p>Let&rsquo;s see the new code:</p>
+
+<pre><code class="javascript">// Controller Class
+class Controller {
+
+    constructor(app = {}) {
+        this.app = app;
+
+        // In case no routes are specified
+        if (!this.routes) {
+            this.routes = [];
+        }
+    }
+
+}
+
+// NotesController Class
+class NotesController extends Controller {
+
+    @route('note')
+    show(id) {
+
+    }
+
+    @route('notes/create')
+    create(params, data, $form) {
+
+    }
+
+    @route()
+    new() {
+
+    }
+
+    doSomethingUseful() {
+
+    }
+
+}
+</code></pre>
+
+<p>You can see, no more <code>actions</code> function, no more verbose listing of the functions. I&rsquo;ve intentionally left out the value of the <code>new</code> route, to demonstrate how the &lsquo;implied&rsquo; routing works. If you run the code above in the Babel <a href="http://babeljs.io/repl/#?experimental=true&amp;evaluate=true&amp;loose=false&amp;spec=false&amp;code=function%20route(route)%20%7B%0A%09return%20function(target%2C%20key%2C%20descriptor)%20%7B%0A%09%09var%20fn%20%3D%20descriptor.value%3B%0A%0A%09%09delete%20descriptor.value%3B%0A%09%09delete%20descriptor.writable%3B%0A%0A%09%09if%20(!route)%20%7B%0A%09%09%09route%20%3D%20key%3B%0A%09%09%7D%0A%0A%09%09descriptor.get%20%3D%20function()%20%7B%0A%09%09%09var%20bound%20%3D%20fn.bind(this%2C%20route)%3B%0A%0A%09%09%09Object.defineProperty(this%2C%20key%2C%20%7B%0A%09%09%09%09configurable%3A%20true%2C%0A%09%09%09%09writable%3A%20true%2C%0A%09%09%09%09value%3A%20bound%0A%09%09%09%7D)%3B%0A%0A%09%09%09return%20bound%3B%0A%09%09%7D%3B%0A%0A%09%09if%20(!target.routes)%20%7B%0A%09%09%09target.routes%20%3D%20%5B%5D%3B%0A%09%09%7D%0A%0A%09%09target.routes.push(%7B%20match%3A%20route%2C%20action%3A%20key%20%7D)%3B%0A%0A%09%7D%3B%0A%7D%0A%0Aclass%20Controller%20%7B%0A%0A%09constructor(app%20%3D%20%7B%7D)%20%7B%0A%09%09this.app%20%3D%20app%3B%0A%0A%09%09if%20(!this.routes)%20%7B%0A%09%09%09this.routes%20%3D%20%5B%5D%3B%0A%09%09%7D%0A%09%7D%0A%0A%7D%0A%0A%2F%2F%20NotesController%20Class%0Aclass%20NotesController%20extends%20Controller%20%7B%0A%0A%09%40route('note')%0A%09show(id)%20%7B%0A%0A%09%7D%0A%0A%09%40route('notes%2Fcreate')%0A%09create(params%2C%20data%2C%20%24form)%20%7B%0A%0A%09%7D%0A%0A%09%40route()%0A%09new()%20%7B%0A%0A%09%7D%0A%09%0A%09doSomethingUseful()%20%7B%0A%09%0A%09%7D%0A%0A%7D%0A%0Aconsole.log(new%20NotesController().routes)">REPL</a>, you should get the output below:</p>
+
+<pre><code class="javascript">[
+    {"match":"note","action":"show"},
+    {"match":"notes/create","action":"create"},
+    {"match":"new","action":"new"}
+]
+</code></pre>
+
+<p>With the exception of <code>new</code>, the array is identical to that of the first example. That be some nice ass syntactic sugar. The future rocks. Peace out.</p>
+]]></content>
+  </entry>
+  
+</feed>

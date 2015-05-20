@@ -9,7 +9,7 @@
   <meta name="author" content="Richard Kimber">
 
   
-  <meta name="description" content="This is a repost of http://dogma.co.uk/blog/1-content-management-with-perch Perch, if you not already aware is a curious little PHP CMS by British &hellip;">
+  <meta name="description" content="This is a repost of http://dogma.co.uk/blog/10-converting-svn-to-git We&rsquo;ve recently set about converting all our old SVN repositories to GIT. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -84,6 +84,54 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2012/11/25/converting-svn-to-git/">Converting SVN to GIT</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2012-11-25T20:36:00+00:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>8:36 pm</span></time>
+        
+           | <a href="/blog/2012/11/25/converting-svn-to-git/#disqus_thread"
+             data-disqus-identifier="http://rich.k3r.me/blog/2012/11/25/converting-svn-to-git/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><blockquote><p>This is a repost of <a href="http://dogma.co.uk/blog/10-converting-svn-to-git">http://dogma.co.uk/blog/10-converting-svn-to-git</a></p></blockquote>
+
+<p>We&rsquo;ve recently set about converting all our old SVN repositories to GIT. The process is quite easy thanks to the <code>git svn</code> command, but there are some gotchas. So, I&rsquo;ll detail the process below.</p>
+
+<p>Every revision in a SVN repository has an author, these authors need to be migrated to the new GIT repository; which is done by compiling a text file listing the existing SVN username along with the author&rsquo;s new GIT equivalent. The format of the text file is as follows:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">svn_username</span> <span class="o">=</span> GIT User Name &lt;user@dogma.co.uk&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/11/25/converting-svn-to-git/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2011/03/04/content-management-with-perch/">Content Management With Perch</a></h1>
     
     
@@ -133,6 +181,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/05/20/simple-routing-with-javascript-decorators/">Simple Routing With JavaScript Decorators</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/04/29/empty-promises-dos-and-donts-of-es6-promises/">Empty Promises: Dos and Don&#8217;ts of ES6 Promises</a>
       </li>
     
@@ -146,10 +198,6 @@
     
       <li class="post">
         <a href="/blog/2015/04/12/consuming-es6-modules-in-npm-packages/">Consuming ES6 Modules in NPM Packages</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/04/02/controlling-cordova-from-gulp/">Controlling Cordova From Gulp</a>
       </li>
     
   </ul>
