@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Es6 | Adventures in brine]]></title>
   <link href="http://rich.k3r.me/blog/categories/es6/atom.xml" rel="self"/>
   <link href="http://rich.k3r.me/"/>
-  <updated>2015-05-20T23:04:00+01:00</updated>
+  <updated>2015-06-14T10:21:11+01:00</updated>
   <id>http://rich.k3r.me/</id>
   <author>
     <name><![CDATA[Richard Kimber]]></name>
@@ -186,7 +186,9 @@ class NotesController extends Controller {
     <link href="http://rich.k3r.me/blog/2015/04/29/empty-promises-dos-and-donts-of-es6-promises/"/>
     <updated>2015-04-29T22:10:03+01:00</updated>
     <id>http://rich.k3r.me/blog/2015/04/29/empty-promises-dos-and-donts-of-es6-promises</id>
-    <content type="html"><![CDATA[<p>There is so much I love about the functionality and syntax coming through under the banner of ES6. One such piece of functionality, is the &lsquo;Promise&rsquo;. Promises are not something that needs to be transpiled, as of writing, <a href="http://caniuse.com/#feat=promises">all but IE and Opera Mini have support</a> out of the box. The stragglers can be polyfilled <a href="https://github.com/jakearchibald/es6-promise">quite</a> <a href="https://github.com/taylorhakes/promise-polyfill">easily</a>.</p>
+    <content type="html"><![CDATA[<p><em><strong>UPDATE 14/06/15:</strong> Realised the existence of <code>Promise.resolve</code>, added info on <code>Promise.all</code>.</em></p>
+
+<p>There is so much I love about the functionality and syntax coming through under the banner of ES6. One such piece of functionality, is the &lsquo;Promise&rsquo;. Promises are not something that needs to be transpiled, as of writing, <a href="http://caniuse.com/#feat=promises">all but IE and Opera Mini have support</a> out of the box. The stragglers can be polyfilled <a href="https://github.com/jakearchibald/es6-promise">quite</a> <a href="https://github.com/taylorhakes/promise-polyfill">easily</a>.</p>
 
 <p>What follows, are three tips for using promises more effectively.</p>
 
@@ -241,19 +243,21 @@ new Example().display(1);
         })
         .then(function(data) {
             // Display somewhere
-            return new Promise((resolve) =&gt; { resolve(); });
+            return data;
         });
 }
 </code></pre>
 
-<p>The <code>display</code> function is doing exactly the same, but now the promises are chained. The new <code>Promise</code> declaration in the second <code>then</code> callback, enables the <code>display</code> function to be chained itself:</p>
+<p>The <code>display</code> function is doing exactly the same, but now the functionality is chained. The second <code>then</code> function deals with the display logic, before returning the data param, enabling the <code>display</code> function to be chained itself:</p>
 
-<pre><code class="js">new Example().display(1).then(() =&gt; { console.log('async finished'); });
+<pre><code class="js">new Example().display(1).then((data) =&gt; { /* Work on data */ console.log('async finished'); });
 </code></pre>
 
 <h2>Empty Promises</h2>
 
-<p>To expedite the example above, I&rsquo;ve started adding a helper function (similar to the example below) to my projects.</p>
+<p>I&rsquo;m one of those people who has never read a VCR manual. I pick up and do, realising only years later, that I didn&rsquo;t need to rush home every time I wanted to record something, because the VCR had a timer. I once wrote a really handy little function in SQL called <code>VALUENULL</code>, for dealing with NULL values. I can&rsquo;t believe that sort of functionality wasn&rsquo;t built in, oh wait, <a href="https://www.google.co.uk/webhp?sourceid=chrome-instant&amp;ion=1&amp;espv=2&amp;ie=UTF-8#q=isnull%20sql">ISNULL</a>.</p>
+
+<p>Well, I find myself in that place again. After triumphing that I&rsquo;d come up with such a simple way to provide consistent <code>Promise</code> returning functions with <code>Util.emptyPromise</code> (see below), then worring that such a thing might be considered bad practice.</p>
 
 <pre><code class="js">class Util {
 
@@ -264,7 +268,13 @@ new Example().display(1);
 }
 </code></pre>
 
-<p>The function is poorly names, because it can return a value. I just like the pun. An example of the pun in action:</p>
+<p>You see, the point of the function is to wrap a value (or no value) around a prefab <code>Promise</code> that always resolves. You would do this if you were creating a non-blocking/asynchronous API on top of synchronous code. Or if you envisaged blocking code becoming asynchronous in the future and wanted to ensure that the public API didn&rsquo;t feel the affect of such massive breaking changes.</p>
+
+<p>A prime example of this, is when I recently wrote a data layer based on <code>localstorage</code> (which is synchronous), then decided that  <code>localstorage</code> wasn&rsquo;t cutting the mustard, so replaced with <a href="http://mozilla.github.io/localForage/">localForage</a> (which is <code>Promise</code> based). That weekend is one I won&rsquo;t forget in a hurry.</p>
+
+<p>My point is, <code>Util.emptyPromise</code> is a less elegant equivalent to the already existing <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/resolve">Promise.resolve</a>. I&rsquo;ll leave this section with the original pun, because it still makes me chuckle.</p>
+
+<p>The function is poorly named, because it can return a value. I just like the pun. An example of the pun in action:</p>
 
 <pre><code class="js">class Election {
 
@@ -276,31 +286,81 @@ new Example().display(1);
 }
 </code></pre>
 
-<h2>In all the right places</h2>
+<h2>Promise.all</h2>
 
-<p>I&rsquo;ve certainly been guilty of overuse in the past; there is certainly a time and a place for promises. I&rsquo;d say if the function is clearly an async function (or at least has the potential to be), or provides some conversion functionality that would be useful in a chain, then the function should return a Promise.</p>
+<p>You may want to check up my sleeves at this point, because I&rsquo;m about to make bunnies appear out of thin air.</p>
 
-<pre><code class="js">class Conversion {
+<p>&lsquo;Callbacks&rsquo; is just something you do if you&rsquo;re writing non-blocking JavaScript. Calllbacks, within callbacks, within callbacks. Callbacks are there so that you can control the flow of some logic, which has a dependancy on asynchronous code (like an Ajax request), that will take you away from the main &lsquo;blocking&rsquo; execution thread.</p>
 
-    static toJson(str) {
-        return Util.emptyPromise(JSON.parse(str));
-    }
+<p>Promises take these callbacks and makes them look a lot prettier, while also providing a platform for deferring the attachment of callbacks. The following example still fires the <code>console.log</code>, even though the callback is attached after the <code>Promise</code> has already resolved.</p>
 
-}
-
-class Proxy {
-
-    get(id) {
-        return Ajax.request(id)
-            .then((response) =&gt; { return Conversion.toJson(response.responseText); });
-    }
-
-}
-
-new Proxy().get(1).then((json) =&gt; { console.log(json); });
+<pre><code class="js">var p = Promise.resolve();
+p.then(function() { console.log('test'); });
 </code></pre>
 
-<p>An example of when I wish I&rsquo;d used Promises earlier, would a data layer I wrote on top of <code>localStorage</code>, which itself is synchronous. When I wanted to apply the data layer to Chrome Apps, which only supports an asynchronous version of <code>localStorage</code>, I was not a happy bunny.</p>
+<p>But there is still room to make our code damn right gorgeous. Consider the following code:</p>
+
+<pre><code class="js">function asyncFuncA() {
+  return new Promise(function(r) {
+    setTimeout(() =&gt; { r('asyncA'); }, 2000);
+  });
+}
+
+function asyncFuncB() {
+  return new Promise(function(r) {
+    setTimeout(() =&gt; { r('asyncB'); }, 1000);
+  });
+}
+
+class AsyncController {
+
+  render(template, data) {
+    return new Promise(function(resolve, reject) {
+      // Do render stuff
+      resolve({ t: template, d: data });
+    });
+  }
+
+  asyncAction(route) {
+    return asyncFuncA()
+      .then(function(a) {
+        return asyncFuncB()
+          .then(b =&gt; { return [ a, b ]; });
+      })
+      .then(data =&gt; { return this.render('route', data); });
+  } 
+
+}
+
+let c = new AsyncController();
+
+c.asyncAction()
+  .then((obj) =&gt; { console.log(`${obj.d[0]} + ${obj.d[1]}`); });
+</code></pre>
+
+<p>Looking at the <code>asyncAction</code>. <code>asyncFuncA</code> and <code>asyncFuncB</code> are chained by calling <code>asyncFuncB</code> within the callback of <code>asyncFuncA</code>. The call to the <code>render</code> function starts on a separate tree, consuming the response of both asynchronous functions. A rocky sort of waterfall.</p>
+
+<pre><code>asyncAction
+    --&gt; asyncFuncA
+            --&gt; asyncFuncB
+        --&gt; render
+</code></pre>
+
+<p>We can achieve the same with the function below. The second asynchronous function no longer has a dependancy on the first, and we only have to call <code>then</code> once.</p>
+
+<pre><code class="js"> asyncAction(route) {
+    return Promise.all([ asyncFuncA(), asyncFuncB() ])
+      .then(data =&gt; { return this.render('route', data); });
+  } 
+</code></pre>
+
+<pre><code>asyncAction
+    --&gt; asyncFuncA
+    --&gt; asyncFuncB
+        --&gt; render
+</code></pre>
+
+<p>Pretty hot!</p>
 ]]></content>
   </entry>
   
