@@ -4,7 +4,7 @@
   <title><![CDATA[Adventures in brine]]></title>
   <link href="http://rich.k3r.me/atom.xml" rel="self"/>
   <link href="http://rich.k3r.me/"/>
-  <updated>2015-06-14T10:22:17+01:00</updated>
+  <updated>2015-06-16T23:29:45+01:00</updated>
   <id>http://rich.k3r.me/</id>
   <author>
     <name><![CDATA[Richard Kimber]]></name>
@@ -12,6 +12,152 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Async/await, Readable Non-blocking Code]]></title>
+    <link href="http://rich.k3r.me/blog/2015/06/16/async-slash-await-readable-non-blocking-code/"/>
+    <updated>2015-06-16T23:06:49+01:00</updated>
+    <id>http://rich.k3r.me/blog/2015/06/16/async-slash-await-readable-non-blocking-code</id>
+    <content type="html"><![CDATA[<p><em><strong>TL;DR:</strong> Shit just got streamlined. More specifically, promises start looking cleaner when you spray them with &lsquo;Callbacks Begone&rsquo;.</em></p>
+
+<p>In this post I&rsquo;m going to give you a quick demo of how easy it is to incorporate ES7&rsquo;s proposed <a href="https://github.com/lukehoban/ecmascript-asyncawait">Async/Await</a> functionality into your existing ES6 code. To build the code, I&rsquo;m using <a href="https://babeljs.io/">Babel</a> with &lsquo;es7.asyncFunctions&rsquo; enabled. You can read about my <a href="https://github.com/gulpjs/gulp">Gulp</a> setup <a href="http://rich.k3r.me/blog/2015/03/23/in-the-name-of-gulp/">here</a>.</p>
+
+<!-- More -->
+
+
+<p>Consider the code below:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">asyncFuncA</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">setTimeout</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">r</span><span class="p">(</span><span class="s1">&#39;asyncA&#39;</span><span class="p">);</span> <span class="p">},</span> <span class="mi">2000</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">function</span> <span class="nx">asyncFuncB</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">setTimeout</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">r</span><span class="p">(</span><span class="s1">&#39;asyncB&#39;</span><span class="p">);</span> <span class="p">},</span> <span class="mi">1000</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">class</span> <span class="nx">AsyncController</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">render</span><span class="p">(</span><span class="nx">template</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="c1">// Do render stuff</span>
+</span><span class='line'>      <span class="nx">resolve</span><span class="p">({</span> <span class="nx">t</span><span class="o">:</span> <span class="nx">template</span><span class="p">,</span> <span class="nx">d</span><span class="o">:</span> <span class="nx">data</span> <span class="p">});</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">asyncAction</span><span class="p">(</span><span class="nx">route</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">asyncFuncA</span><span class="p">()</span>
+</span><span class='line'>      <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nx">asyncFuncB</span><span class="p">()</span>
+</span><span class='line'>          <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">b</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="k">return</span> <span class="p">[</span> <span class="nx">a</span><span class="p">,</span> <span class="nx">b</span> <span class="p">];</span> <span class="p">});</span>
+</span><span class='line'>      <span class="p">})</span>
+</span><span class='line'>      <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">data</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;route&#39;</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span> <span class="p">});</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">let</span> <span class="nx">c</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">AsyncController</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">c</span><span class="p">.</span><span class="nx">asyncAction</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">then</span><span class="p">((</span><span class="nx">obj</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">obj</span><span class="p">.</span><span class="nx">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]}</span> <span class="o">+</span> <span class="nx">$</span><span class="p">{</span><span class="nx">obj</span><span class="p">.</span><span class="nx">d</span><span class="p">[</span><span class="mi">1</span><span class="p">]}</span><span class="err">`</span><span class="p">);</span> <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We&rsquo;re looking at a Controller class with a couple of actions. The <code>asyncAction</code> function of <code>AsyncController</code> is what we&rsquo;re interested in. The action resolves two promises, one after the other, before calling <code>render</code> with the results of the two promises. In a <a href="http://rich.k3r.me/blog/2015/04/29/empty-promises-dos-and-donts-of-es6-promises/">previous article</a>, we already removed a couple of callbacks with <code>Promise.all</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'> <span class="nx">asyncAction</span><span class="p">(</span><span class="nx">route</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">Promise</span><span class="p">.</span><span class="nx">all</span><span class="p">([</span> <span class="nx">asyncFuncA</span><span class="p">(),</span> <span class="nx">asyncFuncB</span><span class="p">()</span> <span class="p">])</span>
+</span><span class='line'>      <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">data</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;route&#39;</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span> <span class="p">});</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A lot cleaner, but we can do better. <code>async</code> and <code>await</code> are keywords that, when used together, allow you to write asynchronous code without callbacks. <code>async</code> creates a container, within which you can execute promises (prefixed with <code>await</code>) that halt the current scope, until the promises have resolved. The resulting values of said promises are returned in the same way would expect a synchronous function to behave.</p>
+
+<p>What is important, is that this only happens within the <code>async</code> container, which is itself becomes a promise. In the following example <code>p</code> and <code>a</code> are roughly equivalent.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">p</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="s1">&#39;hello world&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">async</span> <span class="kd">function</span> <span class="nx">a</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="s1">&#39;hello world&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">p</span><span class="p">().</span><span class="nx">then</span><span class="p">((</span><span class="nx">r</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">);</span> <span class="p">});</span>
+</span><span class='line'><span class="nx">a</span><span class="p">().</span><span class="nx">then</span><span class="p">((</span><span class="nx">r</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">);</span> <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>What I think is particularly neat, is that class functions can also be decorated with <code>async</code>. So we can use this &lsquo;syntastical&rsquo; sugar on our original example to create:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="nx">async</span> <span class="nx">asyncAction</span><span class="p">(</span><span class="nx">route</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="nx">route</span><span class="p">,</span> <span class="p">[</span> <span class="nx">await</span> <span class="nx">asyncFuncA</span><span class="p">(),</span> <span class="nx">await</span> <span class="nx">asyncFuncB</span><span class="p">()</span> <span class="p">]);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The code above is equivalent to the <code>asyncAction</code> functions of the previous examples. I mean, pure, wow factor. It&rsquo;s so awesome, I&rsquo;m giddy. Deep breaths, carry on. <code>asyncFuncA</code> and <code>asyncFuncB</code> are both functions that return promises. These promises both return simple strings, after different timeout periods, during which time the <code>asyncAction</code> function&rsquo;s execution is halted. After the promises has resolved, the final value is returned to current scope and execution continues, as if the <code>await</code> functions were synchronous.</p>
+
+<p>This new functionality has taken promises to a whole new level for me. The <code>async</code> function by itself, removes the need for repetitive <code>Promise</code> declarations. Combined with <code>await</code>, we get asynchronous code that is as easy to read as synchronous code. And no callbacks!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Simple Routing With JavaScript Decorators]]></title>
@@ -3436,78 +3582,6 @@
 <p>I also find Adam Buxton extremely funny. I hope there is a new series of Bug in the works.</p>
 
 <p>What would your list of funny people look like? I&rsquo;d love to hear.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Half-arsed Working Techniques]]></title>
-    <link href="http://rich.k3r.me/blog/2014/12/21/half-arsed-working-techniques/"/>
-    <updated>2014-12-21T11:21:41+00:00</updated>
-    <id>http://rich.k3r.me/blog/2014/12/21/half-arsed-working-techniques</id>
-    <content type="html"><![CDATA[<h2>TL;DR</h2>
-
-<p>&ldquo;Half-arsed&rdquo;, as in reducing possibility of getting a fat arse by working more efficiently.  It&rsquo;s a pun, I&rsquo;m funny like that.</p>
-
-<h2>Introduction</h2>
-
-<p>I recently watched this video <a href="http://youtu.be/uiKg6JfS658">Are You Sitting Too Much?</a> and the followup <a href="http://youtu.be/4K_ENbRgywY">9 Tips To Save Your Life</a>. Please watch them if you sit for long periods of time, they&rsquo;re not long and you learn a lot.</p>
-
-<p>I really had no idea, which is irritating because it makes perfect sense. It makes perfect sense, because even in my ignorance, I have already seen the benefits yielded from breaking up my work. Having unwittingly lost half a stone this year, without changing my diet (next year&rsquo;s resolution).</p>
-
-<!--more-->
-
-
-<p>The tips in the second video are insightful, but didn&rsquo;t really speak to my specific situation. So, I&rsquo;ve come up with a few ideas for how I might tackle the issue.</p>
-
-<h2>Use a Timer</h2>
-
-<p>We use a service called <a href="https://letsfreckle.com/">Freckle</a> to track the time we spend on projects. On the Mac app at least, the timer beeps once an hour; this I believe is there to indicate that the timer is still running. It seems to me though, that it is also a great reminder to get up and stretch your legs for five minutes.</p>
-
-<p>Now, while I adore Freckle and it&rsquo;s beautiful reporting, it is quite expensive. $49 per month for a team of five. I strive for greater efficiency, if only so one day I feel I can survive the week without Freckle. It is certainly too much to spend on a simple timer to remind you to get up and have a wander.</p>
-
-<p>If I was without Freckle and facing this issue, I&rsquo;d recognise my personal cycles of work differ at different times during the day. That is to say, that I would be much aggrieved if I was interrupted from my work after a mere hour, first thing in the morning, but would take such a distraction as a blessing mid-afternoon. Instead, I&rsquo;d chop my day into sprints of different lengths, and set up timers accordingly. This would have the extra benefit of adding a bit more structure to my day, by understanding when I&rsquo;m more effective at longer or shorter tasks.</p>
-
-<h2>Work Standing</h2>
-
-<p>I&rsquo;ve long enjoyed the idea of these adjustable desks, that allow you to work seated or standing. They are very expensive though and I wonder how I would actually get on coding for long periods of time, while standing.</p>
-
-<p>Coding aside, I think a lot of activities can benefit from standing.</p>
-
-<h3>Catch Up Meetings</h3>
-
-<p>The most obvious example is meetings. Quick catch up meetings have more impact when standing, the same meeting while seated would take twice as long.</p>
-
-<h3>Phone calls</h3>
-
-<p>I&rsquo;m a pacer on the phone, so this is an easy one for me. It can be quite distracting for others, but I&rsquo;ll get most of my steps throughout the day just by talking on the phone.</p>
-
-<h3>Poor man&rsquo;s adjustable desk</h3>
-
-<p>This is crazy idea I&rsquo;ve had, that I think I&rsquo;d like to trial. I don&rsquo;t think I&rsquo;d code standing up, but there is a bunch of other stuff that I would do on a computer while standing. Clearing up email, project management, or testing comes to mind.</p>
-
-<p>The premise of my idea is that my development work requires a beast of a machine, but other tasks may not. I&rsquo;d have two desks, or at least have access to a second.</p>
-
-<h4>Desk One</h4>
-
-<p>Desk One, as it has always been, comfy with massive computer in front of me.</p>
-
-<h4>Desk Two</h4>
-
-<p>More like a shelf or a &ldquo;hot desking&rdquo; coffee shop table at standing height, with an inexpensive laptop (like a Chromebook) setup.</p>
-
-<p>Every time you want to perform an admin task, you get up and walk to your admin shelf. It really doesn&rsquo;t need to be much more than that, if you&rsquo;re going to start leaning, you&rsquo;re using the space for the wrong task.</p>
-
-<h2>Conclusion</h2>
-
-<p>I&rsquo;m really excited about setting up sprints. I like that I&rsquo;d be able communicate clearer expectations of when I&rsquo;m approachable to my co-workers, after understanding my own process more clearly.</p>
-
-<p>I&rsquo;m also falling in love with the idea of an admin shelf, or maybe not an admin shelf, maybe an area that is more communal. A standing desk area, that by virtue of standing there says, &ldquo;Hey I&rsquo;m approachable&rdquo;.</p>
-
-<h2>Conclusion on Conclusion</h2>
-
-<p>What&rsquo;s weird about my conclusion, is that it doesn&rsquo;t talk about my ideas in context of standing more; which is the point of the post. I seem to be more concerned with disruptions in my workflow and being approachable to my co-workers. I think that&rsquo;s interesting, because for me, it&rsquo;s all interconnected.</p>
-
-<p>By playing with these techniques, I don&rsquo;t just prevent the onset of having a fat arse, I also become more productive and collaborative in my work.</p>
 ]]></content>
   </entry>
   
