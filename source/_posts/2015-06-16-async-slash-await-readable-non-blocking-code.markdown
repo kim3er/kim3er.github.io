@@ -1,0 +1,92 @@
+---
+layout: post
+title: "Async/await, readable non-blocking code"
+date: 2015-06-16 23:06:49 +0100
+comments: true
+categories: [ ES7, JavaScript, Async, Routing ]
+---
+
+___TL;DR:__ Shit just got streamlined. More specifically, promises start looking cleaner when you spray them with 'Callbacks Begone'._
+
+In this post I'm going to give you a quick demo of how easy it is to incorporate ES7's proposed [Async/Await](https://github.com/lukehoban/ecmascript-asyncawait) functionality into your existing ES6 code. To build the code, I'm using [Babel](https://babeljs.io/) with 'es7.asyncFunctions' enabled. You can read about my [Gulp](https://github.com/gulpjs/gulp) setup [here](/blog/2015/03/23/in-the-name-of-gulp/).
+
+<!-- More -->
+
+Consider the code below:
+
+``` js
+function asyncFuncA() {
+  return new Promise(function(r) {
+    setTimeout(() => { r('asyncA'); }, 2000);
+  });
+}
+
+function asyncFuncB() {
+  return new Promise(function(r) {
+    setTimeout(() => { r('asyncB'); }, 1000);
+  });
+}
+
+class AsyncController {
+
+  render(template, data) {
+    return new Promise(function(resolve, reject) {
+      // Do render stuff
+      resolve({ t: template, d: data });
+    });
+  }
+
+  asyncAction(route) {
+    return asyncFuncA()
+      .then(function(a) {
+        return asyncFuncB()
+          .then(b => { return [ a, b ]; });
+      })
+      .then(data => { return this.render('route', data); });
+  }
+
+}
+
+let c = new AsyncController();
+
+c.asyncAction()
+  .then((obj) => { console.log(`${obj.d[0]} + ${obj.d[1]}`); });
+```
+
+We're looking at a Controller class with a couple of actions. The `asyncAction` function of `AsyncController` is what we're interested in. The action resolves two promises, one after the other, before calling `render` with the results of the two promises. In a [previous article](/blog/2015/04/29/empty-promises-dos-and-donts-of-es6-promises/), we already removed a couple of callbacks with `Promise.all`.
+
+``` js
+ asyncAction(route) {
+    return Promise.all([ asyncFuncA(), asyncFuncB() ])
+      .then(data => { return this.render('route', data); });
+  }
+```
+
+A lot cleaner, but we can do better. `async` and `await` are keywords that, when used together, allow you to write asynchronous code without callbacks. `async` creates a container, within which you can execute promises (prefixed with `await`) that halt the current scope, until the promises have resolved. The resulting values of said promises are returned in the same way would expect a synchronous function to behave.
+
+What is important, is that this only happens within the `async` container, which is itself becomes a promise. In the following example `p` and `a` are roughly equivalent.
+
+```  js
+function p() {
+  return Promise.resolve('hello world');
+}
+
+async function a() {
+  return 'hello world';
+}
+
+p().then((r) => { console.log(r); });
+a().then((r) => { console.log(r); });
+```
+
+What I think is particularly neat, is that class functions can also be decorated with `async`. So we can use this 'syntastical' sugar on our original example to create:
+
+``` js
+  async asyncAction(route) {
+    return this.render(route, [ await asyncFuncA(), await asyncFuncB() ]);
+  }
+```
+
+The code above is equivalent to the `asyncAction` functions of the previous examples. I mean, pure, wow factor. It's so awesome, I'm giddy. Deep breaths, carry on. `asyncFuncA` and `asyncFuncB` are both functions that return promises. These promises both return simple strings, after different timeout periods, during which time the `asyncAction` function's execution is halted. After the promises has resolved, the final value is returned to current scope and execution continues, as if the `await` functions were synchronous.
+
+This new functionality has taken promises to a whole new level for me. The `async` function by itself, removes the need for repetitive `Promise` declarations. Combined with `await`, we get asynchronous code that is as easy to read as synchronous code. And no callbacks!
