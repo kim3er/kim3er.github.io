@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+{{ contents | safe }}
+
+{% if next %}
+	<a href="{{ next.url }}">{{ next.title }}</a>
+{% endif %}
+{% endblock %}
