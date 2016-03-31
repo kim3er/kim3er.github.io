@@ -1,0 +1,6 @@
+{
+	"srcPath": "./src",
+	"buildPath": "./.build",
+	"postTemplate": "post.html",
+	"postUrl": "/blog/{{ year }}/{{ month }}/{{ day }}/{{ fileName }}/"
+}
