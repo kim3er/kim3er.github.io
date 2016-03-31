@@ -50,6 +50,8 @@ const init = async function() {
 			fileArr.push(data);
 		}
 
+		fileArr.reverse();
+
 		return fileArr;
 	};
 
@@ -84,8 +86,37 @@ const init = async function() {
 
 		await renderPosts(postData);
 
+		// Render Archive
+		const archiveHtml = nunjucksWithLayout.render('archive.html', { posts: postData });
+
+		await fsh.writeFile(`${settings.buildPath}/blog/archive.html`, archiveHtml);
+
 		const totalPosts = postData.length,
-			postsPerPage = 10;
+			postsPerPage = 10,
+			pagesOfPosts = Math.ceil(totalPosts / postsPerPage);
+
+		let i = 0;
+		while (i < pagesOfPosts) {
+			const start = i++ * postsPerPage,
+				remaining = postData.length - start,
+				end = start + ( remaining > postsPerPage ? postsPerPage : remaining );
+
+			const url = i > 1 ? `/posts/${i}` : '',
+				path = `${settings.buildPath}${url}`,
+				file = `${path}/${indexFile}`;
+
+			console.log(i > 1 ? `posts/${i - 1}` : null, i < pagesOfPosts ? `posts/${i + 1}` : null);
+
+			const html = nunjucksWithLayout.render('index.html', {
+				posts: postData.slice(start, end),
+				prev: ( i > 1 ? `/posts/${i - 1}` : null ),
+				next: ( i < pagesOfPosts ? `/posts/${i + 1}` : null )
+			});
+
+			await fsh.mkdirp(path);
+
+			await fsh.writeFile(file, html);
+		}
 	};
 
 	await buildTemplates();

@@ -3,6 +3,10 @@
 {% block content %}
 {{ contents | safe }}
 
+{% if prev %}
+	<a href="{{ prev.url }}">{{ prev.title }}</a>
+{% endif %}
+
 {% if next %}
 	<a href="{{ next.url }}">{{ next.title }}</a>
 {% endif %}
