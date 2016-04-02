@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<h1>{{ name }}</h1>
+{% for year in years %}
+	<h2>{{ year.name }}</h2>
+	{% for post in year.posts %}
+		<a href="{{ post.url }}">{{ post.title }}</a>
+	{% endfor %}
+{% endfor %}
+{% endblock %}
