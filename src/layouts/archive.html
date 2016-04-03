@@ -1,10 +1,44 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% for year in postsByYear %}
-	<h1>{{ year.name }}</h1>
-	{% for post in year.posts %}
-		<div>{{ post.attributes.title }}</div>
-	{% endfor %}
-{% endfor %}
+<div>
+	<article role="article">
+		<header>
+			<h1 class="entry-title">Blog Archive</h1>
+		</header>
+
+		<div id="blog-archives">
+		{% for year in postsByYear %}
+			<h2>{{ year.name }}</h2>
+
+			{% for post in year.posts %}
+			<article>
+				<h1>
+					<a href="/blog/2015/06/16/async-slash-await-readable-non-blocking-code/">
+						{{ post.attributes.title }}
+					</a>
+				</h1>
+
+				<time datetime="2015-06-16T23:06:49+01:00" pubdate>
+					<span class='month'>Jun</span>
+					<span class='day'>16</span>
+					<span class='year'>2015</span>
+				</time>
+
+				<footer>
+					<span class="categories">
+						posted in
+						<a class='category' href='/blog/categories/async/'>async</a>,
+						<a class='category' href='/blog/categories/es7/'>es7</a>,
+						<a class='category' href='/blog/categories/javascript/'>javascript</a>,
+						<a class='category' href='/blog/categories/routing/'>routing</a>
+					</span>
+				</footer>
+			</article>
+			{% endfor %}
+
+		{% endfor %}
+		</div>
+	</article>
+</div>
 {% endblock %}

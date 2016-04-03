@@ -1,13 +1,80 @@
 {% extends "base.html" %}
 
 {% block content %}
-{{ contents | safe }}
+<div>
+	<article class="hentry" role="article">
+		<header>
+			<h1 class="entry-title">
+				Async/await, Readable Non-blocking Code
+			</h1>
 
-{% if prev %}
-	<a href="{{ prev.url }}">{{ prev.title }}</a>
-{% endif %}
+			<p class="meta">
+				<time class='entry-date' datetime='2015-06-16T23:06:49+01:00'>
+					<span class='date'>
+						<span class='date-month'>Jun</span>
+						<span class='date-day'>16</span><span class='date-suffix'>th</span>,
+						<span class='date-year'>2015</span>
+					</span>
+					<span class='time'>11:06 pm</span>
+				</time>
+				| <a href="#disqus_thread"
+						data-disqus-identifier="http://rich.k3r.me">Comments</a>
+			</p>
+		</header>
 
-{% if next %}
-	<a href="{{ next.url }}">{{ next.title }}</a>
-{% endif %}
+		<div class="entry-content">
+			{{ contents | safe }}
+		</div>
+
+		<footer>
+			<p class="meta">
+				<span class="byline author vcard">
+					Posted by <span class="fn">Richard Kimber</span>
+				</span>
+				<time class='entry-date' datetime='2015-06-16T23:06:49+01:00'>
+					<span class='date'>
+						<span class='date-month'>Jun</span>
+						<span class='date-day'>16</span><span class='date-suffix'>th</span>,
+						<span class='date-year'>2015</span>
+					</span>
+					<span class='time'>11:06 pm</span>
+				</time>
+				<span class="categories">
+					<a class='category' href='/blog/categories/async/'>async</a>,
+					<a class='category' href='/blog/categories/es7/'>es7</a>,
+					<a class='category' href='/blog/categories/javascript/'>javascript</a>,
+					<a class='category' href='/blog/categories/routing/'>routing</a>
+				</span>
+			</p>
+
+			<div class="sharing">
+				<a href="//twitter.com/share" class="twitter-share-button" data-url="http://rich.k3r.me/blog/2015/06/16/async-slash-await-readable-non-blocking-code/" data-via="kim3er" data-counturl="http://rich.k3r.me/blog/2015/06/16/async-slash-await-readable-non-blocking-code/">
+					Tweet
+				</a>
+				<div class="g-plusone" data-size="medium"></div>
+				<div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+			</div>
+
+			<p class="meta">
+				{% if prev %}
+					<a class="basic-alignment left" href="{{ prev.url }}" title="Previous Post: {{ prev.title }}">&laquo; {{ prev.title }}</a>
+				{% endif %}
+
+				{% if next %}
+					<a class="basic-alignment right" href="{{ next.url }}" title="Next Post: {{ prev.title }}">&laquo; {{ next.title }}</a>
+				{% endif %}
+			</p>
+		</footer>
+	</article>
+
+	<section>
+		<h1>Comments</h1>
+		<div id="disqus_thread" aria-live="polite">
+			<noscript>
+				Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+			</noscript>
+		</div>
+	</section>
+
+</div>
 {% endblock %}

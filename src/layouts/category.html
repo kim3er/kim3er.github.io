@@ -1,11 +1,44 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<h1>{{ name }}</h1>
-{% for year in years %}
-	<h2>{{ year.name }}</h2>
-	{% for post in year.posts %}
-		<a href="{{ post.url }}">{{ post.title }}</a>
-	{% endfor %}
-{% endfor %}
+<div>
+	<article role="article">
+		<header>
+			<h1 class="entry-title">
+				Category: {{ name }}
+			</h1>
+		</header>
+
+		<div id="blog-archives" class="category">
+		{% for year in years %}
+			<h2>{{ year.name }}</h2>
+			{% for post in year.posts %}
+				<article>
+					<h1>
+						<a href="{{ post.url }}">
+							{{ post.title }}
+						</a>
+					</h1>
+
+					<time datetime="2015-06-16T23:06:49+01:00" pubdate>
+						<span class='month'>Jun</span>
+						<span class='day'>16</span>
+						<span class='year'>2015</span>
+					</time>
+
+					<footer>
+						<span class="categories">
+							posted in
+							<a class='category' href='/blog/categories/async/'>async</a>,
+							<a class='category' href='/blog/categories/es7/'>es7</a>,
+							<a class='category' href='/blog/categories/javascript/'>javascript</a>,
+							<a class='category' href='/blog/categories/routing/'>routing</a>
+						</span>
+					</footer>
+				</article>
+			{% endfor %}
+		{% endfor %}
+		</div>
+	</article>
+</div>
 {% endblock %}

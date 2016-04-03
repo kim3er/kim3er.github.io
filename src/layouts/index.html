@@ -1,18 +1,50 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% for year in postsByYear %}
-	<h1>{{ year.name }}</h1>
-	{% for post in year.posts %}
-		<div>{{ post.attributes.title }}</div>
+<div class="blog-index">
+
+	{% for year in postsByYear %}
+		{% for post in year.posts %}
+	<article>
+		<header>
+			<h1 class="entry-title">
+				<a href="/blog/2015/06/16/async-slash-await-readable-non-blocking-code/">
+					{{ post.attributes.title }}
+				</a>
+			</h1>
+			<p class="meta">
+				<time class='entry-date' datetime='2015-06-16T23:06:49+01:00'>
+					<span class='date'>
+						<span class='date-month'>Jun</span>
+						<span class='date-day'>16</span><span class='date-suffix'>th</span>,
+						<span class='date-year'>2015</span>
+					</span>
+					<span class='time'>11:06 pm</span>
+				</time>
+				| <a href="/blog/2015/06/16/async-slash-await-readable-non-blocking-code/#disqus_thread"
+						data-disqus-identifier="http://rich.k3r.me/blog/2015/06/16/async-slash-await-readable-non-blocking-code/">Comments</a>
+			</p>
+		</header>
+		<div class="entry-content">
+			{{ post.excerpt | safe }}
+		</div>
+		<footer>
+			<a rel="full-article" href="/blog/2015/06/16/async-slash-await-readable-non-blocking-code/">Read on &rarr;</a>
+		</footer>
+	</article>
+		{% endfor %}
 	{% endfor %}
-{% endfor %}
 
-{% if prev %}
-	<a href="{{ prev }}">Older</a>
-{% endif %}
+	<div class="pagination">
+	{% if prev %}
+		<a class="prev" href="{{ prev }}">&larr; Older</a>
+	{% endif %}
 
-{% if next %}
-	<a href="{{ next }}">Newer</a>
-{% endif %}
+		<a href="/blog/archives">Blog Archives</a>
+
+	{% if next %}
+		<a class="next" href="{{ next }}">Newer &rarr;</a>
+	{% endif %}
+	</div>
+</div>
 {% endblock %}
