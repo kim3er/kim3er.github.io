@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% for post in posts %}
-	<div>{{ post.attributes.title }}</div>
+{% for year in postsByYear %}
+	<h1>{{ year.name }}</h1>
+	{% for post in year.posts %}
+		<div>{{ post.attributes.title }}</div>
+	{% endfor %}
 {% endfor %}
 
 {% if prev %}
