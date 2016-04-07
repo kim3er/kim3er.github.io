@@ -1,0 +1,30 @@
+{% macro date(date) %}
+<time datetime="{{ date | date }}" pubdate>
+	<span class='month'>{{ date | date("MMM") }}</span>
+	<span class='day'>{{ date | date("DD") }}</span>
+	<span class='year'>{{ date | date("YYYY") }}</span>
+</time>
+{% endmacro %}
+
+{% macro summary(post) %}
+<article>
+	<h1>
+		<a href="{{ post.url }}">
+			{{ post.title }}
+		</a>
+	</h1>
+
+	{{ date(post.date) }}
+
+	<footer>
+		{% if post.categories.length > 0 -%}
+		<span class="categories">
+			posted in
+			{% for category in post.categories -%}
+			<a class='category' href='{{ category.url }}'>{{ category.name }}</a>{{ "," if not loop.last }}
+			{% endfor -%}
+		</span>
+		{% endif -%}
+	</footer>
+</article>
+{% endmacro %}
