@@ -1,24 +1,17 @@
 {% extends "base.html" %}
+{% import "helpers.html" as helpers %}
 
 {% block content %}
 <div>
 	<article class="hentry" role="article">
 		<header>
 			<h1 class="entry-title">
-				Async/await, Readable Non-blocking Code
+				{{ title }}
 			</h1>
 
 			<p class="meta">
-				<time class='entry-date' datetime='2015-06-16T23:06:49+01:00'>
-					<span class='date'>
-						<span class='date-month'>Jun</span>
-						<span class='date-day'>16</span><span class='date-suffix'>th</span>,
-						<span class='date-year'>2015</span>
-					</span>
-					<span class='time'>11:06 pm</span>
-				</time>
-				| <a href="#disqus_thread"
-						data-disqus-identifier="http://rich.k3r.me">Comments</a>
+				{{ helpers.long_date(date) }}
+				| {{ helpers.comments_link(url) }}
 			</p>
 		</header>
 
@@ -31,24 +24,12 @@
 				<span class="byline author vcard">
 					Posted by <span class="fn">Richard Kimber</span>
 				</span>
-				<time class='entry-date' datetime='2015-06-16T23:06:49+01:00'>
-					<span class='date'>
-						<span class='date-month'>Jun</span>
-						<span class='date-day'>16</span><span class='date-suffix'>th</span>,
-						<span class='date-year'>2015</span>
-					</span>
-					<span class='time'>11:06 pm</span>
-				</time>
-				<span class="categories">
-					<a class='category' href='/blog/categories/async/'>async</a>,
-					<a class='category' href='/blog/categories/es7/'>es7</a>,
-					<a class='category' href='/blog/categories/javascript/'>javascript</a>,
-					<a class='category' href='/blog/categories/routing/'>routing</a>
-				</span>
+				{{ helpers.long_date(date) }}
+				{{ helpers.categories(categories) }}
 			</p>
 
 			<div class="sharing">
-				<a href="//twitter.com/share" class="twitter-share-button" data-url="http://rich.k3r.me/blog/2015/06/16/async-slash-await-readable-non-blocking-code/" data-via="kim3er" data-counturl="http://rich.k3r.me/blog/2015/06/16/async-slash-await-readable-non-blocking-code/">
+				<a href="//twitter.com/share" class="twitter-share-button" data-url="http://rich.k3r.me{{ url }}" data-via="kim3er" data-counturl="http://rich.k3r.me{{ url }}">
 					Tweet
 				</a>
 				<div class="g-plusone" data-size="medium"></div>

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import "helpers.html" as helpers %}
 
 {% block content %}
 <div class="blog-index">
@@ -8,28 +9,17 @@
 	<article>
 		<header>
 			<h1 class="entry-title">
-				<a href="/blog/2015/06/16/async-slash-await-readable-non-blocking-code/">
+				<a href="{{ post.attributes.url }}">
 					{{ post.attributes.title }}
 				</a>
 			</h1>
-			<p class="meta">
-				<time class='entry-date' datetime='2015-06-16T23:06:49+01:00'>
-					<span class='date'>
-						<span class='date-month'>Jun</span>
-						<span class='date-day'>16</span><span class='date-suffix'>th</span>,
-						<span class='date-year'>2015</span>
-					</span>
-					<span class='time'>11:06 pm</span>
-				</time>
-				| <a href="/blog/2015/06/16/async-slash-await-readable-non-blocking-code/#disqus_thread"
-						data-disqus-identifier="http://rich.k3r.me/blog/2015/06/16/async-slash-await-readable-non-blocking-code/">Comments</a>
-			</p>
+			{{ helpers.meta(post.attributes) }}
 		</header>
 		<div class="entry-content">
 			{{ post.excerpt | safe }}
 		</div>
 		<footer>
-			<a rel="full-article" href="/blog/2015/06/16/async-slash-await-readable-non-blocking-code/">Read on &rarr;</a>
+			<a rel="full-article" href="{{ post.attributes.url }}">Read on &rarr;</a>
 		</footer>
 	</article>
 		{% endfor %}

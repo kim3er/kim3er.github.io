@@ -1,30 +1,57 @@
 {% macro date(date) %}
-<time datetime="{{ date | date }}" pubdate>
-	<span class='month'>{{ date | date("MMM") }}</span>
-	<span class='day'>{{ date | date("DD") }}</span>
-	<span class='year'>{{ date | date("YYYY") }}</span>
-</time>
+	<time datetime="{{ date | date }}" pubdate>
+		<span class='month'>{{ date | date("MMM") }}</span>
+		<span class='day'>{{ date | date("DD") }}</span>
+		<span class='year'>{{ date | date("YYYY") }}</span>
+	</time>
 {% endmacro %}
 
-{% macro summary(post) %}
-<article>
-	<h1>
-		<a href="{{ post.url }}">
-			{{ post.title }}
-		</a>
-	</h1>
+{% macro long_date(date) %}
+	<time class='entry-date' datetime='{{ date | date }}'>
+		<span class='date'>
+			<span class='date-month'>{{ date | date("MMM") }}</span>
+			<span class='date-day'>{{ date | date("D") }}</span><span class='date-suffix'>{{ date | date("Do") | letters }}</span>,
+			<span class='date-year'>{{ date | date("YYYY") }}</span>
+		</span>
+		<span class='time'>{{ date | date("HH:mm") }}</span>
+	</time>
+{% endmacro %}
 
-	{{ date(post.date) }}
+{% macro comments_link(url) %}
+<a href="{{ url }}#disqus_thread"
+				data-disqus-identifier="http://rich.k3r.me{{ url }}">Comments</a>
+{% endmacro %}
 
-	<footer>
-		{% if post.categories.length > 0 -%}
+{% macro categories(categories) %}
+	{% if categories.length > 0 -%}
 		<span class="categories">
 			posted in
-			{% for category in post.categories -%}
+			{% for category in categories -%}
 			<a class='category' href='{{ category.url }}'>{{ category.name }}</a>{{ "," if not loop.last }}
 			{% endfor -%}
 		</span>
 		{% endif -%}
-	</footer>
-</article>
+{% endmacro %}
+
+{% macro summary(post) %}
+	<article>
+		<h1>
+			<a href="{{ post.url }}">
+				{{ post.title }}
+			</a>
+		</h1>
+
+		{{ date(post.date) }}
+
+		<footer>
+			{{ categories(post.categories) }}
+		</footer>
+	</article>
+{% endmacro %}
+
+{% macro meta(post) %}
+	<p class="meta">
+		{{ long_date(post.date) }}
+		| {{ comments_link(post.url )}}
+	</p>
 {% endmacro %}

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Adventures in brine]]></title>
+  <link href="http://rich.k3r.me/atom.xml" rel="self"/>
+  <link href="http://rich.k3r.me/"/>
+  <updated>2015-06-16T23:29:45+01:00</updated>
+  <id>http://rich.k3r.me/</id>
+  <author>
+    <name><![CDATA[Richard Kimber]]></name>
+
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  <entry>
+    <title type="html"><![CDATA[Async/await, Readable Non-blocking Code]]></title>
+    <link href="http://rich.k3r.me/blog/2015/06/16/async-slash-await-readable-non-blocking-code/"/>
+    <updated>2015-06-16T23:06:49+01:00</updated>
+    <id>http://rich.k3r.me/blog/2015/06/16/async-slash-await-readable-non-blocking-code</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+
+</feed>
