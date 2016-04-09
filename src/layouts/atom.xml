@@ -16,9 +16,9 @@
     {% for post in year.posts %}
   <entry>
     <title type="html"><![CDATA[{{ post.attribute.title }}]]></title>
-    <link href="http://rich.k3r.me{{ post.attributes.url }}"/>
-    <updated>{{ post.attributes.date | date }}</updated>
-    <id>http://rich.k3r.me{{ post.attributes.url }}</id>
+    <link href="http://rich.k3r.me{{ post.url }}"/>
+    <updated>{{ post.date | date }}</updated>
+    <id>http://rich.k3r.me{{ post.url }}</id>
     <content type="html"><![CDATA[{{ post.body | safe }}]]></content>
   </entry>
     {% endfor %}

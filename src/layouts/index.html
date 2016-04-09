@@ -9,17 +9,17 @@
 	<article>
 		<header>
 			<h1 class="entry-title">
-				<a href="{{ post.attributes.url }}">
-					{{ post.attributes.title }}
+				<a href="{{ post.url }}">
+					{{ post.title }}
 				</a>
 			</h1>
-			{{ helpers.meta(post.attributes) }}
+			{{ helpers.meta(post) }}
 		</header>
 		<div class="entry-content">
 			{{ post.excerpt | safe }}
 		</div>
 		<footer>
-			<a rel="full-article" href="{{ post.attributes.url }}">Read on &rarr;</a>
+			<a rel="full-article" href="{{ post.url }}">Read on &rarr;</a>
 		</footer>
 	</article>
 		{% endfor %}

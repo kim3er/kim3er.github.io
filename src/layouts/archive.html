@@ -13,7 +13,7 @@
 			<h2>{{ year.name }}</h2>
 
 			{% for post in year.posts %}
-			{{ helpers.summary(post.attributes) }}
+			{{ helpers.summary(post) }}
 			{% endfor %}
 
 		{% endfor %}
