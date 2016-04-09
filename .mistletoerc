@@ -2,5 +2,9 @@
 	"srcPath": "./src",
 	"buildPath": "./.build",
 	"postTemplate": "post.html",
-	"postUrl": "/blog/{{ year }}/{{ month }}/{{ day }}/{{ fileName }}/"
+	"postUrl": "/blog/{{ year }}/{{ month }}/{{ day }}/{{ fileName }}/",
+	"filters": {
+		"date": { "path": "date", "local": true },
+		"letters": { "path": "letters", "local": true }
+	}
 }

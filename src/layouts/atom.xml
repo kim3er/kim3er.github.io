@@ -4,7 +4,7 @@
   <title><![CDATA[Adventures in brine]]></title>
   <link href="http://rich.k3r.me/atom.xml" rel="self"/>
   <link href="http://rich.k3r.me/"/>
-  <updated>2015-06-16T23:29:45+01:00</updated>
+  <updated>{{ lastUpdated | date }}</updated>
   <id>http://rich.k3r.me/</id>
   <author>
     <name><![CDATA[Richard Kimber]]></name>
@@ -12,13 +12,18 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  {% for year in postsByYear %}
+    {% for post in year.posts %}
   <entry>
-    <title type="html"><![CDATA[Async/await, Readable Non-blocking Code]]></title>
-    <link href="http://rich.k3r.me/blog/2015/06/16/async-slash-await-readable-non-blocking-code/"/>
-    <updated>2015-06-16T23:06:49+01:00</updated>
-    <id>http://rich.k3r.me/blog/2015/06/16/async-slash-await-readable-non-blocking-code</id>
+    <title type="html"><![CDATA[{{ post.attribute.title }}]]></title>
+    <link href="http://rich.k3r.me{{ post.url }}"/>
+    <updated>{{ post.date | date }}</updated>
+    <id>http://rich.k3r.me{{ url }}</id>
     <content type="html"><![CDATA[
+  }
 ]]></content>
   </entry>
+    {% endfor %}
+  {% endfor %}
 
 </feed>
