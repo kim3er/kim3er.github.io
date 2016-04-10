@@ -6,9 +6,9 @@ comments: true
 categories: [ JavaScript, Gulp, Task Runners ]
 ---
 
-___TL;DR:__ Use Gulp 4 if you care about task management. If you can't use Gulp 4, use Gulp 3 with 'runSequence'. Also, I need to start reading documentation more and assuming less._
+_**TL;DR:**Use Gulp 4 if you care about task management. If you can't use Gulp 4, use Gulp 3 with 'runSequence'. Also, I need to start reading documentation more and assuming less._
 
-___NOTE:__ You see the code over at [Github](https://github.com/kim3er/gulp-4-demo)._
+_**NOTE:**You see the code over at [Github](https://github.com/kim3er/gulp-4-demo)._
 
 The release of Gulp 4 is right around the corner, but you can already use it on the [4.0 branch](https://github.com/gulpjs/gulp/tree/4.0). Here is why you should.
 

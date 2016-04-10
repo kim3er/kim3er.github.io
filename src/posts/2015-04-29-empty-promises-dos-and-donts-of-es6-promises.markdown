@@ -6,7 +6,7 @@ comments: true
 categories: [ ES6, JavaScript, Promises ]
 ---
 
-___UPDATE 14/06/15:__ Realised the existence of `Promise.resolve`, added info on `Promise.all`._
+_**UPDATE 14/06/15:** Realised the existence of `Promise.resolve`, added info on `Promise.all`._
 
 There is so much I love about the functionality and syntax coming through under the banner of ES6. One such piece of functionality, is the 'Promise'. Promises are not something that needs to be transpiled, as of writing, [all but IE and Opera Mini have support](http://caniuse.com/#feat=promises) out of the box. The stragglers can be polyfilled [quite](https://github.com/jakearchibald/es6-promise) [easily](https://github.com/taylorhakes/promise-polyfill).
 
@@ -27,14 +27,14 @@ class Example {
 			resolve(data);
 		});
 	}
-	
+
 	getFromWeb(id) {
 		return new Promise(function(resolve, reject) {
 			// Get from web
 			resolve(data);
 		});
 	}
-	
+
 	display(id) {
 		let self = this;
 		return new Promise(function(resolve, reject) {
@@ -79,7 +79,7 @@ new Example().display(1).then((data) => { /* Work on data */ console.log('async 
 
 I'm one of those people who has never read a VCR manual. I pick up and do, realising only years later, that I didn't need to rush home every time I wanted to record something, because the VCR had a timer. I once wrote a really handy little function in SQL called `VALUENULL`, for dealing with NULL values. I can't believe that sort of functionality wasn't built in, oh wait, [ISNULL](https://www.google.co.uk/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#q=isnull%20sql).
 
-Well, I find myself in that place again. After triumphing that I'd come up with such a simple way to provide consistent `Promise` returning functions with `Util.emptyPromise` (see below), then worring that such a thing might be considered bad practice. 
+Well, I find myself in that place again. After triumphing that I'd come up with such a simple way to provide consistent `Promise` returning functions with `Util.emptyPromise` (see below), then worring that such a thing might be considered bad practice.
 
 ``` js
 class Util {
@@ -87,7 +87,7 @@ class Util {
 	static emptyPromise(val = null) {
 		return new Promise((resolve) => { resolve(val); });
 	}
-	
+
 }
 ```
 
@@ -106,7 +106,7 @@ class Election {
 		return Util.emptyPromise()
 			.then(() => { return Util.emptyPromise(); });
 	}
-	
+
 }
 ```
 
@@ -139,14 +139,14 @@ function asyncFuncB() {
 }
 
 class AsyncController {
-  
+
   render(template, data) {
     return new Promise(function(resolve, reject) {
       // Do render stuff
       resolve({ t: template, d: data });
     });
   }
-  
+
   asyncAction(route) {
     return asyncFuncA()
       .then(function(a) {
@@ -154,7 +154,7 @@ class AsyncController {
           .then(b => { return [ a, b ]; });
       })
       .then(data => { return this.render('route', data); });
-  } 
+  }
 
 }
 
@@ -179,7 +179,7 @@ We can achieve the same with the function below. The second asynchronous functio
  asyncAction(route) {
     return Promise.all([ asyncFuncA(), asyncFuncB() ])
       .then(data => { return this.render('route', data); });
-  } 
+  }
 ```
 
 ```

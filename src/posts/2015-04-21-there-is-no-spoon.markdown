@@ -6,7 +6,7 @@ comments: true
 categories: [ Preaching, Life Lessons ]
 ---
 
-___TL;DR:__ I'm using a scene from the movie, The Matrix, as a metaphor for dealing with self doubt. Nifty._
+_**TL;DR:**I'm using a scene from the movie, The Matrix, as a metaphor for dealing with self doubt. Nifty._
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/uAXtO5dMqEI" frameborder="0" allowfullscreen></iframe>
 
@@ -24,10 +24,10 @@ I've been tempted to prattle on for the rest of this post about how I see the sp
 
 In my work, when I am working through a new project, I typically go through these stages:
 
-1. ___Excitement___, as I enthuse over the possibilities for implementation. <-- The project is the spoon, the possibilities are my desire to bend the spoon.
-2. ___Worry___, that I've gotten ahead of myself, promised the world, only to deliver Keighley (sorry Keighley, it's not that you're bad, you're just not to the world). <-- This is my perception of the spoon as an unbending instrument of breakfast.
-3. ___Focus___, as I get over myself and get the work done. <-- This is me going all kung-fu on the spoon's ass (bottom, not donkey).
-4. ___Mission accomplished___. <-- Spoon, moved.
+1. **_Excitement_**, as I enthuse over the possibilities for implementation. <-- The project is the spoon, the possibilities are my desire to bend the spoon.
+2. **_Worry_**, that I've gotten ahead of myself, promised the world, only to deliver Keighley (sorry Keighley, it's not that you're bad, you're just not to the world). <-- This is my perception of the spoon as an unbending instrument of breakfast.
+3. **_Focus_**, as I get over myself and get the work done. <-- This is me going all kung-fu on the spoon's ass (bottom, not donkey).
+4. **_Mission accomplished_**. <-- Spoon, moved.
 
 I certainly hope for step 4, and I hope steps 1-3 aren't a million miles away from most other people. But how does one see through the spoon? On some projects by the time I start step 3, I've all but smashed my self confidence to pieces. Step 3 can sometimes be driven by fear that you might not live up to your own expectations and pigheadedness that you won't allow the project to fail!
 

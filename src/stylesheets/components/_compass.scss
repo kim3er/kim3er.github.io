@@ -1,0 +1,7 @@
+@mixin transition($value) {
+	-webkit-transition: $value;
+	-webkit-transition-delay: 0s;
+	-moz-transition: $value 0s;
+	-o-transition: $value 0s;
+	transition: $value 0s;
+}

@@ -12,9 +12,9 @@ In this post I'm going to describe how you can make use of [Babel's](https://bab
 
 <!-- more -->
 
-___TL;DR:__ Scroll down to the [Star Wars](http://www.starwars.com/) reference for the actual tutorial._
+_**TL;DR:**Scroll down to the [Star Wars](http://www.starwars.com/) reference for the actual tutorial._
 
-___NOTE:__ This tutorial has two [Github](https://github.com/) repos, [this one](https://github.com/kim3er/example-es6-module) and [this one](https://github.com/kim3er/example-module-consumer)._
+_**NOTE:**This tutorial has two [Github](https://github.com/) repos, [this one](https://github.com/kim3er/example-es6-module) and [this one](https://github.com/kim3er/example-module-consumer)._
 
 Modules have existed in JS space for a while now. I've dabbled in the past, because I'm a big fan of results, I mean who wouldn't be?
 
@@ -293,7 +293,7 @@ gulp build
 
 Any errors? No, great. You should now have a 'lib' directory that mirrors the structure of 'src', just with ES5 code, instead of ES6.
 
-___NOTE:__ This feels a bit 'fly-by the seat of your pants' coding. Usually I'd have a test suite in the project, to ensure that we're all rocking in the right direction. However, we're about to build a consumer for exactly that, and for the purposes of this tutorial I wanted to keep concerns clean and avoid duplication. You dig?_
+_**NOTE:**This feels a bit 'fly-by the seat of your pants' coding. Usually I'd have a test suite in the project, to ensure that we're all rocking in the right direction. However, we're about to build a consumer for exactly that, and for the purposes of this tutorial I wanted to keep concerns clean and avoid duplication. You dig?_
 
 ### The consumer
 
@@ -385,7 +385,7 @@ gulp.task('serve', [ 'clear' ], function(cb) {
 	runSequence(
 		[ 'js', 'index' ],
 		'connect',
-		function() {			
+		function() {
 			watch([ APP_PATH + '/app.js' ], function() { gulp.start('js'); });
 			watch([ APP_PATH + '/index.html' ], function() { gulp.start('index'); });
 			watch([ WEB_PATH + '/**/*' ], function() { gulp.start('livereload'); });
@@ -485,7 +485,7 @@ new es6.CleverClass();
 npm install --save-dev ../es6-module
 ```
 
-___NOTE:__ NPM allows you to install local packages, that's what going on in the code above._
+_**NOTE:**NPM allows you to install local packages, that's what going on in the code above._
 
 What was I saying? Right, three examples. They should all have the same result, but show the flexibility was the ES6 way of doing modules:
 

@@ -6,7 +6,7 @@ comments: true
 categories: [ ES6, JavaScript, Decorators, Routing, MVC ]
 ---
 
-___TL;DR:__ I've used decorators to generate a bunch of routes from a class._
+_**TL;DR:**I've used decorators to generate a bunch of routes from a class._
 
 I can't decide whether this is a legitimate use for decorators, but I knew from the moment I saw this crazy syntax that this was want I wanted to achieve.
 

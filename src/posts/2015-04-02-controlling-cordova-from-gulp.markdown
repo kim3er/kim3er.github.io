@@ -10,7 +10,7 @@ It's a story as old as time. Girl meets boy, boy has an annoying two step build 
 
 <!-- more -->
 
-___NOTE:__ You see the code over at [Github](https://github.com/kim3er/cordova-gulp)._
+_**NOTE:**You see the code over at [Github](https://github.com/kim3er/cordova-gulp)._
 
 Let's discuss the problem first. Until recently, Gulp and Cordova were two separate Node based, command line powered worlds to me, with seemingly nothing in common. In the given scenario, I'd typically have a two directory structure:
 
@@ -50,7 +50,7 @@ The `-g` means install globally, and the `--save-dev` will save the packages as 
 
 [ios-deploy](https://github.com/phonegap/ios-deploy) is neat if you're on a Mac and want to deploy from script or command line to iOS.
 
-The last line scaffolds a basic Cordova project. 
+The last line scaffolds a basic Cordova project.
 
 Paste in the following to your newly created `gulpfile.js`, but don't run anything yet!
 

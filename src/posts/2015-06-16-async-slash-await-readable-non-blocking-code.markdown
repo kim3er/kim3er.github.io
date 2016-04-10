@@ -6,7 +6,7 @@ comments: true
 categories: [ ES7, JavaScript, Async, Routing ]
 ---
 
-___TL;DR:__ Shit just got streamlined. More specifically, promises start looking cleaner when you spray them with 'Callbacks Begone'._
+_**TL;DR:** Shit just got streamlined. More specifically, promises start looking cleaner when you spray them with 'Callbacks Begone'._
 
 In this post I'm going to give you a quick demo of how easy it is to incorporate ES7's proposed [Async/Await](https://github.com/lukehoban/ecmascript-asyncawait) functionality into your existing ES6 code. To build the code, I'm using [Babel](https://babeljs.io/) with 'es7.asyncFunctions' enabled. You can read about my [Gulp](https://github.com/gulpjs/gulp) setup [here](/blog/2015/03/23/in-the-name-of-gulp/).
 

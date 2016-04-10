@@ -10,7 +10,7 @@
     <name><![CDATA[Richard Kimber]]></name>
 
   </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+  <generator uri="http://rich.k3r.me/">Mistletoe</generator>
 
   {% for year in postsByYear %}
     {% for post in year.posts %}
