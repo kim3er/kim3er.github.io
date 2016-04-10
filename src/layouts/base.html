@@ -7,7 +7,9 @@
 	<title>{{ title }} Adventures in brine</title>
 	<meta name="author" content="Richard Kimber">
 
+	{% if metaDescription -%}
 	<meta name="description" content="{{ metaDescription }}">
+	{% endif -%}
 
 	<!-- http://t.co/dKP3o1e -->
 	<meta name="HandheldFriendly" content="True">
