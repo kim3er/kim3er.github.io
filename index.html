@@ -1,620 +1,505 @@
-
 <!DOCTYPE html>
 <!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
 <!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
-  <meta charset="utf-8">
-  <title>Adventures in brine</title>
-  <meta name="author" content="Richard Kimber">
+	<meta charset="utf-8">
+	<title> Adventures in brine</title>
+	<meta name="author" content="Richard Kimber">
 
-  
-  <meta name="description" content="TL;DR: Shit just got streamlined. More specifically, promises start looking cleaner when you spray them with &lsquo;Callbacks Begone&rsquo;. In this &hellip;">
-  
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- http://t.co/dKP3o1e -->
-  <meta name="HandheldFriendly" content="True">
-  <meta name="MobileOptimized" content="320">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="canonical" href="http://rich.k3r.me">
+	<link href="/favicon.png" rel="icon">
+	<link href="/stylesheets/reset.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link href="/atom.xml" rel="alternate" title="Adventures in brine" type="application/atom+xml">
 
-  
-  <link rel="canonical" href="http://rich.k3r.me">
-  <link href="/favicon.png" rel="icon">
-  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="Adventures in brine" type="application/atom+xml">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
 
-  
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-56802309-1']);
-    _gaq.push(['_trackPageview']);
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
 
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-56802309-1']);
+		_gaq.push(['_trackPageview']);
 
-
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
 </head>
 
-<body   >
-  <header role="banner"><hgroup>
-  <h1><a href="/">Adventures in brine</a></h1>
-  
-    <h2>A blog about code and coding.</h2>
-  
-</hgroup>
+<body>
+	<header role="banner">
+		<hgroup>
+			<h1>
+				<a href="/">Adventures in brine</a>
+			</h1>
 
-</header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
-</ul>
-  
-<form action="https://www.google.com/search" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="sitesearch" value="rich.k3r.me">
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  
-<ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
-  <li><a href="/blog/archives">Archives</a></li>
-</ul>
+			<h2>A blog about code and coding.</h2>
+		</hgroup>
+	</header>
 
-</nav>
-  <div id="main">
-    <div id="content">
-      <div class="blog-index">
-  
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/06/16/async-slash-await-readable-non-blocking-code/">Async/await, Readable Non-blocking Code</a></h1>
-    
-    
-      <p class="meta">
-        
+	<nav role="navigation">
+		<ul class="subscription" data-subscription="rss">
+			<li>
+				<a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a>
+			</li>
+		</ul>
 
+		<form action="https://www.google.com/search" method="get">
+			<fieldset role="search">
+				<input type="hidden" name="sitesearch" value="rich.k3r.me">
+				<input class="search" type="text" name="q" results="0" placeholder="Search"/>
+			</fieldset>
+		</form>
 
+		<ul class="main-navigation">
+			<li><a href="/">Blog</a></li>
+			<li><a href="/blog/archives">Archives</a></li>
+		</ul>
+	</nav>
 
+	<div id="main">
+		<div id="content">
+			
+<div class="blog-index">
 
-<time class='entry-date' datetime='2015-06-16T23:06:49+01:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>16</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:06 pm</span></time>
-        
-           | <a href="/blog/2015/06/16/async-slash-await-readable-non-blocking-code/#disqus_thread"
-             data-disqus-identifier="http://rich.k3r.me/blog/2015/06/16/async-slash-await-readable-non-blocking-code/">Comments</a>
-        
-      </p>
-    
-  </header>
+	
+		
+	<article>
+		<header>
+			<h1 class="entry-title">
+				<a href="/blog/2015/06/16/async-slash-await-readable-non-blocking-code/">
+					Async/await, readable non-blocking code
+				</a>
+			</h1>
+			
+	<p class="meta">
+		
+	<time class='entry-date' datetime='2015-06-16T23:06:49+01:00'>
+		<span class='date'>
+			<span class='date-month'>Jun</span>
+			<span class='date-day'>16</span><span class='date-suffix'>th</span>,
+			<span class='date-year'>2015</span>
+		</span>
+		<span class='time'>23:06</span>
+	</time>
 
+		| 
+<a href="/blog/2015/06/16/async-slash-await-readable-non-blocking-code/#disqus_thread"
+				data-disqus-identifier="http://rich.k3r.me/blog/2015/06/16/async-slash-await-readable-non-blocking-code/">Comments</a>
 
-  <div class="entry-content"><p><em><strong>TL;DR:</strong> Shit just got streamlined. More specifically, promises start looking cleaner when you spray them with &lsquo;Callbacks Begone&rsquo;.</em></p>
+	</p>
 
-<p>In this post I&rsquo;m going to give you a quick demo of how easy it is to incorporate ES7&rsquo;s proposed <a href="https://github.com/lukehoban/ecmascript-asyncawait">Async/Await</a> functionality into your existing ES6 code. To build the code, I&rsquo;m using <a href="https://babeljs.io/">Babel</a> with &lsquo;es7.asyncFunctions&rsquo; enabled. You can read about my <a href="https://github.com/gulpjs/gulp">Gulp</a> setup <a href="/blog/2015/03/23/in-the-name-of-gulp/">here</a>.</p>
+		</header>
+		<div class="entry-content">
+			<p><em><strong>TL;DR:</strong> Shit just got streamlined. More specifically, promises start looking cleaner when you spray them with &#39;Callbacks Begone&#39;.</em></p>
+<p>In this post I&#39;m going to give you a quick demo of how easy it is to incorporate ES7&#39;s proposed <a href="https://github.com/lukehoban/ecmascript-asyncawait">Async/Await</a> functionality into your existing ES6 code. To build the code, I&#39;m using <a href="https://babeljs.io/">Babel</a> with &#39;es7.asyncFunctions&#39; enabled. You can read about my <a href="https://github.com/gulpjs/gulp">Gulp</a> setup <a href="/blog/2015/03/23/in-the-name-of-gulp/">here</a>.</p>
 
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/06/16/async-slash-await-readable-non-blocking-code/">Read on &rarr;</a>
-    </footer>
-  
+		</div>
+		<footer>
+			<a rel="full-article" href="/blog/2015/06/16/async-slash-await-readable-non-blocking-code/">Read on &rarr;</a>
+		</footer>
+	</article>
+		
+	<article>
+		<header>
+			<h1 class="entry-title">
+				<a href="/blog/2015/05/20/simple-routing-with-javascript-decorators/">
+					Simple routing with JavaScript Decorators
+				</a>
+			</h1>
+			
+	<p class="meta">
+		
+	<time class='entry-date' datetime='2015-05-20T22:30:57+01:00'>
+		<span class='date'>
+			<span class='date-month'>May</span>
+			<span class='date-day'>20</span><span class='date-suffix'>th</span>,
+			<span class='date-year'>2015</span>
+		</span>
+		<span class='time'>22:30</span>
+	</time>
 
+		| 
+<a href="/blog/2015/05/20/simple-routing-with-javascript-decorators/#disqus_thread"
+				data-disqus-identifier="http://rich.k3r.me/blog/2015/05/20/simple-routing-with-javascript-decorators/">Comments</a>
 
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/05/20/simple-routing-with-javascript-decorators/">Simple Routing With JavaScript Decorators</a></h1>
-    
-    
-      <p class="meta">
-        
+	</p>
 
+		</header>
+		<div class="entry-content">
+			<p><em><strong>TL;DR:</strong>I&#39;ve used decorators to generate a bunch of routes from a class.</em></p>
+<p>I can&#39;t decide whether this is a legitimate use for decorators, but I knew from the moment I saw this crazy syntax that this was want I wanted to achieve.</p>
 
+		</div>
+		<footer>
+			<a rel="full-article" href="/blog/2015/05/20/simple-routing-with-javascript-decorators/">Read on &rarr;</a>
+		</footer>
+	</article>
+		
+	<article>
+		<header>
+			<h1 class="entry-title">
+				<a href="/blog/2015/04/29/empty-promises-dos-and-donts-of-es6-promises/">
+					Empty Promises: Dos and Don&#39;ts of ES6 Promises
+				</a>
+			</h1>
+			
+	<p class="meta">
+		
+	<time class='entry-date' datetime='2015-04-29T22:10:03+01:00'>
+		<span class='date'>
+			<span class='date-month'>Apr</span>
+			<span class='date-day'>29</span><span class='date-suffix'>th</span>,
+			<span class='date-year'>2015</span>
+		</span>
+		<span class='time'>22:10</span>
+	</time>
 
+		| 
+<a href="/blog/2015/04/29/empty-promises-dos-and-donts-of-es6-promises/#disqus_thread"
+				data-disqus-identifier="http://rich.k3r.me/blog/2015/04/29/empty-promises-dos-and-donts-of-es6-promises/">Comments</a>
 
-<time class='entry-date' datetime='2015-05-20T22:30:57+01:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>20</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:30 pm</span></time>
-        
-           | <a href="/blog/2015/05/20/simple-routing-with-javascript-decorators/#disqus_thread"
-             data-disqus-identifier="http://rich.k3r.me/blog/2015/05/20/simple-routing-with-javascript-decorators/">Comments</a>
-        
-      </p>
-    
-  </header>
+	</p>
 
-
-  <div class="entry-content"><p><em><strong>TL;DR:</strong> I&rsquo;ve used decorators to generate a bunch of routes from a class.</em></p>
-
-<p>I can&rsquo;t decide whether this is a legitimate use for decorators, but I knew from the moment I saw this crazy syntax that this was want I wanted to achieve.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/05/20/simple-routing-with-javascript-decorators/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/04/29/empty-promises-dos-and-donts-of-es6-promises/">Empty Promises: Dos and Don&#8217;ts of ES6 Promises</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-04-29T22:10:03+01:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:10 pm</span></time>
-        
-           | <a href="/blog/2015/04/29/empty-promises-dos-and-donts-of-es6-promises/#disqus_thread"
-             data-disqus-identifier="http://rich.k3r.me/blog/2015/04/29/empty-promises-dos-and-donts-of-es6-promises/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><em><strong>UPDATE 14/06/15:</strong> Realised the existence of <code>Promise.resolve</code>, added info on <code>Promise.all</code>.</em></p>
-
-<p>There is so much I love about the functionality and syntax coming through under the banner of ES6. One such piece of functionality, is the &lsquo;Promise&rsquo;. Promises are not something that needs to be transpiled, as of writing, <a href="http://caniuse.com/#feat=promises">all but IE and Opera Mini have support</a> out of the box. The stragglers can be polyfilled <a href="https://github.com/jakearchibald/es6-promise">quite</a> <a href="https://github.com/taylorhakes/promise-polyfill">easily</a>.</p>
-
+		</header>
+		<div class="entry-content">
+			<p><em><strong>UPDATE 14/06/15:</strong> Realised the existence of <code>Promise.resolve</code>, added info on <code>Promise.all</code>.</em></p>
+<p>There is so much I love about the functionality and syntax coming through under the banner of ES6. One such piece of functionality, is the &#39;Promise&#39;. Promises are not something that needs to be transpiled, as of writing, <a href="http://caniuse.com/#feat=promises">all but IE and Opera Mini have support</a> out of the box. The stragglers can be polyfilled <a href="https://github.com/jakearchibald/es6-promise">quite</a> <a href="https://github.com/taylorhakes/promise-polyfill">easily</a>.</p>
 <p>What follows, are three tips for using promises more effectively.</p>
 
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/04/29/empty-promises-dos-and-donts-of-es6-promises/">Read on &rarr;</a>
-    </footer>
-  
+		</div>
+		<footer>
+			<a rel="full-article" href="/blog/2015/04/29/empty-promises-dos-and-donts-of-es6-promises/">Read on &rarr;</a>
+		</footer>
+	</article>
+		
+	<article>
+		<header>
+			<h1 class="entry-title">
+				<a href="/blog/2015/04/25/a-punnet-size-guide-to-git-cherry-picking/">
+					A punnet size guide to Git cherry picking
+				</a>
+			</h1>
+			
+	<p class="meta">
+		
+	<time class='entry-date' datetime='2015-04-25T10:10:55+01:00'>
+		<span class='date'>
+			<span class='date-month'>Apr</span>
+			<span class='date-day'>25</span><span class='date-suffix'>th</span>,
+			<span class='date-year'>2015</span>
+		</span>
+		<span class='time'>10:10</span>
+	</time>
 
+		| 
+<a href="/blog/2015/04/25/a-punnet-size-guide-to-git-cherry-picking/#disqus_thread"
+				data-disqus-identifier="http://rich.k3r.me/blog/2015/04/25/a-punnet-size-guide-to-git-cherry-picking/">Comments</a>
 
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/04/25/a-punnet-size-guide-to-git-cherry-picking/">A Punnet Size Guide to Git Cherry Picking</a></h1>
-    
-    
-      <p class="meta">
-        
+	</p>
 
-
-
-
-<time class='entry-date' datetime='2015-04-25T10:10:55+01:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:10 am</span></time>
-        
-           | <a href="/blog/2015/04/25/a-punnet-size-guide-to-git-cherry-picking/#disqus_thread"
-             data-disqus-identifier="http://rich.k3r.me/blog/2015/04/25/a-punnet-size-guide-to-git-cherry-picking/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I&rsquo;d just finished a load of work on a project. I&rsquo;d made my commit and was a about to push to origin, when I noticed I was on the wrong branch.</p>
-
+		</header>
+		<div class="entry-content">
+			<p>I&#39;d just finished a load of work on a project. I&#39;d made my commit and was a about to push to origin, when I noticed I was on the wrong branch.</p>
 <p><em>What a numpty.</em></p>
-
 <p>Why this happened, is probably a good subject for another post. What I want to talk about is how I resolved the issue.</p>
 
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/04/25/a-punnet-size-guide-to-git-cherry-picking/">Read on &rarr;</a>
-    </footer>
-  
+		</div>
+		<footer>
+			<a rel="full-article" href="/blog/2015/04/25/a-punnet-size-guide-to-git-cherry-picking/">Read on &rarr;</a>
+		</footer>
+	</article>
+		
+	<article>
+		<header>
+			<h1 class="entry-title">
+				<a href="/blog/2015/04/21/there-is-no-spoon/">
+					There is no spoon
+				</a>
+			</h1>
+			
+	<p class="meta">
+		
+	<time class='entry-date' datetime='2015-04-21T22:25:32+01:00'>
+		<span class='date'>
+			<span class='date-month'>Apr</span>
+			<span class='date-day'>21</span><span class='date-suffix'>st</span>,
+			<span class='date-year'>2015</span>
+		</span>
+		<span class='time'>22:25</span>
+	</time>
 
+		| 
+<a href="/blog/2015/04/21/there-is-no-spoon/#disqus_thread"
+				data-disqus-identifier="http://rich.k3r.me/blog/2015/04/21/there-is-no-spoon/">Comments</a>
 
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/04/21/there-is-no-spoon/">There Is No Spoon</a></h1>
-    
-    
-      <p class="meta">
-        
+	</p>
 
-
-
-
-<time class='entry-date' datetime='2015-04-21T22:25:32+01:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>10:25 pm</span></time>
-        
-           | <a href="/blog/2015/04/21/there-is-no-spoon/#disqus_thread"
-             data-disqus-identifier="http://rich.k3r.me/blog/2015/04/21/there-is-no-spoon/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><em><strong>TL;DR:</strong> I&rsquo;m using a scene from the movie, The Matrix, as a metaphor for dealing with self doubt. Nifty.</em></p>
-
+		</header>
+		<div class="entry-content">
+			<p><em><strong>TL;DR:</strong>I&#39;m using a scene from the movie, The Matrix, as a metaphor for dealing with self doubt. Nifty.</em></p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/uAXtO5dMqEI" frameborder="0" allowfullscreen></iframe>
 
 
+		</div>
+		<footer>
+			<a rel="full-article" href="/blog/2015/04/21/there-is-no-spoon/">Read on &rarr;</a>
+		</footer>
+	</article>
+		
+	<article>
+		<header>
+			<h1 class="entry-title">
+				<a href="/blog/2015/04/12/consuming-es6-modules-in-npm-packages/">
+					Consuming ES6 modules in NPM packages
+				</a>
+			</h1>
+			
+	<p class="meta">
+		
+	<time class='entry-date' datetime='2015-04-12T14:06:12+01:00'>
+		<span class='date'>
+			<span class='date-month'>Apr</span>
+			<span class='date-day'>12</span><span class='date-suffix'>th</span>,
+			<span class='date-year'>2015</span>
+		</span>
+		<span class='time'>14:06</span>
+	</time>
 
+		| 
+<a href="/blog/2015/04/12/consuming-es6-modules-in-npm-packages/#disqus_thread"
+				data-disqus-identifier="http://rich.k3r.me/blog/2015/04/12/consuming-es6-modules-in-npm-packages/">Comments</a>
 
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/04/21/there-is-no-spoon/">Read on &rarr;</a>
-    </footer>
-  
+	</p>
 
+		</header>
+		<div class="entry-content">
+			<p>I&#39;m going to have to start coming up with more interesting title for my posts. My eyes are watering at the thought of &#39;Consuming ES6 modules in NPM packages&#39;. Maybe something more exciting, like &#39;Munching on the nuggets of next gen wonderment&#39;. I&#39;ll work on it.</p>
+<p>In this post I&#39;m going to describe how you can make use of <a href="https://babeljs.io/">Babel&#39;s</a> support for <a href="https://babeljs.io/docs/learn-es6/#modules">ES6 modules</a>, and how you might consume them as <a href="https://www.npmjs.com/">NPM</a> packages. It&#39;s pretty neato stuff and makes for very clean code. Read on!</p>
 
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/04/12/consuming-es6-modules-in-npm-packages/">Consuming ES6 Modules in NPM Packages</a></h1>
-    
-    
-      <p class="meta">
-        
+		</div>
+		<footer>
+			<a rel="full-article" href="/blog/2015/04/12/consuming-es6-modules-in-npm-packages/">Read on &rarr;</a>
+		</footer>
+	</article>
+		
+	<article>
+		<header>
+			<h1 class="entry-title">
+				<a href="/blog/2015/04/02/controlling-cordova-from-gulp/">
+					Controlling Cordova from Gulp
+				</a>
+			</h1>
+			
+	<p class="meta">
+		
+	<time class='entry-date' datetime='2015-04-02T22:39:27+01:00'>
+		<span class='date'>
+			<span class='date-month'>Apr</span>
+			<span class='date-day'>2</span><span class='date-suffix'>nd</span>,
+			<span class='date-year'>2015</span>
+		</span>
+		<span class='time'>22:39</span>
+	</time>
 
+		| 
+<a href="/blog/2015/04/02/controlling-cordova-from-gulp/#disqus_thread"
+				data-disqus-identifier="http://rich.k3r.me/blog/2015/04/02/controlling-cordova-from-gulp/">Comments</a>
 
+	</p>
 
+		</header>
+		<div class="entry-content">
+			<p>It&#39;s a story as old as time. Girl meets boy, boy has an annoying two step build process, spread across two directories. Of course I&#39;m talking about having an awesome <a href="http://gulpjs.com/">Gulp</a> workflow, with a Cordova project clumsily tacked on the side. Well, no more, now you can integrate <a href="http://cordova.apache.org/">Cordova</a>! into Gulp! Yay!</p>
 
-<time class='entry-date' datetime='2015-04-12T14:06:12+01:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>2:06 pm</span></time>
-        
-           | <a href="/blog/2015/04/12/consuming-es6-modules-in-npm-packages/#disqus_thread"
-             data-disqus-identifier="http://rich.k3r.me/blog/2015/04/12/consuming-es6-modules-in-npm-packages/">Comments</a>
-        
-      </p>
-    
-  </header>
+		</div>
+		<footer>
+			<a rel="full-article" href="/blog/2015/04/02/controlling-cordova-from-gulp/">Read on &rarr;</a>
+		</footer>
+	</article>
+		
+	<article>
+		<header>
+			<h1 class="entry-title">
+				<a href="/blog/2015/03/23/in-the-name-of-gulp/">
+					In the name of Gulp
+				</a>
+			</h1>
+			
+	<p class="meta">
+		
+	<time class='entry-date' datetime='2015-03-23T22:41:47+00:00'>
+		<span class='date'>
+			<span class='date-month'>Mar</span>
+			<span class='date-day'>23</span><span class='date-suffix'>rd</span>,
+			<span class='date-year'>2015</span>
+		</span>
+		<span class='time'>22:41</span>
+	</time>
 
+		| 
+<a href="/blog/2015/03/23/in-the-name-of-gulp/#disqus_thread"
+				data-disqus-identifier="http://rich.k3r.me/blog/2015/03/23/in-the-name-of-gulp/">Comments</a>
 
-  <div class="entry-content"><p>I&rsquo;m going to have to start coming up with more interesting title for my posts. My eyes are watering at the thought of &lsquo;Consuming ES6 modules in NPM packages&rsquo;. Maybe something more exciting, like &lsquo;Munching on the nuggets of next gen wonderment&rsquo;. I&rsquo;ll work on it.</p>
+	</p>
 
-<p>In this post I&rsquo;m going to describe how you can make use of <a href="https://babeljs.io/">Babel&rsquo;s</a> support for <a href="https://babeljs.io/docs/learn-es6/#modules">ES6 modules</a>, and how you might consume them as <a href="https://www.npmjs.com/">NPM</a> packages. It&rsquo;s pretty neato stuff and makes for very clean code. Read on!</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/04/12/consuming-es6-modules-in-npm-packages/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/04/02/controlling-cordova-from-gulp/">Controlling Cordova From Gulp</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-04-02T22:39:27+01:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>10:39 pm</span></time>
-        
-           | <a href="/blog/2015/04/02/controlling-cordova-from-gulp/#disqus_thread"
-             data-disqus-identifier="http://rich.k3r.me/blog/2015/04/02/controlling-cordova-from-gulp/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>It&rsquo;s a story as old as time. Girl meets boy, boy has an annoying two step build process, spread across two directories. Of course I&rsquo;m talking about having an awesome <a href="http://gulpjs.com/">Gulp</a> workflow, with a Cordova project clumsily tacked on the side. Well, no more, now you can integrate <a href="http://cordova.apache.org/">Cordova</a>! into Gulp! Yay!</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/04/02/controlling-cordova-from-gulp/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/03/23/in-the-name-of-gulp/">In the Name of Gulp</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-03-23T22:41:47+00:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>10:41 pm</span></time>
-        
-           | <a href="/blog/2015/03/23/in-the-name-of-gulp/#disqus_thread"
-             data-disqus-identifier="http://rich.k3r.me/blog/2015/03/23/in-the-name-of-gulp/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><em><strong>TL;DR:</strong> Use Gulp 4 if you care about task management. If you can&rsquo;t use Gulp 4, use Gulp 3 with &lsquo;runSequence&rsquo;. Also, I need to start reading documentation more and assuming less.</em></p>
-
-<p><em><strong>NOTE:</strong> You see the code over at <a href="https://github.com/kim3er/gulp-4-demo">Github</a>.</em></p>
-
+		</header>
+		<div class="entry-content">
+			<p><em><strong>TL;DR:</strong>Use Gulp 4 if you care about task management. If you can&#39;t use Gulp 4, use Gulp 3 with &#39;runSequence&#39;. Also, I need to start reading documentation more and assuming less.</em></p>
+<p><em><strong>NOTE:</strong>You see the code over at <a href="https://github.com/kim3er/gulp-4-demo">Github</a>.</em></p>
 <p>The release of Gulp 4 is right around the corner, but you can already use it on the <a href="https://github.com/gulpjs/gulp/tree/4.0">4.0 branch</a>. Here is why you should.</p>
 
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/03/23/in-the-name-of-gulp/">Read on &rarr;</a>
-    </footer>
-  
+		</div>
+		<footer>
+			<a rel="full-article" href="/blog/2015/03/23/in-the-name-of-gulp/">Read on &rarr;</a>
+		</footer>
+	</article>
+		
+	<article>
+		<header>
+			<h1 class="entry-title">
+				<a href="/blog/2015/03/05/comics-the-drm-effect/">
+					Comics: The DRM effect
+				</a>
+			</h1>
+			
+	<p class="meta">
+		
+	<time class='entry-date' datetime='2015-03-05T07:42:41+00:00'>
+		<span class='date'>
+			<span class='date-month'>Mar</span>
+			<span class='date-day'>5</span><span class='date-suffix'>th</span>,
+			<span class='date-year'>2015</span>
+		</span>
+		<span class='time'>07:42</span>
+	</time>
 
+		| 
+<a href="/blog/2015/03/05/comics-the-drm-effect/#disqus_thread"
+				data-disqus-identifier="http://rich.k3r.me/blog/2015/03/05/comics-the-drm-effect/">Comments</a>
 
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/03/05/comics-the-drm-effect/">Comics: The DRM Effect</a></h1>
-    
-    
-      <p class="meta">
-        
+	</p>
 
+		</header>
+		<div class="entry-content">
+			<p>When I transitioned from paper to digital, I didn&#39;t just reclaim floor space in my loft, I picked up a more eclectic taste in reading material as well. For the most part, I suspect happenstance of maturity in tastes and storage reclamation. One factor, that at least in part, can be attributed to my personal comic book renaissance, is DRM. Which is funny, because I bloody hate DRM.</p>
 
+		</div>
+		<footer>
+			<a rel="full-article" href="/blog/2015/03/05/comics-the-drm-effect/">Read on &rarr;</a>
+		</footer>
+	</article>
+		
+	<article>
+		<header>
+			<h1 class="entry-title">
+				<a href="/blog/2015/02/28/localforage-for-cross-platform-storage/">
+					localForage for cross-platform storage
+				</a>
+			</h1>
+			
+	<p class="meta">
+		
+	<time class='entry-date' datetime='2015-02-28T09:30:05+00:00'>
+		<span class='date'>
+			<span class='date-month'>Feb</span>
+			<span class='date-day'>28</span><span class='date-suffix'>th</span>,
+			<span class='date-year'>2015</span>
+		</span>
+		<span class='time'>09:30</span>
+	</time>
 
+		| 
+<a href="/blog/2015/02/28/localforage-for-cross-platform-storage/#disqus_thread"
+				data-disqus-identifier="http://rich.k3r.me/blog/2015/02/28/localforage-for-cross-platform-storage/">Comments</a>
 
-<time class='entry-date' datetime='2015-03-05T07:42:41+00:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>7:42 am</span></time>
-        
-           | <a href="/blog/2015/03/05/comics-the-drm-effect/#disqus_thread"
-             data-disqus-identifier="http://rich.k3r.me/blog/2015/03/05/comics-the-drm-effect/">Comments</a>
-        
-      </p>
-    
-  </header>
+	</p>
 
-
-  <div class="entry-content"><p>When I transitioned from paper to digital, I didn&rsquo;t just reclaim floor space in my loft, I picked up a more eclectic taste in reading material as well. For the most part, I suspect happenstance of maturity in tastes and storage reclamation. One factor, that at least in part, can be attributed to my personal comic book renaissance, is DRM. Which is funny, because I bloody hate DRM.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/03/05/comics-the-drm-effect/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/02/28/localforage-for-cross-platform-storage/">localForage for Cross-platform Storage</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-02-28T09:30:05+00:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>28</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>9:30 am</span></time>
-        
-           | <a href="/blog/2015/02/28/localforage-for-cross-platform-storage/#disqus_thread"
-             data-disqus-identifier="http://rich.k3r.me/blog/2015/02/28/localforage-for-cross-platform-storage/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><em>TL;DR: You should be using <a href="https://mozilla.github.io/localForage/">localForage</a> for all your web based local storage needs. It&rsquo;s wonderful.</em></p>
-
+		</header>
+		<div class="entry-content">
+			<p><em>TL;DR: You should be using <a href="https://mozilla.github.io/localForage/">localForage</a> for all your web based local storage needs. It&#39;s wonderful.</em></p>
 <p>Storage in general is a bit of a tricky one in hybrid development. There are three main types of storage (excluding bespoke implementations and filesystem) you potentially have access to in a web based development:</p>
 
+		</div>
+		<footer>
+			<a rel="full-article" href="/blog/2015/02/28/localforage-for-cross-platform-storage/">Read on &rarr;</a>
+		</footer>
+	</article>
+		
+	
+
+	<div class="pagination">
+	
+
+		<a href="/blog/archives">Blog Archives</a>
+
+	
+		<a class="next" href="/posts/2">Newer &rarr;</a>
+	
+	</div>
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/02/28/localforage-for-cross-platform-storage/">Read on &rarr;</a>
-    </footer>
-  
 
+		</div>
+	</div>
 
-    </article>
-  
-  <div class="pagination">
-    
-      <a class="prev" href="/posts/2">&larr; Older</a>
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
-<aside class="sidebar">
-  
-    <section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2015/06/16/async-slash-await-readable-non-blocking-code/">Async/await, Readable Non-blocking Code</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/20/simple-routing-with-javascript-decorators/">Simple Routing With JavaScript Decorators</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/04/29/empty-promises-dos-and-donts-of-es6-promises/">Empty Promises: Dos and Don&#8217;ts of ES6 Promises</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/04/25/a-punnet-size-guide-to-git-cherry-picking/">A Punnet Size Guide to Git Cherry Picking</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/04/21/there-is-no-spoon/">There Is No Spoon</a>
-      </li>
-    
-  </ul>
-</section>
+	<footer role="contentinfo">
+		<p>
+			Copyright &copy; 2016 - Richard Kimber -
+			<span class="credit">Powered by <a href="http://rich.k3r.me">Mistletoe</a></span>
+		</p>
+	</footer>
 
-<section>
-  <h1>GitHub Repos</h1>
-  <ul id="gh_repos">
-    <li class="loading">Status updating&#8230;</li>
-  </ul>
-  
-  <a href="https://github.com/kim3er">@kim3er</a> on GitHub
-  
-  <script type="text/javascript">
-    $(document).ready(function(){
-        if (!window.jXHR){
-            var jxhr = document.createElement('script');
-            jxhr.type = 'text/javascript';
-            jxhr.src = '/javascripts/libs/jXHR.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(jxhr, s);
-        }
+	<script type="text/javascript">
+		var disqus_shortname = 'k3r';
+		var disqus_script = 'count.js';
 
-        github.showRepos({
-            user: 'kim3er',
-            count: 0,
-            skip_forks: true,
-            target: '#gh_repos'
-        });
-    });
-  </script>
-  <script src="/javascripts/github.js" type="text/javascript"> </script>
-</section>
+		(function () {
+			var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+			dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+			(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+		}());
+	</script>
 
+	<div id="fb-root"></div>
+	<script>(function(d, s, id) {
+		var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) {return;}
+			js = d.createElement(s); js.id = id; js.async = true;
+			js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+	</script>
 
+	<script type="text/javascript">
+		(function() {
+			var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+			script.src = 'https://apis.google.com/js/plusone.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+		})();
+	</script>
 
-<section class="googleplus">
-  <h1>
-    <a href="https://plus.google.com/RichardKimber?rel=author">
-      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
-      Google+
-    </a>
-  </h1>
-</section>
-
-
-
-  
-</aside>
-
-    </div>
-  </div>
-  <footer role="contentinfo"><p>
-  Copyright &copy; 2015 - Richard Kimber -
-  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
-</p>
-
-</footer>
-  
-
-<script type="text/javascript">
-      var disqus_shortname = 'k3r';
-      
-        
-        var disqus_script = 'count.js';
-      
-    (function () {
-      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    }());
-</script>
-
-
-
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) {return;}
-  js = d.createElement(s); js.id = id; js.async = true;
-  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-
-
-
-  <script type="text/javascript">
-    (function() {
-      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
-      script.src = 'https://apis.google.com/js/plusone.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
-    })();
-  </script>
-
-
-
-  <script type="text/javascript">
-    (function(){
-      var twitterWidgets = document.createElement('script');
-      twitterWidgets.type = 'text/javascript';
-      twitterWidgets.async = true;
-      twitterWidgets.src = '//platform.twitter.com/widgets.js';
-      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
-    })();
-  </script>
-
-
-
-
+	<script type="text/javascript">
+		(function(){
+			var twitterWidgets = document.createElement('script');
+			twitterWidgets.type = 'text/javascript';
+			twitterWidgets.async = true;
+			twitterWidgets.src = '//platform.twitter.com/widgets.js';
+			document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+		})();
+	</script>
 
 </body>
 </html>

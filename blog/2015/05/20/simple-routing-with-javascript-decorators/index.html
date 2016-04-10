@@ -1,534 +1,314 @@
-
 <!DOCTYPE html>
 <!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
 <!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
-  <meta charset="utf-8">
-  <title>Simple Routing With JavaScript Decorators - Adventures in brine</title>
-  <meta name="author" content="Richard Kimber">
+	<meta charset="utf-8">
+	<title>Simple routing with JavaScript Decorators Adventures in brine</title>
+	<meta name="author" content="Richard Kimber">
 
-  
-  <meta name="description" content="TL;DR: I&rsquo;ve used decorators to generate a bunch of routes from a class. I can&rsquo;t decide whether this is a legitimate use for decorators, &hellip;">
-  
+	<meta name="description" content="TL;DR:I&amp;#39;ve used decorators to generate a bunch of routes from a class.
+I can&amp;#39;t decide whether this is a legitimate use for decorators, but I knew from the moment I saw this crazy syntax that this was want I wanted to achieve.
+">
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- http://t.co/dKP3o1e -->
-  <meta name="HandheldFriendly" content="True">
-  <meta name="MobileOptimized" content="320">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="canonical" href="http://rich.k3r.me">
+	<link href="/favicon.png" rel="icon">
+	<link href="/stylesheets/reset.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link href="/atom.xml" rel="alternate" title="Adventures in brine" type="application/atom+xml">
 
-  
-  <link rel="canonical" href="http://rich.k3r.me/blog/2015/05/20/simple-routing-with-javascript-decorators">
-  <link href="/favicon.png" rel="icon">
-  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="Adventures in brine" type="application/atom+xml">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
 
-  
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-56802309-1']);
-    _gaq.push(['_trackPageview']);
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
 
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-56802309-1']);
+		_gaq.push(['_trackPageview']);
 
-
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
 </head>
 
-<body   >
-  <header role="banner"><hgroup>
-  <h1><a href="/">Adventures in brine</a></h1>
-  
-    <h2>A blog about code and coding.</h2>
-  
-</hgroup>
+<body>
+	<header role="banner">
+		<hgroup>
+			<h1>
+				<a href="/">Adventures in brine</a>
+			</h1>
 
-</header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
-</ul>
-  
-<form action="https://www.google.com/search" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="sitesearch" value="rich.k3r.me">
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  
-<ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
-  <li><a href="/blog/archives">Archives</a></li>
-</ul>
+			<h2>A blog about code and coding.</h2>
+		</hgroup>
+	</header>
 
-</nav>
-  <div id="main">
-    <div id="content">
-      <div>
-<article class="hentry" role="article">
-  
-  <header>
-    
-      <h1 class="entry-title">Simple Routing With JavaScript Decorators</h1>
-    
-    
-      <p class="meta">
-        
+	<nav role="navigation">
+		<ul class="subscription" data-subscription="rss">
+			<li>
+				<a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a>
+			</li>
+		</ul>
 
+		<form action="https://www.google.com/search" method="get">
+			<fieldset role="search">
+				<input type="hidden" name="sitesearch" value="rich.k3r.me">
+				<input class="search" type="text" name="q" results="0" placeholder="Search"/>
+			</fieldset>
+		</form>
 
+		<ul class="main-navigation">
+			<li><a href="/">Blog</a></li>
+			<li><a href="/blog/archives">Archives</a></li>
+		</ul>
+	</nav>
 
+	<div id="main">
+		<div id="content">
+			
+<div>
+	<article class="hentry" role="article">
+		<header>
+			<h1 class="entry-title">
+				Simple routing with JavaScript Decorators
+			</h1>
 
-<time class='entry-date' datetime='2015-05-20T22:30:57+01:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>20</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:30 pm</span></time>
-        
-           | <a href="#disqus_thread"
-             data-disqus-identifier="http://rich.k3r.me">Comments</a>
-        
-      </p>
-    
-  </header>
+			<p class="meta">
+				
+	<time class='entry-date' datetime='2015-05-20T22:30:57+01:00'>
+		<span class='date'>
+			<span class='date-month'>May</span>
+			<span class='date-day'>20</span><span class='date-suffix'>th</span>,
+			<span class='date-year'>2015</span>
+		</span>
+		<span class='time'>22:30</span>
+	</time>
 
+				| 
+<a href="/blog/2015/05/20/simple-routing-with-javascript-decorators/#disqus_thread"
+				data-disqus-identifier="http://rich.k3r.me/blog/2015/05/20/simple-routing-with-javascript-decorators/">Comments</a>
 
-<div class="entry-content"><p><em><strong>TL;DR:</strong> I&rsquo;ve used decorators to generate a bunch of routes from a class.</em></p>
+			</p>
+		</header>
 
-<p>I can&rsquo;t decide whether this is a legitimate use for decorators, but I knew from the moment I saw this crazy syntax that this was want I wanted to achieve.</p>
-
+		<div class="entry-content">
+			<p><em><strong>TL;DR:</strong>I&#39;ve used decorators to generate a bunch of routes from a class.</em></p>
+<p>I can&#39;t decide whether this is a legitimate use for decorators, but I knew from the moment I saw this crazy syntax that this was want I wanted to achieve.</p>
 <!-- More -->
-
-
-<h2>What&rsquo;s what?</h2>
-
+<h2 id="what-s-what-">What&#39;s what?</h2>
 <p>In a lot of my app projects, I chuck my actions into a series of classes which extend a simple class called <code>Controller</code>. My old code for <code>Controller</code> is below and as you can see, it exposes an empty array of actions.</p>
+<pre><code class="lang-javascript">class Controller {
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kr">class</span> <span class="nx">Controller</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">actions</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">return</span> <span class="p">[];</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">constructor</span><span class="p">(</span><span class="nx">app</span> <span class="o">=</span> <span class="p">{})</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">app</span> <span class="o">=</span> <span class="nx">app</span><span class="p">;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
+    actions() {
+        return [];
+    }
 
+    constructor(app = {}) {
+        this.app = app;
+    }
 
-<p>The idea is that in the extended class, you add &lsquo;action&rsquo; functions, that you then list in the overridden array. See the example <code>NotesController</code> below.</p>
+}
+</code></pre>
+<p>The idea is that in the extended class, you add &#39;action&#39; functions, that you then list in the overridden array. See the example <code>NotesController</code> below.</p>
+<pre><code class="lang-javascript">class NotesController extends Controller {
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kr">class</span> <span class="nx">NotesController</span> <span class="kr">extends</span> <span class="nx">Controller</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">actions</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">return</span> <span class="p">[</span>
-</span><span class='line'>          <span class="p">{</span> <span class="nx">match</span><span class="o">:</span> <span class="s1">&#39;note&#39;</span><span class="p">,</span> <span class="nx">action</span><span class="o">:</span> <span class="s1">&#39;show&#39;</span> <span class="p">},</span>
-</span><span class='line'>          <span class="p">{</span> <span class="nx">match</span><span class="o">:</span> <span class="s1">&#39;notes/create&#39;</span><span class="p">,</span> <span class="nx">action</span><span class="o">:</span> <span class="s1">&#39;create&#39;</span> <span class="p">},</span>
-</span><span class='line'>          <span class="p">{</span> <span class="nx">match</span><span class="o">:</span> <span class="s1">&#39;notes/new&#39;</span><span class="p">,</span> <span class="nx">action</span><span class="o">:</span> <span class="s1">&#39;new&#39;</span> <span class="p">}</span>
-</span><span class='line'>      <span class="p">];</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">show</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">create</span><span class="p">(</span><span class="nx">params</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">$form</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">new</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">doSomethingUseful</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
+    actions() {
+        return [
+            { match: &#39;note&#39;, action: &#39;show&#39; },
+            { match: &#39;notes/create&#39;, action: &#39;create&#39; },
+            { match: &#39;notes/new&#39;, action: &#39;new&#39; }
+        ];
+    }
 
+    show(id) {
 
-<p><code>NotesController</code> now advertises which routes it&rsquo;s setup to listen to. Any function not listed n the array is ignored and assumed to be a helper method of some kind. This has alway felt a bit clunky, specifically I didn&rsquo;t like:</p>
+    }
 
+    create(params, data, $form) {
+
+    }
+
+    new() {
+
+    }
+
+    doSomethingUseful() {
+
+    }
+
+}
+</code></pre>
+<p><code>NotesController</code> now advertises which routes it&#39;s setup to listen to. Any function not listed n the array is ignored and assumed to be a helper method of some kind. This has alway felt a bit clunky, specifically I didn&#39;t like:</p>
 <ol>
-<li>Overriding a function, whose sole purpose to create and return a new array each time it&rsquo;s called. During the application lifecycle it&rsquo;s typically only called once, but that&rsquo;s not the point. I could have used class properties, but it&rsquo;s still quite a new feature for Babel. I could have used <a href="http://www.typescriptlang.org/">TypeScript</a> I guess, but <a href="http://www.sublimetext.com/3">Sublime Text</a> tooling for TS has not been a positive experience and I&rsquo;m not ready to switch to <a href="https://code.visualstudio.com/">Visual Studio Code</a>, yet.</li>
+<li>Overriding a function, whose sole purpose to create and return a new array each time it&#39;s called. During the application lifecycle it&#39;s typically only called once, but that&#39;s not the point. I could have used class properties, but it&#39;s still quite a new feature for Babel. I could have used <a href="http://www.typescriptlang.org/">TypeScript</a> I guess, but <a href="http://www.sublimetext.com/3">Sublime Text</a> tooling for TS has not been a positive experience and I&#39;m not ready to switch to <a href="https://code.visualstudio.com/">Visual Studio Code</a>, yet.</li>
 <li>The repetition of writing a function, then list it in an array. #boring.</li>
 </ol>
+<h2 id="so-what-s-what-now-">So, what&#39;s what now?</h2>
+<p>Glad you asked. I&#39;ve basically ripped off the <code>autobind</code> example from the <a href="http://babeljs.io/blog/2015/03/31/5.0.0/#stage-1:-decorators">Babel 5.0.0 blog post</a> and created  a new decorator called <code>route</code>. Checkout the code for <code>route</code> below.</p>
+<pre><code class="lang-javascript">function route(route) {
+    return function(target, key, descriptor) {
+        var fn = descriptor.value;
 
+        delete descriptor.value;
+        delete descriptor.writable;
 
-<h2>So, what&rsquo;s what now?</h2>
+        if (!route) {
+            route = key;
+        }
 
-<p>Glad you asked. I&rsquo;ve basically ripped off the <code>autobind</code> example from the <a href="http://babeljs.io/blog/2015/03/31/5.0.0/#stage-1:-decorators">Babel 5.0.0 blog post</a> and created  a new decorator called <code>route</code>. Checkout the code for <code>route</code> below.</p>
+        descriptor.get = function() {
+            var bound = fn.bind(this, route);
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">route</span><span class="p">(</span><span class="nx">route</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">target</span><span class="p">,</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">descriptor</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="kd">var</span> <span class="nx">fn</span> <span class="o">=</span> <span class="nx">descriptor</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="k">delete</span> <span class="nx">descriptor</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
-</span><span class='line'>      <span class="k">delete</span> <span class="nx">descriptor</span><span class="p">.</span><span class="nx">writable</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">route</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>          <span class="nx">route</span> <span class="o">=</span> <span class="nx">key</span><span class="p">;</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="nx">descriptor</span><span class="p">.</span><span class="nx">get</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>          <span class="kd">var</span> <span class="nx">bound</span> <span class="o">=</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">route</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>          <span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">key</span><span class="p">,</span> <span class="p">{</span>
-</span><span class='line'>              <span class="nx">configurable</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-</span><span class='line'>              <span class="nx">writable</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-</span><span class='line'>              <span class="nx">value</span><span class="o">:</span> <span class="nx">bound</span>
-</span><span class='line'>          <span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'>          <span class="k">return</span> <span class="nx">bound</span><span class="p">;</span>
-</span><span class='line'>      <span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">target</span><span class="p">.</span><span class="nx">routes</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>          <span class="nx">target</span><span class="p">.</span><span class="nx">routes</span> <span class="o">=</span> <span class="p">[];</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="nx">target</span><span class="p">.</span><span class="nx">routes</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span> <span class="nx">match</span><span class="o">:</span> <span class="nx">route</span><span class="p">,</span> <span class="nx">action</span><span class="o">:</span> <span class="nx">key</span> <span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="p">};</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
+            Object.defineProperty(this, key, {
+                configurable: true,
+                writable: true,
+                value: bound
+            });
 
+            return bound;
+        };
 
+        if (!target.routes) {
+            target.routes = [];
+        }
+
+        target.routes.push({ match: route, action: key });
+
+    };
+}
+</code></pre>
 <p>The differences between this decorator and the <code>autobind</code> example are:</p>
-
 <ol>
 <li><code>route</code> takes an optional parameter (also called <code>route</code>), that allows you to specify the route to be matched. Optional, in that if missed out, the decorator assumes the name of the action, is also the route.</li>
 <li>An array of the routes is managed on the instance of the controller, so the array is an instance property now.</li>
-<li>I&rsquo;m passing the <code>route</code> param to the function, as it&rsquo;s often useful to know the route in the function.</li>
+<li>I&#39;m passing the <code>route</code> param to the function, as it&#39;s often useful to know the route in the function.</li>
 </ol>
+<p>Let&#39;s see the new code:</p>
+<pre><code class="lang-javascript">// Controller Class
+class Controller {
 
+    constructor(app = {}) {
+        this.app = app;
 
-<p>Let&rsquo;s see the new code:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">// Controller Class</span>
-</span><span class='line'><span class="kr">class</span> <span class="nx">Controller</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">constructor</span><span class="p">(</span><span class="nx">app</span> <span class="o">=</span> <span class="p">{})</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">app</span> <span class="o">=</span> <span class="nx">app</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="c1">// In case no routes are specified</span>
-</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">routes</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>          <span class="k">this</span><span class="p">.</span><span class="nx">routes</span> <span class="o">=</span> <span class="p">[];</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// NotesController Class</span>
-</span><span class='line'><span class="kr">class</span> <span class="nx">NotesController</span> <span class="kr">extends</span> <span class="nx">Controller</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="err">@</span><span class="nx">route</span><span class="p">(</span><span class="s1">&#39;note&#39;</span><span class="p">)</span>
-</span><span class='line'>  <span class="nx">show</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="err">@</span><span class="nx">route</span><span class="p">(</span><span class="s1">&#39;notes/create&#39;</span><span class="p">)</span>
-</span><span class='line'>  <span class="nx">create</span><span class="p">(</span><span class="nx">params</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">$form</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="err">@</span><span class="nx">route</span><span class="p">()</span>
-</span><span class='line'>  <span class="k">new</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">doSomethingUseful</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You can see, no more <code>actions</code> function, no more verbose listing of the functions. I&rsquo;ve intentionally left out the value of the <code>new</code> route, to demonstrate how the &lsquo;implied&rsquo; routing works. If you run the code above in the Babel <a href="http://babeljs.io/repl/#?experimental=true&amp;evaluate=true&amp;loose=false&amp;spec=false&amp;code=function%20route(route)%20%7B%0A%09return%20function(target%2C%20key%2C%20descriptor)%20%7B%0A%09%09var%20fn%20%3D%20descriptor.value%3B%0A%0A%09%09delete%20descriptor.value%3B%0A%09%09delete%20descriptor.writable%3B%0A%0A%09%09if%20(!route)%20%7B%0A%09%09%09route%20%3D%20key%3B%0A%09%09%7D%0A%0A%09%09descriptor.get%20%3D%20function()%20%7B%0A%09%09%09var%20bound%20%3D%20fn.bind(this%2C%20route)%3B%0A%0A%09%09%09Object.defineProperty(this%2C%20key%2C%20%7B%0A%09%09%09%09configurable%3A%20true%2C%0A%09%09%09%09writable%3A%20true%2C%0A%09%09%09%09value%3A%20bound%0A%09%09%09%7D)%3B%0A%0A%09%09%09return%20bound%3B%0A%09%09%7D%3B%0A%0A%09%09if%20(!target.routes)%20%7B%0A%09%09%09target.routes%20%3D%20%5B%5D%3B%0A%09%09%7D%0A%0A%09%09target.routes.push(%7B%20match%3A%20route%2C%20action%3A%20key%20%7D)%3B%0A%0A%09%7D%3B%0A%7D%0A%0Aclass%20Controller%20%7B%0A%0A%09constructor(app%20%3D%20%7B%7D)%20%7B%0A%09%09this.app%20%3D%20app%3B%0A%0A%09%09if%20(!this.routes)%20%7B%0A%09%09%09this.routes%20%3D%20%5B%5D%3B%0A%09%09%7D%0A%09%7D%0A%0A%7D%0A%0A%2F%2F%20NotesController%20Class%0Aclass%20NotesController%20extends%20Controller%20%7B%0A%0A%09%40route('note')%0A%09show(id)%20%7B%0A%0A%09%7D%0A%0A%09%40route('notes%2Fcreate')%0A%09create(params%2C%20data%2C%20%24form)%20%7B%0A%0A%09%7D%0A%0A%09%40route()%0A%09new()%20%7B%0A%0A%09%7D%0A%09%0A%09doSomethingUseful()%20%7B%0A%09%0A%09%7D%0A%0A%7D%0A%0Aconsole.log(new%20NotesController().routes)">REPL</a>, you should get the output below:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="p">[</span>
-</span><span class='line'>  <span class="p">{</span><span class="s2">&quot;match&quot;</span><span class="o">:</span><span class="s2">&quot;note&quot;</span><span class="p">,</span><span class="s2">&quot;action&quot;</span><span class="o">:</span><span class="s2">&quot;show&quot;</span><span class="p">},</span>
-</span><span class='line'>  <span class="p">{</span><span class="s2">&quot;match&quot;</span><span class="o">:</span><span class="s2">&quot;notes/create&quot;</span><span class="p">,</span><span class="s2">&quot;action&quot;</span><span class="o">:</span><span class="s2">&quot;create&quot;</span><span class="p">},</span>
-</span><span class='line'>  <span class="p">{</span><span class="s2">&quot;match&quot;</span><span class="o">:</span><span class="s2">&quot;new&quot;</span><span class="p">,</span><span class="s2">&quot;action&quot;</span><span class="o">:</span><span class="s2">&quot;new&quot;</span><span class="p">}</span>
-</span><span class='line'><span class="p">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>With the exception of <code>new</code>, the array is identical to that of the first example. That be some nice ass syntactic sugar. The future rocks. Peace out.</p>
-</div>
-
-
-  <footer>
-    <p class="meta">
-      
-  
-
-<span class="byline author vcard">Posted by <span class="fn">Richard Kimber</span></span>
-
-      
-
-
-
-
-<time class='entry-date' datetime='2015-05-20T22:30:57+01:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>20</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:30 pm</span></time>
-      
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/decorators/'>decorators</a>, <a class='category' href='/blog/categories/es6/'>es6</a>, <a class='category' href='/blog/categories/javascript/'>javascript</a>, <a class='category' href='/blog/categories/mvc/'>mvc</a>, <a class='category' href='/blog/categories/routing/'>routing</a>
-  
-</span>
-
-
-    </p>
-    
-      <div class="sharing">
-  
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://rich.k3r.me/blog/2015/05/20/simple-routing-with-javascript-decorators/" data-via="kim3er" data-counturl="http://rich.k3r.me/blog/2015/05/20/simple-routing-with-javascript-decorators/" >Tweet</a>
-  
-  
-  <div class="g-plusone" data-size="medium"></div>
-  
-  
-    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
-  
-</div>
-
-    
-    <p class="meta">
-      
-        <a class="basic-alignment left" href="/blog/2015/04/29/empty-promises-dos-and-donts-of-es6-promises/" title="Previous Post: Empty Promises: Dos and Don'ts of ES6 Promises">&laquo; Empty Promises: Dos and Don&#8217;ts of ES6 Promises</a>
-      
-      
-        <a class="basic-alignment right" href="/blog/2015/06/16/async-slash-await-readable-non-blocking-code/" title="Next Post: Async/await, readable non-blocking code">Async/await, readable non-blocking code &raquo;</a>
-      
-    </p>
-  </footer>
-</article>
-
-  <section>
-    <h1>Comments</h1>
-    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-</div>
-  </section>
-
-</div>
-
-<aside class="sidebar">
-  
-    <section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2015/06/16/async-slash-await-readable-non-blocking-code/">Async/await, Readable Non-blocking Code</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/20/simple-routing-with-javascript-decorators/">Simple Routing With JavaScript Decorators</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/04/29/empty-promises-dos-and-donts-of-es6-promises/">Empty Promises: Dos and Don&#8217;ts of ES6 Promises</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/04/25/a-punnet-size-guide-to-git-cherry-picking/">A Punnet Size Guide to Git Cherry Picking</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/04/21/there-is-no-spoon/">There Is No Spoon</a>
-      </li>
-    
-  </ul>
-</section>
-
-<section>
-  <h1>GitHub Repos</h1>
-  <ul id="gh_repos">
-    <li class="loading">Status updating&#8230;</li>
-  </ul>
-  
-  <a href="https://github.com/kim3er">@kim3er</a> on GitHub
-  
-  <script type="text/javascript">
-    $(document).ready(function(){
-        if (!window.jXHR){
-            var jxhr = document.createElement('script');
-            jxhr.type = 'text/javascript';
-            jxhr.src = '/javascripts/libs/jXHR.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(jxhr, s);
+        // In case no routes are specified
+        if (!this.routes) {
+            this.routes = [];
         }
+    }
 
-        github.showRepos({
-            user: 'kim3er',
-            count: 0,
-            skip_forks: true,
-            target: '#gh_repos'
-        });
-    });
-  </script>
-  <script src="/javascripts/github.js" type="text/javascript"> </script>
-</section>
+}
 
+// NotesController Class
+class NotesController extends Controller {
 
+    @route(&#39;note&#39;)
+    show(id) {
 
-<section class="googleplus">
-  <h1>
-    <a href="https://plus.google.com/RichardKimber?rel=author">
-      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
-      Google+
-    </a>
-  </h1>
-</section>
+    }
 
+    @route(&#39;notes/create&#39;)
+    create(params, data, $form) {
 
+    }
 
-  
-</aside>
+    @route()
+    new() {
 
+    }
 
-    </div>
-  </div>
-  <footer role="contentinfo"><p>
-  Copyright &copy; 2015 - Richard Kimber -
-  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
-</p>
+    doSomethingUseful() {
 
-</footer>
-  
+    }
+
+}
+</code></pre>
+<p>You can see, no more <code>actions</code> function, no more verbose listing of the functions. I&#39;ve intentionally left out the value of the <code>new</code> route, to demonstrate how the &#39;implied&#39; routing works. If you run the code above in the Babel <a href="http://babeljs.io/repl/#?experimental=true&amp;evaluate=true&amp;loose=false&amp;spec=false&amp;code=function%20route\(route\">REPL</a>%20%7B%0A%09return%20function(target%2C%20key%2C%20descriptor)%20%7B%0A%09%09var%20fn%20%3D%20descriptor.value%3B%0A%0A%09%09delete%20descriptor.value%3B%0A%09%09delete%20descriptor.writable%3B%0A%0A%09%09if%20(!route)%20%7B%0A%09%09%09route%20%3D%20key%3B%0A%09%09%7D%0A%0A%09%09descriptor.get%20%3D%20function()%20%7B%0A%09%09%09var%20bound%20%3D%20fn.bind(this%2C%20route)%3B%0A%0A%09%09%09Object.defineProperty(this%2C%20key%2C%20%7B%0A%09%09%09%09configurable%3A%20true%2C%0A%09%09%09%09writable%3A%20true%2C%0A%09%09%09%09value%3A%20bound%0A%09%09%09%7D)%3B%0A%0A%09%09%09return%20bound%3B%0A%09%09%7D%3B%0A%0A%09%09if%20(!target.routes)%20%7B%0A%09%09%09target.routes%20%3D%20%5B%5D%3B%0A%09%09%7D%0A%0A%09%09target.routes.push(%7B%20match%3A%20route%2C%20action%3A%20key%20%7D)%3B%0A%0A%09%7D%3B%0A%7D%0A%0Aclass%20Controller%20%7B%0A%0A%09constructor(app%20%3D%20%7B%7D)%20%7B%0A%09%09this.app%20%3D%20app%3B%0A%0A%09%09if%20(!this.routes)%20%7B%0A%09%09%09this.routes%20%3D%20%5B%5D%3B%0A%09%09%7D%0A%09%7D%0A%0A%7D%0A%0A%2F%2F%20NotesController%20Class%0Aclass%20NotesController%20extends%20Controller%20%7B%0A%0A%09%40route(&#39;note&#39;)%0A%09show(id)%20%7B%0A%0A%09%7D%0A%0A%09%40route(&#39;notes%2Fcreate&#39;)%0A%09create(params%2C%20data%2C%20%24form)%20%7B%0A%0A%09%7D%0A%0A%09%40route()%0A%09new()%20%7B%0A%0A%09%7D%0A%09%0A%09doSomethingUseful()%20%7B%0A%09%0A%09%7D%0A%0A%7D%0A%0Aconsole.log(new%20NotesController().routes)), you should get the output below:</p>
+<pre><code class="lang-javascript">[
+    {&quot;match&quot;:&quot;note&quot;,&quot;action&quot;:&quot;show&quot;},
+    {&quot;match&quot;:&quot;notes/create&quot;,&quot;action&quot;:&quot;create&quot;},
+    {&quot;match&quot;:&quot;new&quot;,&quot;action&quot;:&quot;new&quot;}
+]
+</code></pre>
+<p>With the exception of <code>new</code>, the array is identical to that of the first example. That be some nice ass syntactic sugar. The future rocks. Peace out.</p>
+
+		</div>
+
+		<footer>
+			<p class="meta">
+				<span class="byline author vcard">
+					Posted by <span class="fn">Richard Kimber</span>
+				</span>
+				
+	<time class='entry-date' datetime='2015-05-20T22:30:57+01:00'>
+		<span class='date'>
+			<span class='date-month'>May</span>
+			<span class='date-day'>20</span><span class='date-suffix'>th</span>,
+			<span class='date-year'>2015</span>
+		</span>
+		<span class='time'>22:30</span>
+	</time>
+
+				
+	<span class="categories">
+			posted in
+			<a class='category' href='/blog/categories/es6'>ES6</a>,
+			<a class='category' href='/blog/categories/javascript'>JavaScript</a>,
+			<a class='category' href='/blog/categories/decorators'>Decorators</a>,
+			<a class='category' href='/blog/categories/routing'>Routing</a>,
+			<a class='category' href='/blog/categories/mvc'>MVC</a>
+			</span>
+		
+			</p>
+
+			<div class="sharing">
+				<a href="//twitter.com/share" class="twitter-share-button" data-url="http://rich.k3r.me/blog/2015/05/20/simple-routing-with-javascript-decorators/" data-via="kim3er" data-counturl="http://rich.k3r.me/blog/2015/05/20/simple-routing-with-javascript-decorators/">
+					Tweet
+				</a>
+				<div class="g-plusone" data-size="medium"></div>
+				<div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+			</div>
+
+			<p class="meta">
+				
+					<a class="basic-alignment left" href="/blog/2015/04/29/empty-promises-dos-and-donts-of-es6-promises/" title="Previous Post: Empty Promises: Dos and Don&#39;ts of ES6 Promises">&laquo; Empty Promises: Dos and Don&#39;ts of ES6 Promises</a>
+				
+
+				
+					<a class="basic-alignment right" href="/blog/2015/06/16/async-slash-await-readable-non-blocking-code/" title="Next Post: Empty Promises: Dos and Don&#39;ts of ES6 Promises">&laquo; Async/await, readable non-blocking code</a>
+				
+			</p>
+		</footer>
+	</article>
+
+	<section>
+		<h1>Comments</h1>
+		<div id="disqus_thread" aria-live="polite">
+			<noscript>
+				Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+			</noscript>
+		</div>
+	</section>
+
+</div>
 
 <script type="text/javascript">
       var disqus_shortname = 'k3r';
-      
-        
+
         // var disqus_developer = 1;
         var disqus_identifier = 'http://rich.k3r.me/blog/2015/05/20/simple-routing-with-javascript-decorators/';
         var disqus_url = 'http://rich.k3r.me/blog/2015/05/20/simple-routing-with-javascript-decorators/';
         var disqus_script = 'embed.js';
-      
+
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
       dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
@@ -536,42 +316,54 @@
     }());
 </script>
 
+		</div>
+	</div>
 
+	<footer role="contentinfo">
+		<p>
+			Copyright &copy; 2016 - Richard Kimber -
+			<span class="credit">Powered by <a href="http://rich.k3r.me">Mistletoe</a></span>
+		</p>
+	</footer>
 
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) {return;}
-  js = d.createElement(s); js.id = id; js.async = true;
-  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
+	<script type="text/javascript">
+		var disqus_shortname = 'k3r';
+		var disqus_script = 'count.js';
 
+		(function () {
+			var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+			dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+			(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+		}());
+	</script>
 
+	<div id="fb-root"></div>
+	<script>(function(d, s, id) {
+		var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) {return;}
+			js = d.createElement(s); js.id = id; js.async = true;
+			js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+	</script>
 
-  <script type="text/javascript">
-    (function() {
-      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
-      script.src = 'https://apis.google.com/js/plusone.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
-    })();
-  </script>
+	<script type="text/javascript">
+		(function() {
+			var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+			script.src = 'https://apis.google.com/js/plusone.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+		})();
+	</script>
 
-
-
-  <script type="text/javascript">
-    (function(){
-      var twitterWidgets = document.createElement('script');
-      twitterWidgets.type = 'text/javascript';
-      twitterWidgets.async = true;
-      twitterWidgets.src = '//platform.twitter.com/widgets.js';
-      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
-    })();
-  </script>
-
-
-
-
+	<script type="text/javascript">
+		(function(){
+			var twitterWidgets = document.createElement('script');
+			twitterWidgets.type = 'text/javascript';
+			twitterWidgets.async = true;
+			twitterWidgets.src = '//platform.twitter.com/widgets.js';
+			document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+		})();
+	</script>
 
 </body>
 </html>

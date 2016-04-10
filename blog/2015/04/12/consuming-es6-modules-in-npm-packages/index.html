@@ -1,1030 +1,554 @@
-
 <!DOCTYPE html>
 <!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
 <!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
-  <meta charset="utf-8">
-  <title>Consuming ES6 Modules in NPM Packages - Adventures in brine</title>
-  <meta name="author" content="Richard Kimber">
+	<meta charset="utf-8">
+	<title>Consuming ES6 modules in NPM packages Adventures in brine</title>
+	<meta name="author" content="Richard Kimber">
 
-  
-  <meta name="description" content="I&rsquo;m going to have to start coming up with more interesting title for my posts. My eyes are watering at the thought of &lsquo;Consuming ES6 &hellip;">
-  
+	<meta name="description" content="I&amp;#39;m going to have to start coming up with more interesting title for my posts. My eyes are watering at the thought of &amp;#39;Consuming ES6 modules in NPM packages&amp;#39;. Maybe something more exciting, like &amp;#39;Munching on the nuggets of next gen wonderment&amp;#39;. I&amp;#39;ll work on it.
+In this post I&amp;#39;m going to describe how you can make use of Babel&amp;#39;s support for ES6 modules, and how you might consume them as NPM packages. It&amp;#39;s pretty neato stuff and makes for very clean code. Read on!
+">
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- http://t.co/dKP3o1e -->
-  <meta name="HandheldFriendly" content="True">
-  <meta name="MobileOptimized" content="320">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="canonical" href="http://rich.k3r.me">
+	<link href="/favicon.png" rel="icon">
+	<link href="/stylesheets/reset.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link href="/atom.xml" rel="alternate" title="Adventures in brine" type="application/atom+xml">
 
-  
-  <link rel="canonical" href="http://rich.k3r.me/blog/2015/04/12/consuming-es6-modules-in-npm-packages">
-  <link href="/favicon.png" rel="icon">
-  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="Adventures in brine" type="application/atom+xml">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
 
-  
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-56802309-1']);
-    _gaq.push(['_trackPageview']);
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
 
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-56802309-1']);
+		_gaq.push(['_trackPageview']);
 
-
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
 </head>
 
-<body   >
-  <header role="banner"><hgroup>
-  <h1><a href="/">Adventures in brine</a></h1>
-  
-    <h2>A blog about code and coding.</h2>
-  
-</hgroup>
+<body>
+	<header role="banner">
+		<hgroup>
+			<h1>
+				<a href="/">Adventures in brine</a>
+			</h1>
 
-</header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
-</ul>
-  
-<form action="https://www.google.com/search" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="sitesearch" value="rich.k3r.me">
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  
-<ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
-  <li><a href="/blog/archives">Archives</a></li>
-</ul>
+			<h2>A blog about code and coding.</h2>
+		</hgroup>
+	</header>
 
-</nav>
-  <div id="main">
-    <div id="content">
-      <div>
-<article class="hentry" role="article">
-  
-  <header>
-    
-      <h1 class="entry-title">Consuming ES6 Modules in NPM Packages</h1>
-    
-    
-      <p class="meta">
-        
+	<nav role="navigation">
+		<ul class="subscription" data-subscription="rss">
+			<li>
+				<a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a>
+			</li>
+		</ul>
 
+		<form action="https://www.google.com/search" method="get">
+			<fieldset role="search">
+				<input type="hidden" name="sitesearch" value="rich.k3r.me">
+				<input class="search" type="text" name="q" results="0" placeholder="Search"/>
+			</fieldset>
+		</form>
 
+		<ul class="main-navigation">
+			<li><a href="/">Blog</a></li>
+			<li><a href="/blog/archives">Archives</a></li>
+		</ul>
+	</nav>
 
+	<div id="main">
+		<div id="content">
+			
+<div>
+	<article class="hentry" role="article">
+		<header>
+			<h1 class="entry-title">
+				Consuming ES6 modules in NPM packages
+			</h1>
 
-<time class='entry-date' datetime='2015-04-12T14:06:12+01:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>2:06 pm</span></time>
-        
-           | <a href="#disqus_thread"
-             data-disqus-identifier="http://rich.k3r.me">Comments</a>
-        
-      </p>
-    
-  </header>
+			<p class="meta">
+				
+	<time class='entry-date' datetime='2015-04-12T14:06:12+01:00'>
+		<span class='date'>
+			<span class='date-month'>Apr</span>
+			<span class='date-day'>12</span><span class='date-suffix'>th</span>,
+			<span class='date-year'>2015</span>
+		</span>
+		<span class='time'>14:06</span>
+	</time>
 
+				| 
+<a href="/blog/2015/04/12/consuming-es6-modules-in-npm-packages/#disqus_thread"
+				data-disqus-identifier="http://rich.k3r.me/blog/2015/04/12/consuming-es6-modules-in-npm-packages/">Comments</a>
 
-<div class="entry-content"><p>I&rsquo;m going to have to start coming up with more interesting title for my posts. My eyes are watering at the thought of &lsquo;Consuming ES6 modules in NPM packages&rsquo;. Maybe something more exciting, like &lsquo;Munching on the nuggets of next gen wonderment&rsquo;. I&rsquo;ll work on it.</p>
+			</p>
+		</header>
 
-<p>In this post I&rsquo;m going to describe how you can make use of <a href="https://babeljs.io/">Babel&rsquo;s</a> support for <a href="https://babeljs.io/docs/learn-es6/#modules">ES6 modules</a>, and how you might consume them as <a href="https://www.npmjs.com/">NPM</a> packages. It&rsquo;s pretty neato stuff and makes for very clean code. Read on!</p>
-
+		<div class="entry-content">
+			<p>I&#39;m going to have to start coming up with more interesting title for my posts. My eyes are watering at the thought of &#39;Consuming ES6 modules in NPM packages&#39;. Maybe something more exciting, like &#39;Munching on the nuggets of next gen wonderment&#39;. I&#39;ll work on it.</p>
+<p>In this post I&#39;m going to describe how you can make use of <a href="https://babeljs.io/">Babel&#39;s</a> support for <a href="https://babeljs.io/docs/learn-es6/#modules">ES6 modules</a>, and how you might consume them as <a href="https://www.npmjs.com/">NPM</a> packages. It&#39;s pretty neato stuff and makes for very clean code. Read on!</p>
 <!-- more -->
-
-
-<p><em><strong>TL;DR:</strong> Scroll down to the <a href="http://www.starwars.com/">Star Wars</a> reference for the actual tutorial.</em></p>
-
-<p><em><strong>NOTE:</strong> This tutorial has two <a href="https://github.com/">Github</a> repos, <a href="https://github.com/kim3er/example-es6-module">this one</a> and <a href="https://github.com/kim3er/example-module-consumer">this one</a>.</em></p>
-
-<p>Modules have existed in JS space for a while now. I&rsquo;ve dabbled in the past, because I&rsquo;m a big fan of results, I mean who wouldn&rsquo;t be?</p>
-
+<p><em><strong>TL;DR:</strong>Scroll down to the <a href="http://www.starwars.com/">Star Wars</a> reference for the actual tutorial.</em></p>
+<p><em><strong>NOTE:</strong>This tutorial has two <a href="https://github.com/">Github</a> repos, <a href="https://github.com/kim3er/example-es6-module">this one</a> and <a href="https://github.com/kim3er/example-module-consumer">this one</a>.</em></p>
+<p>Modules have existed in JS space for a while now. I&#39;ve dabbled in the past, because I&#39;m a big fan of results, I mean who wouldn&#39;t be?</p>
 <ul>
 <li>Keeps junk out of the global scope</li>
 <li>Only load what you need</li>
 <li>Inferred order of compilation</li>
 </ul>
-
-
-<p>I&rsquo;m just going to pick up on that last point for a moment. While I dabbled, I never really embraced modules as part of a longer term strategy. My reluctance was due to inherent ugliness of implementation, with anything but Node&rsquo;s <code>require</code> and <code>exports</code> syntax. The ugliness is there to make these great ideas work in the browser.</p>
-
+<p>I&#39;m just going to pick up on that last point for a moment. While I dabbled, I never really embraced modules as part of a longer term strategy. My reluctance was due to inherent ugliness of implementation, with anything but Node&#39;s <code>require</code> and <code>exports</code> syntax. The ugliness is there to make these great ideas work in the browser.</p>
 <p>Using the fantastic <a href="https://jquery.com/">jQuery</a> as an example, stuff like:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="k">if</span> <span class="p">(</span> <span class="k">typeof</span> <span class="nx">module</span> <span class="o">===</span> <span class="s2">&quot;object&quot;</span> <span class="o">&amp;&amp;</span> <span class="k">typeof</span> <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">===</span> <span class="s2">&quot;object&quot;</span> <span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// For CommonJS and CommonJS-like environments where a proper `window`</span>
-</span><span class='line'>  <span class="c1">// is present, execute the factory and get jQuery.</span>
-</span><span class='line'>  <span class="c1">// For environments that do not have a `window` with a `document`</span>
-</span><span class='line'>  <span class="c1">// (such as Node.js), expose a factory as module.exports.</span>
-</span><span class='line'>  <span class="c1">// This accentuates the need for the creation of a real `window`.</span>
-</span><span class='line'>  <span class="c1">// e.g. var jQuery = require(&quot;jquery&quot;)(window);</span>
-</span><span class='line'>  <span class="c1">// See ticket #14549 for more info.</span>
-</span><span class='line'>  <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">global</span><span class="p">.</span><span class="nb">document</span> <span class="o">?</span>
-</span><span class='line'>      <span class="nx">factory</span><span class="p">(</span> <span class="nx">global</span><span class="p">,</span> <span class="kc">true</span> <span class="p">)</span> <span class="o">:</span>
-</span><span class='line'>      <span class="kd">function</span><span class="p">(</span> <span class="nx">w</span> <span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>          <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="nx">w</span><span class="p">.</span><span class="nb">document</span> <span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>              <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span> <span class="s2">&quot;jQuery requires a window with a document&quot;</span> <span class="p">);</span>
-</span><span class='line'>          <span class="p">}</span>
-</span><span class='line'>          <span class="k">return</span> <span class="nx">factory</span><span class="p">(</span> <span class="nx">w</span> <span class="p">);</span>
-</span><span class='line'>      <span class="p">};</span>
-</span><span class='line'><span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">factory</span><span class="p">(</span> <span class="nx">global</span> <span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
+<pre><code class="lang-js">    if ( typeof module === &quot;object&quot; &amp;&amp; typeof module.exports === &quot;object&quot; ) {
+        // For CommonJS and CommonJS-like environments where a proper `window`
+        // is present, execute the factory and get jQuery.
+        // For environments that do not have a `window` with a `document`
+        // (such as Node.js), expose a factory as module.exports.
+        // This accentuates the need for the creation of a real `window`.
+        // e.g. var jQuery = require(&quot;jquery&quot;)(window);
+        // See ticket #14549 for more info.
+        module.exports = global.document ?
+            factory( global, true ) :
+            function( w ) {
+                if ( !w.document ) {
+                    throw new Error( &quot;jQuery requires a window with a document&quot; );
+                }
+                return factory( w );
+            };
+    } else {
+        factory( global );
+    }
+</code></pre>
 <p>and</p>
+<pre><code class="lang-js">// Register as a named AMD module, since jQuery can be concatenated with other
+// files that may use define, but not via a proper concatenation script that
+// understands anonymous AMD modules. A named AMD is safest and most robust
+// way to register. Lowercase jquery is used because AMD module names are
+// derived from file names, and jQuery is normally delivered in a lowercase
+// file name. Do this after creating the global so that if an AMD module wants
+// to call noConflict to hide this version of jQuery, it will work.
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="c1">// Register as a named AMD module, since jQuery can be concatenated with other</span>
-</span><span class='line'><span class="c1">// files that may use define, but not via a proper concatenation script that</span>
-</span><span class='line'><span class="c1">// understands anonymous AMD modules. A named AMD is safest and most robust</span>
-</span><span class='line'><span class="c1">// way to register. Lowercase jquery is used because AMD module names are</span>
-</span><span class='line'><span class="c1">// derived from file names, and jQuery is normally delivered in a lowercase</span>
-</span><span class='line'><span class="c1">// file name. Do this after creating the global so that if an AMD module wants</span>
-</span><span class='line'><span class="c1">// to call noConflict to hide this version of jQuery, it will work.</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// Note that for maximum portability, libraries that are not jQuery should</span>
-</span><span class='line'><span class="c1">// declare themselves as anonymous modules, and avoid setting a global if an</span>
-</span><span class='line'><span class="c1">// AMD loader is present. jQuery is a special case. For more information, see</span>
-</span><span class='line'><span class="c1">// https://github.com/jrburke/requirejs/wiki/Updating-existing-libraries#wiki-anon</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">if</span> <span class="p">(</span> <span class="k">typeof</span> <span class="nx">define</span> <span class="o">===</span> <span class="s2">&quot;function&quot;</span> <span class="o">&amp;&amp;</span> <span class="nx">define</span><span class="p">.</span><span class="nx">amd</span> <span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">define</span><span class="p">(</span> <span class="s2">&quot;jquery&quot;</span><span class="p">,</span> <span class="p">[],</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">return</span> <span class="nx">jQuery</span><span class="p">;</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
+// Note that for maximum portability, libraries that are not jQuery should
+// declare themselves as anonymous modules, and avoid setting a global if an
+// AMD loader is present. jQuery is a special case. For more information, see
+// https://github.com/jrburke/requirejs/wiki/Updating-existing-libraries#wiki-anon
 
-
+if ( typeof define === &quot;function&quot; &amp;&amp; define.amd ) {
+    define( &quot;jquery&quot;, [], function() {
+        return jQuery;
+    });
+}
+</code></pre>
 <p>and</p>
+<pre><code class="lang-js">// Expose jQuery and $ identifiers, even in AMD
+// (#7102#comment:10, https://github.com/jquery/jquery/pull/557)
+// and CommonJS for browser emulators (#13566)
+if ( typeof noGlobal === strundefined ) {
+    window.jQuery = window.$ = jQuery;
+}
+</code></pre>
+<p>I get why it&#39;s all there, and I appreciate the efforts teams like jQuery put into compatibility with all of these different systems. I have benefitted from those efforts on many occasions. I bet it&#39;s a pain in the backside to maintain, it&#39;s very clever, but also, U-G-L-Y.</p>
+<h3 id="flashback-wavy-lines-">Flashback (wavy lines)</h3>
+<p>I was drawn back into the fold, as the result of a recent ES6 based project I&#39;ve been working on. I was gorging on the beautiful ES6 class syntax, doing a fine job of controlling compilation through the use of sub folders.</p>
+<p>As an example, the classes in directories &#39;controller&#39; and &#39;model&#39;, inherit from directory &#39;base&#39;. Classes in &#39;controller&#39; can reference classes in &#39;model&#39;, but not the other way around.</p>
+<pre><code class="lang-bash">root
+    base            &lt;-- Compile first
+    controller        &lt;-- Compile third
+    model            &lt;-- Compile second
+</code></pre>
+<p>``` js base/base_class.js
+class BaseClass {
+    parent()  {
+        console.log(&#39;something interesting&#39;);
+    }
+}</p>
+<pre><code>
+``` js controller/app_controller.js
+class AppController extends BaseClass {
+    action()  {
+        let user = new UserModel();
+        console.log(&#39;I\&#39;m an action&#39;);
+    }
+}
+</code></pre><p>``` js model/user_model.js
+class UserModel extends BaseClass {
+    constructor() {
+        this.parent();
+        console.log(&#39;I\&#39;m a model&#39;);
+    }
+}</p>
+<pre><code>
+This all worked great, better than great, I was king of the world. Until I needed to create `BaseController`, that extends `BaseClass` and is extended by `AppController`.
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="c1">// Expose jQuery and $ identifiers, even in AMD</span>
-</span><span class='line'><span class="c1">// (#7102#comment:10, https://github.com/jquery/jquery/pull/557)</span>
-</span><span class='line'><span class="c1">// and CommonJS for browser emulators (#13566)</span>
-</span><span class='line'><span class="k">if</span> <span class="p">(</span> <span class="k">typeof</span> <span class="nx">noGlobal</span> <span class="o">===</span> <span class="nx">strundefined</span> <span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nb">window</span><span class="p">.</span><span class="nx">jQuery</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">$</span> <span class="o">=</span> <span class="nx">jQuery</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
+``` js controller/base_controller.js
+class BaseController extends BaseClass {
+    defaultAction()  {
+        console.log(&#39;I\&#39;m a default action&#39;);
+    }
+}
+</code></pre><p>``` js controller/app_controller.js
+class AppController extends BaseController {
+    action()  {
+        this.defaultAction();
+    }
+}</p>
+<pre><code>
+Due to the dreaded alphabet, `AppController` compiles before `BaseController`. Arrrgh. Why world, would you treat me this way?!
 
-
-<p>I get why it&rsquo;s all there, and I appreciate the efforts teams like jQuery put into compatibility with all of these different systems. I have benefitted from those efforts on many occasions. I bet it&rsquo;s a pain in the backside to maintain, it&rsquo;s very clever, but also, U-G-L-Y.</p>
-
-<h3>Flashback (wavy lines)</h3>
-
-<p>I was drawn back into the fold, as the result of a recent ES6 based project I&rsquo;ve been working on. I was gorging on the beautiful ES6 class syntax, doing a fine job of controlling compilation through the use of sub folders.</p>
-
-<p>As an example, the classes in directories &lsquo;controller&rsquo; and &lsquo;model&rsquo;, inherit from directory &lsquo;base&rsquo;. Classes in &lsquo;controller&rsquo; can reference classes in &lsquo;model&rsquo;, but not the other way around.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>root
-</span><span class='line'>  base            &lt;-- Compile first
-</span><span class='line'>  controller      &lt;-- Compile third
-</span><span class='line'>  model           &lt;-- Compile second
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>base/base_class.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">class</span> <span class="nx">BaseClass</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">parent</span><span class="p">()</span>  <span class="p">{</span>
-</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;something interesting&#39;</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>controller/app_controller.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">class</span> <span class="nx">AppController</span> <span class="kr">extends</span> <span class="nx">BaseClass</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">action</span><span class="p">()</span>  <span class="p">{</span>
-</span><span class='line'>      <span class="kd">let</span> <span class="nx">user</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">UserModel</span><span class="p">();</span>
-</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;I\&#39;m an action&#39;</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>model/user_model.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">class</span> <span class="nx">UserModel</span> <span class="kr">extends</span> <span class="nx">BaseClass</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">constructor</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">parent</span><span class="p">();</span>
-</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;I\&#39;m a model&#39;</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This all worked great, better than great, I was king of the world. Until I needed to create <code>BaseController</code>, that extends <code>BaseClass</code> and is extended by <code>AppController</code>.</p>
-
-<figure class='code'><figcaption><span>controller/base_controller.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">class</span> <span class="nx">BaseController</span> <span class="kr">extends</span> <span class="nx">BaseClass</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">defaultAction</span><span class="p">()</span>  <span class="p">{</span>
-</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;I\&#39;m a default action&#39;</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>controller/app_controller.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">class</span> <span class="nx">AppController</span> <span class="kr">extends</span> <span class="nx">BaseController</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">action</span><span class="p">()</span>  <span class="p">{</span>
-</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">defaultAction</span><span class="p">();</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Due to the dreaded alphabet, <code>AppController</code> compiles before <code>BaseController</code>. Arrrgh. Why world, would you treat me this way?!</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>controller
-</span><span class='line'>  app_controller.js       &lt;-- Attempts to compile first, but BaseController doesn<span class="err">&#39;</span>t exist yet
-</span><span class='line'>  base_controller.js      &lt;-- Waits patiently
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Don&rsquo;t tell anyone, but my initial fix was to:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>controller
-</span><span class='line'>  0.base_controller.js    &lt;-- Compiles first
-</span><span class='line'>  app_controller.js       &lt;-- Compiles second
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I kidded myself for a while that this was a valid design decision, until maybe my third or forth &lsquo;zero dot&rsquo; file. I needed a better way of controlling the order of compilation; it also felt like those base classes could be reused.</p>
-
-<h2>And so, it begins. Destroy them, destroy them all.</h2>
-
-<p>We&rsquo;re going to create two projects; the <a href="https://github.com/kim3er/example-es6-module">module</a> and the <a href="https://github.com/kim3er/example-module-consumer">consumer</a>.</p>
-
-<h3>The module</h3>
-
-<p>The module package will be written in ES6 JavaScript, but will need to be transpilied to ES5, for compatibility. So the ugliness is still there, just hidden. We&rsquo;ll use <a href="http://gulpjs.com/">Gulp</a> and Babel for the build.</p>
-
-<h4>The setup</h4>
-
-<p>I&rsquo;ve created a directory called &lsquo;blog&rsquo;, in here I&rsquo;m writing the following, in terminal:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>mkdir es6-module
-</span><span class='line'><span class="nb">cd </span>es6-module
-</span><span class='line'>npm init                      &lt;-- Just enter through the defaults
-</span><span class='line'>mkdir src
-</span><span class='line'>touch gulpfile.js .gitignore
-</span></code></pre></td></tr></table></div></figure>
-
-
+``` bash
+controller
+    app_controller.js        &lt;-- Attempts to compile first, but BaseController doesn&#39;t exist yet
+    base_controller.js        &lt;-- Waits patiently
+</code></pre><p>Don&#39;t tell anyone, but my initial fix was to:</p>
+<pre><code class="lang-bash">controller
+    0.base_controller.js    &lt;-- Compiles first
+    app_controller.js        &lt;-- Compiles second
+</code></pre>
+<p>I kidded myself for a while that this was a valid design decision, until maybe my third or forth &#39;zero dot&#39; file. I needed a better way of controlling the order of compilation; it also felt like those base classes could be reused.</p>
+<h2 id="and-so-it-begins-destroy-them-destroy-them-all-">And so, it begins. Destroy them, destroy them all.</h2>
+<p>We&#39;re going to create two projects; the <a href="https://github.com/kim3er/example-es6-module">module</a> and the <a href="https://github.com/kim3er/example-module-consumer">consumer</a>.</p>
+<h3 id="the-module">The module</h3>
+<p>The module package will be written in ES6 JavaScript, but will need to be transpilied to ES5, for compatibility. So the ugliness is still there, just hidden. We&#39;ll use <a href="http://gulpjs.com/">Gulp</a> and Babel for the build.</p>
+<h4 id="the-setup">The setup</h4>
+<p>I&#39;ve created a directory called &#39;blog&#39;, in here I&#39;m writing the following, in terminal:</p>
+<pre><code class="lang-bash">mkdir es6-module
+cd es6-module
+npm init                        &lt;-- Just enter through the defaults
+mkdir src
+touch gulpfile.js .gitignore
+</code></pre>
 <p>Your project should look like:</p>
+<pre><code class="lang-bash">es6-module
+    src                    &lt;-- This is where we\&#39;re going to put our ES6
+    .gitignore            &lt;-- We\&#39;ll need to ignore \&#39;node-modules\&#39;, when this goes to GIT
+    gulpfile.js            &lt;-- Gulp build file
+    package.json        &lt;-- This was created when you typed in \&#39;npm init\&#39;
+</code></pre>
+<p>Make &#39;.gitignore&#39; look this:</p>
+<p>``` text .gitignore
+node_modules</p>
+<pre><code>
+Change the `main` option in &#39;package.json&#39; to read &#39;./lib/index.js&#39;. A &#39;lib&#39; directory will be created as part of the build process, which will contain our ES5 code.
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>es6-module
-</span><span class='line'>  src                 &lt;-- This is where we<span class="se">\&#39;</span>re going to put our ES6
-</span><span class='line'>  .gitignore          &lt;-- We<span class="se">\&#39;</span>ll need to ignore <span class="se">\&#39;</span>node-modules<span class="se">\&#39;</span>, when this goes to GIT
-</span><span class='line'>  gulpfile.js         &lt;-- Gulp build file
-</span><span class='line'>  package.json        &lt;-- This was created when you typed in <span class="se">\&#39;</span>npm init<span class="se">\&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
+``` json
+{
+    ....
+    &quot;main&quot;: &quot;./lib/index.js&quot;,
+    ....
+}
+</code></pre><p><code>main</code> is the entry point to our package. In a consumer, if you were to <code>require(&#39;es6-module&#39;)</code>, you&#39;ll get the exports from the <code>main</code> file.</p>
+<h4 id="the-build-script">The build script</h4>
+<p>We need a build script in our &#39;gulpfile.js&#39;.</p>
+<p>``` js gulpfile.js
+var gulp = require(&#39;gulp&#39;),
+    del = require(&#39;del&#39;),
+    babel = require(&#39;gulp-babel&#39;);</p>
+<p>var SRC_PATH = &#39;./src&#39;,
+    LIB_PATH = &#39;./lib&#39;;</p>
+<p>gulp.task(&#39;clear&#39;, function(cb) {
+    del([ LIB_PATH + &#39;/*&#39; ], function() {
+        cb();
+    });
+});</p>
+<p>gulp.task(&#39;build&#39;, [ &#39;clear&#39; ], function() {
+    return gulp.src([ SRC_PATH + &#39;/<em>*/</em>.js&#39; ])
+                .pipe(babel({ blacklist: [ &#39;useStrict&#39; ] }))
+                .pipe(gulp.dest(LIB_PATH));
+});</p>
+<p>gulp.task(&#39;default&#39;, function() {
+    gulp.start(&#39;build&#39;);
+});</p>
+<pre><code>
+The script has three dependancies:
 
+1. Gulp - The script runner. Like [Grunt](http://gruntjs.com/), but code first.
+2. [Del](https://www.npmjs.com/package/del) - A little package for deleting stuff.
+3. Babel - ES6 transpiler. Reinvigorated my already deeply unnatural love of JavaScript. Hallelujah.
 
-<p>Make &lsquo;.gitignore&rsquo; look this:</p>
+Install the dependancies like so:
 
-<figure class='code'><figcaption><span>.gitignore</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='text'><span class='line'>node_modules
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Change the <code>main</code> option in &lsquo;package.json&rsquo; to read &lsquo;./lib/index.js&rsquo;. A &lsquo;lib&rsquo; directory will be created as part of the build process, which will contain our ES5 code.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="err">....</span>
-</span><span class='line'>  <span class="nt">&quot;main&quot;</span><span class="p">:</span> <span class="s2">&quot;./lib/index.js&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="err">....</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>main</code> is the entry point to our package. In a consumer, if you were to <code>require('es6-module')</code>, you&rsquo;ll get the exports from the <code>main</code> file.</p>
-
-<h4>The build script</h4>
-
-<p>We need a build script in our &lsquo;gulpfile.js&rsquo;.</p>
-
-<figure class='code'><figcaption><span>gulpfile.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">),</span>
-</span><span class='line'>  <span class="nx">del</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;del&#39;</span><span class="p">),</span>
-</span><span class='line'>  <span class="nx">babel</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-babel&#39;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">var</span> <span class="nx">SRC_PATH</span> <span class="o">=</span> <span class="s1">&#39;./src&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nx">LIB_PATH</span> <span class="o">=</span> <span class="s1">&#39;./lib&#39;</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;clear&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">del</span><span class="p">([</span> <span class="nx">LIB_PATH</span> <span class="o">+</span> <span class="s1">&#39;/*&#39;</span> <span class="p">],</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">cb</span><span class="p">();</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;build&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s1">&#39;clear&#39;</span> <span class="p">],</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">([</span> <span class="nx">SRC_PATH</span> <span class="o">+</span> <span class="s1">&#39;/**/*.js&#39;</span> <span class="p">])</span>
-</span><span class='line'>              <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">babel</span><span class="p">({</span> <span class="nx">blacklist</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;useStrict&#39;</span> <span class="p">]</span> <span class="p">}))</span>
-</span><span class='line'>              <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="nx">LIB_PATH</span><span class="p">));</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">gulp</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="s1">&#39;build&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The script has three dependancies:</p>
-
-<ol>
-<li>Gulp - The script runner. Like <a href="http://gruntjs.com/">Grunt</a>, but code first.</li>
-<li><a href="https://www.npmjs.com/package/del">Del</a> - A little package for deleting stuff.</li>
-<li>Babel - ES6 transpiler. Reinvigorated my already deeply unnatural love of JavaScript. Hallelujah.</li>
-</ol>
-
-
-<p>Install the dependancies like so:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm install -g gulp babel
-</span><span class='line'>npm install --save-dev gulp del gulp-babel
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I think the <code>clear</code> task is self explanatory, so lets talk about <code>build</code>. Typically in a build script, it&rsquo;s tempting to concatenate, but our package is going to benefit from keeping the code in separate files. By keeping the code in separate files, modular, we&rsquo;ll be implementing JavaScript module benefit #2 &lsquo;Only load what you need&rsquo;.</p>
-
-<p>The code itself is transpiled through Babel, to create the ES6 code in &lsquo;lib&rsquo;. I&rsquo;ve blacklisted &lsquo;useStrict&rsquo;. I do this by default, because <code>"use strict"</code> can stop execution in iOS UIWebViews, specifically when using <a href="http://cordova.apache.org/">Cordova</a>.</p>
-
-<h4>The code</h4>
-
+``` bash
+npm install -g gulp babel
+npm install --save-dev gulp del gulp-babel
+</code></pre><p>I think the <code>clear</code> task is self explanatory, so lets talk about <code>build</code>. Typically in a build script, it&#39;s tempting to concatenate, but our package is going to benefit from keeping the code in separate files. By keeping the code in separate files, modular, we&#39;ll be implementing JavaScript module benefit #2 &#39;Only load what you need&#39;.</p>
+<p>The code itself is transpiled through Babel, to create the ES6 code in &#39;lib&#39;. I&#39;ve blacklisted &#39;useStrict&#39;. I do this by default, because <code>&quot;use strict&quot;</code> can stop execution in iOS UIWebViews, specifically when using <a href="http://cordova.apache.org/">Cordova</a>.</p>
+<h4 id="the-code">The code</h4>
 <p>In the src directory, create the following files:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>src
-</span><span class='line'>  clever_class.js &lt;-- An example module
-</span><span class='line'>  index.js        &lt;-- Our main file
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>src/clever_class.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">export</span> <span class="kr">class</span> <span class="nx">CleverClass</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">constructor</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;I\&#39;m a clever class&#39;</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>src/index.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">export</span> <span class="o">*</span> <span class="nx">from</span> <span class="s1">&#39;./clever_class&#39;</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><em>I think you can already see how useful our new package is going to be.</em></p>
-
+<pre><code class="lang-bash">src
+    clever_class.js    &lt;-- An example module
+    index.js        &lt;-- Our main file
+</code></pre>
+<p>``` js src/clever_class.js
+export class CleverClass {
+    constructor() {
+        console.log(&#39;I\&#39;m a clever class&#39;);
+    }
+}</p>
+<pre><code>
+``` js src/index.js
+export * from &#39;./clever_class&#39;;
+</code></pre><p><em>I think you can already see how useful our new package is going to be.</em></p>
 <p><code>CleverClass</code> is pretty unexceptional, except for the addition of <code>export</code> before the <code>class</code> declaration. <code>export</code> tells Babel that we want to reference <code>CleverClass</code> as module.</p>
-
-<p>The code in &lsquo;index.js&rsquo; is really interesting. We&rsquo;re literally creating an index to all modules in our package, that we want made public. <code>export * from</code> (not <code>import</code>), re-exports <code>CleverClass</code> as part of &lsquo;index.js&rsquo;.</p>
-
-<p>Think about the implications here. You can have twenty different classes in this directory, all extending each other in different and exciting ways. From &lsquo;index.js&rsquo;, you choose which of those classes make it to your public API. <code>CleverClass</code> may inherit from a class called <code>BaseClass</code>, but only <code>CleverClass</code> is accessible, even though <code>CleverClass</code> still benefits from the existence of <code>BaseClass</code>.</p>
-
-<p><em>At this point, you&rsquo;re starting to feel like Skeletor, just before he was robbed of the powers of Grey Skull.</em></p>
-
+<p>The code in &#39;index.js&#39; is really interesting. We&#39;re literally creating an index to all modules in our package, that we want made public. <code>export * from</code> (not <code>import</code>), re-exports <code>CleverClass</code> as part of &#39;index.js&#39;.</p>
+<p>Think about the implications here. You can have twenty different classes in this directory, all extending each other in different and exciting ways. From &#39;index.js&#39;, you choose which of those classes make it to your public API. <code>CleverClass</code> may inherit from a class called <code>BaseClass</code>, but only <code>CleverClass</code> is accessible, even though <code>CleverClass</code> still benefits from the existence of <code>BaseClass</code>.</p>
+<p><em>At this point, you&#39;re starting to feel like Skeletor, just before he was robbed of the powers of Grey Skull.</em></p>
 <p>Okay, build the mutha:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>gulp build
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Any errors? No, great. You should now have a &lsquo;lib&rsquo; directory that mirrors the structure of &lsquo;src&rsquo;, just with ES5 code, instead of ES6.</p>
-
-<p><em><strong>NOTE:</strong> This feels a bit &lsquo;fly-by the seat of your pants&rsquo; coding. Usually I&rsquo;d have a test suite in the project, to ensure that we&rsquo;re all rocking in the right direction. However, we&rsquo;re about to build a consumer for exactly that, and for the purposes of this tutorial I wanted to keep concerns clean and avoid duplication. You dig?</em></p>
-
-<h3>The consumer</h3>
-
+<pre><code class="lang-bash">gulp build
+</code></pre>
+<p>Any errors? No, great. You should now have a &#39;lib&#39; directory that mirrors the structure of &#39;src&#39;, just with ES5 code, instead of ES6.</p>
+<p><em><strong>NOTE:</strong>This feels a bit &#39;fly-by the seat of your pants&#39; coding. Usually I&#39;d have a test suite in the project, to ensure that we&#39;re all rocking in the right direction. However, we&#39;re about to build a consumer for exactly that, and for the purposes of this tutorial I wanted to keep concerns clean and avoid duplication. You dig?</em></p>
+<h3 id="the-consumer">The consumer</h3>
 <p>The purpose of this tutorial is to demonstrate how you can consume ES6 modules, contained within an NPM package. To do this, we need a separate project, from which to consume the package; this is that project.</p>
-
-<h4>The setup</h4>
-
+<h4 id="the-setup">The setup</h4>
 <p>From the blog directory:</p>
+<pre><code class="lang-bash">mkdir module-consumer
+cd module-consumer
+npm init                        &lt;-- Just enter through the defaults
+mkdir app
+touch gulpfile.js .gitignore
+</code></pre>
+<p>Here is our &#39;.gitignore&#39;:</p>
+<p>``` text .gitignore
+.web
+node_modules</p>
+<pre><code>
+Here is our directory structure:
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>mkdir module-consumer
-</span><span class='line'><span class="nb">cd </span>module-consumer
-</span><span class='line'>npm init                      &lt;-- Just enter through the defaults
-</span><span class='line'>mkdir app
-</span><span class='line'>touch gulpfile.js .gitignore
-</span></code></pre></td></tr></table></div></figure>
+``` bash
+module-consumer
+    app                    &lt;-- This is where we\&#39;re going to put our test app
+    .gitignore            &lt;-- We&#39;ll need to ignore \&#39;node-modules\&#39;, when this goes to GIT
+    gulpfile.js            &lt;-- Gulp build file
+    package.json        &lt;-- This was created when you typed in \&#39;npm init\&#39;
+</code></pre><h4 id="the-build-script">The build script</h4>
+<p>Our test app is going to be a very simple website, so we&#39;re going to need a web server, in this case <a href="https://github.com/senchalabs/connect">Connect</a>. Because we&#39;re using a website as our testbed, we need to a way to consume the NPM package in a way that the browser understands; for this, we will use <a href="http://browserify.org/">Browserify</a>.</p>
+<p>``` js gulpfile.js
+var gulp = require(&#39;gulp&#39;),
+    connect = require(&#39;gulp-connect&#39;),
+    del = require(&#39;del&#39;),
+    watch = require(&#39;gulp-watch&#39;),
+    runSequence = require(&#39;run-sequence&#39;),
+    babelify = require(&#39;babelify&#39;),
+    browserify = require(&#39;browserify&#39;),
+    source = require(&#39;vinyl-source-stream&#39;);</p>
+<p>var APP_PATH = &#39;./app&#39;,
+    WEB_PATH = &#39;./.web&#39;;</p>
+<p>gulp.task(&#39;clear&#39;, function(cb) {
+    del([ WEB_PATH + &#39;/*&#39; ], function() {
+        cb();
+    });
+});</p>
+<p>gulp.task(&#39;js&#39;, function() {
+    return browserify({
+                    entries: APP_PATH + &#39;/app.js&#39;,
+                    debug: true
+                })
+                .transform(babelify)
+                .bundle()
+                .pipe(source(&#39;app.js&#39;))
+                .pipe(gulp.dest(WEB_PATH));
+});</p>
+<p>gulp.task(&#39;index&#39;, function() {
+    return gulp.src([ APP_PATH + &#39;/index.html&#39; ])
+        .pipe(gulp.dest(WEB_PATH));
+});</p>
+<p>gulp.task(&#39;connect&#39;, function(cb) {
+    connect.server({
+        root: WEB_PATH,
+        livereload: true
+    });</p>
+<pre><code>cb();
+</code></pre><p>});</p>
+<p>gulp.task(&#39;livereload&#39;, function () {
+    return gulp.src( WEB_PATH + &#39;/<em>*/</em>&#39; )
+        .pipe(connect.reload());
+});</p>
+<p>gulp.task(&#39;serve&#39;, [ &#39;clear&#39; ], function(cb) {
+    runSequence(
+        [ &#39;js&#39;, &#39;index&#39; ],
+        &#39;connect&#39;,
+        function() {
+            watch([ APP_PATH + &#39;/app.js&#39; ], function() { gulp.start(&#39;js&#39;); });
+            watch([ APP_PATH + &#39;/index.html&#39; ], function() { gulp.start(&#39;index&#39;); });
+            watch([ WEB_PATH + &#39;/<em>*/</em>&#39; ], function() { gulp.start(&#39;livereload&#39;); });</p>
+<pre><code>        cb();
+    }
+);
+</code></pre><p>});</p>
+<pre><code>
+The script has these dependancies:
 
+1. Gulp
+2. Gulp Connect - Our web server.
+3. Del
+4. [Gulp Watch](https://www.npmjs.com/package/gulp-watch) - Kicks off Gulp tasks, when a file changes.
+5. [Run Sequence](https://www.npmjs.com/package/run-sequence) - Asynchronous task management. [Read my blog](/blog/2015/03/23/in-the-name-of-gulp/).
+6. [Babelify](https://github.com/babel/babelify) - Babel transformer for Browserify.
+7. Browserify - Makes Node&#39;s `require` work in the browser.
+8. [Vinyl Source Stream](https://www.npmjs.com/package/vinyl-source-stream) - Makes Browserify work with Gulp.
 
-<p>Here is our &lsquo;.gitignore&rsquo;:</p>
+Install them:
 
-<figure class='code'><figcaption><span>.gitignore</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='text'><span class='line'>.web
-</span><span class='line'>node_modules
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Here is our directory structure:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>module-consumer
-</span><span class='line'>  app                 &lt;-- This is where we<span class="se">\&#39;</span>re going to put our <span class="nb">test </span>app
-</span><span class='line'>  .gitignore          &lt;-- We<span class="err">&#39;</span>ll need to ignore <span class="se">\&#39;</span>node-modules<span class="se">\&#39;</span>, when this goes to GIT
-</span><span class='line'>  gulpfile.js         &lt;-- Gulp build file
-</span><span class='line'>  package.json        &lt;-- This was created when you typed in <span class="se">\&#39;</span>npm init<span class="se">\&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>The build script</h4>
-
-<p>Our test app is going to be a very simple website, so we&rsquo;re going to need a web server, in this case <a href="https://github.com/senchalabs/connect">Connect</a>. Because we&rsquo;re using a website as our testbed, we need to a way to consume the NPM package in a way that the browser understands; for this, we will use <a href="http://browserify.org/">Browserify</a>.</p>
-
-<figure class='code'><figcaption><span>gulpfile.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">),</span>
-</span><span class='line'>  <span class="nx">connect</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-connect&#39;</span><span class="p">),</span>
-</span><span class='line'>  <span class="nx">del</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;del&#39;</span><span class="p">),</span>
-</span><span class='line'>  <span class="nx">watch</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-watch&#39;</span><span class="p">),</span>
-</span><span class='line'>  <span class="nx">runSequence</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;run-sequence&#39;</span><span class="p">),</span>
-</span><span class='line'>  <span class="nx">babelify</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;babelify&#39;</span><span class="p">),</span>
-</span><span class='line'>  <span class="nx">browserify</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;browserify&#39;</span><span class="p">),</span>
-</span><span class='line'>  <span class="nx">source</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;vinyl-source-stream&#39;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">var</span> <span class="nx">APP_PATH</span> <span class="o">=</span> <span class="s1">&#39;./app&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nx">WEB_PATH</span> <span class="o">=</span> <span class="s1">&#39;./.web&#39;</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;clear&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">del</span><span class="p">([</span> <span class="nx">WEB_PATH</span> <span class="o">+</span> <span class="s1">&#39;/*&#39;</span> <span class="p">],</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">cb</span><span class="p">();</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;js&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">browserify</span><span class="p">({</span>
-</span><span class='line'>                  <span class="nx">entries</span><span class="o">:</span> <span class="nx">APP_PATH</span> <span class="o">+</span> <span class="s1">&#39;/app.js&#39;</span><span class="p">,</span>
-</span><span class='line'>                  <span class="nx">debug</span><span class="o">:</span> <span class="kc">true</span>
-</span><span class='line'>              <span class="p">})</span>
-</span><span class='line'>              <span class="p">.</span><span class="nx">transform</span><span class="p">(</span><span class="nx">babelify</span><span class="p">)</span>
-</span><span class='line'>              <span class="p">.</span><span class="nx">bundle</span><span class="p">()</span>
-</span><span class='line'>              <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">source</span><span class="p">(</span><span class="s1">&#39;app.js&#39;</span><span class="p">))</span>
-</span><span class='line'>              <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="nx">WEB_PATH</span><span class="p">));</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">([</span> <span class="nx">APP_PATH</span> <span class="o">+</span> <span class="s1">&#39;/index.html&#39;</span> <span class="p">])</span>
-</span><span class='line'>      <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="nx">WEB_PATH</span><span class="p">));</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;connect&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">connect</span><span class="p">.</span><span class="nx">server</span><span class="p">({</span>
-</span><span class='line'>      <span class="nx">root</span><span class="o">:</span> <span class="nx">WEB_PATH</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">livereload</span><span class="o">:</span> <span class="kc">true</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">cb</span><span class="p">();</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;livereload&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span> <span class="nx">WEB_PATH</span> <span class="o">+</span> <span class="s1">&#39;/**/*&#39;</span> <span class="p">)</span>
-</span><span class='line'>      <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">connect</span><span class="p">.</span><span class="nx">reload</span><span class="p">());</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;serve&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s1">&#39;clear&#39;</span> <span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">runSequence</span><span class="p">(</span>
-</span><span class='line'>      <span class="p">[</span> <span class="s1">&#39;js&#39;</span><span class="p">,</span> <span class="s1">&#39;index&#39;</span> <span class="p">],</span>
-</span><span class='line'>      <span class="s1">&#39;connect&#39;</span><span class="p">,</span>
-</span><span class='line'>      <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>          
-</span><span class='line'>          <span class="nx">watch</span><span class="p">([</span> <span class="nx">APP_PATH</span> <span class="o">+</span> <span class="s1">&#39;/app.js&#39;</span> <span class="p">],</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="s1">&#39;js&#39;</span><span class="p">);</span> <span class="p">});</span>
-</span><span class='line'>          <span class="nx">watch</span><span class="p">([</span> <span class="nx">APP_PATH</span> <span class="o">+</span> <span class="s1">&#39;/index.html&#39;</span> <span class="p">],</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">);</span> <span class="p">});</span>
-</span><span class='line'>          <span class="nx">watch</span><span class="p">([</span> <span class="nx">WEB_PATH</span> <span class="o">+</span> <span class="s1">&#39;/**/*&#39;</span> <span class="p">],</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="s1">&#39;livereload&#39;</span><span class="p">);</span> <span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'>          <span class="nx">cb</span><span class="p">();</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>  <span class="p">);</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The script has these dependancies:</p>
-
-<ol>
-<li>Gulp</li>
-<li>Gulp Connect - Our web server.</li>
-<li>Del</li>
-<li><a href="https://www.npmjs.com/package/gulp-watch">Gulp Watch</a> - Kicks off Gulp tasks, when a file changes.</li>
-<li><a href="https://www.npmjs.com/package/run-sequence">Run Sequence</a> - Asynchronous task management. <a href="/blog/2015/03/23/in-the-name-of-gulp/">Read my blog</a>.</li>
-<li><a href="https://github.com/babel/babelify">Babelify</a> - Babel transformer for Browserify.</li>
-<li>Browserify - Makes Node&rsquo;s <code>require</code> work in the browser.</li>
-<li><a href="https://www.npmjs.com/package/vinyl-source-stream">Vinyl Source Stream</a> - Makes Browserify work with Gulp.</li>
-</ol>
-
-
-<p>Install them:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm install --save-dev gulp gulp-connect del gulp-watch run-sequence babelify browserify vinyl-source-stream
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Here&rsquo;s a quick rundown of the tasks in this script:</p>
-
-<h5>js</h5>
-
-<p>Transpiles and concatenates the contents of &lsquo;app/app.js&rsquo; (not created yet), using Browserify. Browserify follows every <code>require</code>, creates a virtual tree, then bundles all the code in one file.</p>
-
+``` bash
+npm install --save-dev gulp gulp-connect del gulp-watch run-sequence babelify browserify vinyl-source-stream
+</code></pre><p>Here&#39;s a quick rundown of the tasks in this script:</p>
+<h5 id="js">js</h5>
+<p>Transpiles and concatenates the contents of &#39;app/app.js&#39; (not created yet), using Browserify. Browserify follows every <code>require</code>, creates a virtual tree, then bundles all the code in one file.</p>
 <p><em>I mean, wow, just wow.</em></p>
-
-<p>We&rsquo;re not using the <code>require</code> syntax though, so we need Babelify. Babelify transforms/transpiles the ES6 syntax to ES5, for Browserify to understand.</p>
-
-<p>The result of which is outputted to our temporary web directory (&lsquo;.web&rsquo;, which doesn&rsquo;t exist yet).</p>
-
-<h5>index</h5>
-
-<p>Moves &lsquo;app/index.html&rsquo; to &lsquo;.web/index.html&rsquo;. You don&rsquo;t want to be working directly in &lsquo;.web&rsquo;.</p>
-
-<h5>connect</h5>
-
+<p>We&#39;re not using the <code>require</code> syntax though, so we need Babelify. Babelify transforms/transpiles the ES6 syntax to ES5, for Browserify to understand.</p>
+<p>The result of which is outputted to our temporary web directory (&#39;.web&#39;, which doesn&#39;t exist yet).</p>
+<h5 id="index">index</h5>
+<p>Moves &#39;app/index.html&#39; to &#39;.web/index.html&#39;. You don&#39;t want to be working directly in &#39;.web&#39;.</p>
+<h5 id="connect">connect</h5>
 <p>Uses Connect to start a web server, with <a href="http://livereload.com/">Live Reload</a>.</p>
+<h5 id="livereload">livereload</h5>
+<p>Reacts to file changes. Live Reload reloads your browser programmatically. It&#39;s pure magic.</p>
+<h5 id="serve">serve</h5>
+<p>This is what we type into terminal. It&#39;s a &#39;stitch everything together task&#39;. We use Run Sequence to run our two compilation tasks, <code>js</code> and <code>index</code>, before kicking off the web server task <code>connect</code>. Finally, we set off the file watchers, that react accordingly to file changes.</p>
+<h4 id="the-code">The code</h4>
+<p>I&#39;m going to start by boilerplating &#39;index.html&#39; in the &#39;app&#39; directory; the sole point of this file is to load &#39;app.js&#39;.</p>
+<p>``` html app/index.html
+&lt;!DOCTYPE html&gt;</p>
+<p><html></p>
+<p><head>
+    <title></title>
+    <script type="text/javascript" src="./app.js"></script>
+</head></p>
+<body>
 
-<h5>livereload</h5>
+<p></body>
+</html></p>
+<pre><code>
+Here&#39;s &#39;app.js&#39;.
 
-<p>Reacts to file changes. Live Reload reloads your browser programmatically. It&rsquo;s pure magic.</p>
+``` js app/app.js
+// Example 1: Namespace
+import * as es6 from &#39;es6-module&#39;;
 
-<h5>serve</h5>
-
-<p>This is what we type into terminal. It&rsquo;s a &lsquo;stitch everything together task&rsquo;. We use Run Sequence to run our two compilation tasks, <code>js</code> and <code>index</code>, before kicking off the web server task <code>connect</code>. Finally, we set off the file watchers, that react accordingly to file changes.</p>
-
-<h4>The code</h4>
-
-<p>I&rsquo;m going to start by boilerplating &lsquo;index.html&rsquo; in the &lsquo;app&rsquo; directory; the sole point of this file is to load &lsquo;app.js&rsquo;.</p>
-
-<figure class='code'><figcaption><span>app/index.html</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="cp">&lt;!DOCTYPE html&gt;</span>
-</span><span class='line'><span class="nt">&lt;html&gt;</span>
-</span><span class='line'><span class="nt">&lt;head&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;title&gt;&lt;/title&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;./app.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-</span><span class='line'><span class="nt">&lt;/head&gt;</span>
-</span><span class='line'><span class="nt">&lt;body&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nt">&lt;/body&gt;</span>
-</span><span class='line'><span class="nt">&lt;/html&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
+new es6.CleverClass();
 
 
-<p>Here&rsquo;s &lsquo;app.js&rsquo;.</p>
+// Example 2: Choose exports
+// import { CleverClass } from &#39;es6-module&#39;;
 
-<figure class='code'><figcaption><span>app/app.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="c1">// Example 1: Namespace</span>
-</span><span class='line'><span class="kr">import</span> <span class="o">*</span> <span class="nx">as</span> <span class="nx">es6</span> <span class="nx">from</span> <span class="s1">&#39;es6-module&#39;</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">new</span> <span class="nx">es6</span><span class="p">.</span><span class="nx">CleverClass</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// Example 2: Choose exports</span>
-</span><span class='line'><span class="c1">// import { CleverClass } from &#39;es6-module&#39;;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// new CleverClass();</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// Example 3: Target individual files</span>
-</span><span class='line'><span class="c1">// import { CleverClass } from &#39;es6-module/lib/clever_class&#39;;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// new CleverClass();</span>
-</span></code></pre></td></tr></table></div></figure>
+// new CleverClass();
 
 
-<p>&lsquo;app.js&rsquo; contains three examples of how can access &lsquo;CleverClass&rsquo; from our first project&hellip; Aww crap, hang on a minute, we&rsquo;ve not actually referenced our &lsquo;es6-module&rsquo; package!</p>
+// Example 3: Target individual files
+// import { CleverClass } from &#39;es6-module/lib/clever_class&#39;;
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm install --save-dev ../es6-module
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><em><strong>NOTE:</strong> NPM allows you to install local packages, that&rsquo;s what going on in the code above.</em></p>
-
+// new CleverClass();
+</code></pre><p>&#39;app.js&#39; contains three examples of how can access &#39;CleverClass&#39; from our first project... Aww crap, hang on a minute, we&#39;ve not actually referenced our &#39;es6-module&#39; package!</p>
+<pre><code class="lang-bash">npm install --save-dev ../es6-module
+</code></pre>
+<p><em><strong>NOTE:</strong>NPM allows you to install local packages, that&#39;s what going on in the code above.</em></p>
 <p>What was I saying? Right, three examples. They should all have the same result, but show the flexibility was the ES6 way of doing modules:</p>
-
 <ol>
 <li>Namespace - Using <code>as</code>, you can wrap your imports in a namespace. Very tidy.</li>
 <li>Be selective - You may only want to use one or two classes, list them in curly brackets!</li>
-<li>Don&rsquo;t pull in the whole library - Prepare to have your mind blown. &lsquo;Boom&rsquo;. You can reference individual modules within the package. Don&rsquo;t say a word, it&rsquo;s alright, I know. #shhh</li>
+<li>Don&#39;t pull in the whole library - Prepare to have your mind blown. &#39;Boom&#39;. You can reference individual modules within the package. Don&#39;t say a word, it&#39;s alright, I know. #shhh</li>
 </ol>
-
-
 <p>Run the server and breath in the sweet, sweet smell of success.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>gulp serve
-</span></code></pre></td></tr></table></div></figure>
-
-
+<pre><code class="lang-bash">gulp serve
+</code></pre>
 <p>I accept the payoff is a little underwhelming. If all is well, when you open you dev tool in a browser, pointed at <a href="http://localhost:8080">http://localhost:8080</a>, you should see:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='text'><span class='line'>I&#39;m a clever class
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>The conclusion</h3>
-
-<p>That&rsquo;s not the point. The point is, &ldquo;I&rsquo;m a clever class&rdquo; was written in module in one package, and accessed from a script in another. All the code was written in ES6, and only the files needed, were accessed in the test site.</p>
-
-<p>We&rsquo;ve gained:</p>
-
+<pre><code class="lang-text">I&#39;m a clever class
+</code></pre>
+<h3 id="the-conclusion">The conclusion</h3>
+<p>That&#39;s not the point. The point is, &quot;I&#39;m a clever class&quot; was written in module in one package, and accessed from a script in another. All the code was written in ES6, and only the files needed, were accessed in the test site.</p>
+<p>We&#39;ve gained:</p>
 <ol>
 <li>A modular build.</li>
 <li>A reusable library.</li>
 <li>Only compile what you use.</li>
 <li>Future proofing, with ES6 compatible base code.</li>
 </ol>
-
-
 <p>We. Are. Awesome.</p>
+
+		</div>
+
+		<footer>
+			<p class="meta">
+				<span class="byline author vcard">
+					Posted by <span class="fn">Richard Kimber</span>
+				</span>
+				
+	<time class='entry-date' datetime='2015-04-12T14:06:12+01:00'>
+		<span class='date'>
+			<span class='date-month'>Apr</span>
+			<span class='date-day'>12</span><span class='date-suffix'>th</span>,
+			<span class='date-year'>2015</span>
+		</span>
+		<span class='time'>14:06</span>
+	</time>
+
+				
+	<span class="categories">
+			posted in
+			<a class='category' href='/blog/categories/javascript'>JavaScript</a>,
+			<a class='category' href='/blog/categories/gulp'>Gulp</a>,
+			<a class='category' href='/blog/categories/es6'>ES6</a>,
+			<a class='category' href='/blog/categories/modules'>Modules</a>,
+			<a class='category' href='/blog/categories/npm'>NPM</a>
+			</span>
+		
+			</p>
+
+			<div class="sharing">
+				<a href="//twitter.com/share" class="twitter-share-button" data-url="http://rich.k3r.me/blog/2015/04/12/consuming-es6-modules-in-npm-packages/" data-via="kim3er" data-counturl="http://rich.k3r.me/blog/2015/04/12/consuming-es6-modules-in-npm-packages/">
+					Tweet
+				</a>
+				<div class="g-plusone" data-size="medium"></div>
+				<div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+			</div>
+
+			<p class="meta">
+				
+					<a class="basic-alignment left" href="/blog/2015/04/02/controlling-cordova-from-gulp/" title="Previous Post: Controlling Cordova from Gulp">&laquo; Controlling Cordova from Gulp</a>
+				
+
+				
+					<a class="basic-alignment right" href="/blog/2015/04/21/there-is-no-spoon/" title="Next Post: Controlling Cordova from Gulp">&laquo; There is no spoon</a>
+				
+			</p>
+		</footer>
+	</article>
+
+	<section>
+		<h1>Comments</h1>
+		<div id="disqus_thread" aria-live="polite">
+			<noscript>
+				Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+			</noscript>
+		</div>
+	</section>
+
 </div>
-
-
-  <footer>
-    <p class="meta">
-      
-  
-
-<span class="byline author vcard">Posted by <span class="fn">Richard Kimber</span></span>
-
-      
-
-
-
-
-<time class='entry-date' datetime='2015-04-12T14:06:12+01:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>2:06 pm</span></time>
-      
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/es6/'>es6</a>, <a class='category' href='/blog/categories/gulp/'>gulp</a>, <a class='category' href='/blog/categories/javascript/'>javascript</a>, <a class='category' href='/blog/categories/modules/'>modules</a>, <a class='category' href='/blog/categories/npm/'>npm</a>
-  
-</span>
-
-
-    </p>
-    
-      <div class="sharing">
-  
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://rich.k3r.me/blog/2015/04/12/consuming-es6-modules-in-npm-packages/" data-via="kim3er" data-counturl="http://rich.k3r.me/blog/2015/04/12/consuming-es6-modules-in-npm-packages/" >Tweet</a>
-  
-  
-  <div class="g-plusone" data-size="medium"></div>
-  
-  
-    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
-  
-</div>
-
-    
-    <p class="meta">
-      
-        <a class="basic-alignment left" href="/blog/2015/04/02/controlling-cordova-from-gulp/" title="Previous Post: Controlling Cordova from Gulp">&laquo; Controlling Cordova from Gulp</a>
-      
-      
-        <a class="basic-alignment right" href="/blog/2015/04/21/there-is-no-spoon/" title="Next Post: There is no spoon">There is no spoon &raquo;</a>
-      
-    </p>
-  </footer>
-</article>
-
-  <section>
-    <h1>Comments</h1>
-    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-</div>
-  </section>
-
-</div>
-
-<aside class="sidebar">
-  
-    <section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2015/06/16/async-slash-await-readable-non-blocking-code/">Async/await, Readable Non-blocking Code</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/20/simple-routing-with-javascript-decorators/">Simple Routing With JavaScript Decorators</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/04/29/empty-promises-dos-and-donts-of-es6-promises/">Empty Promises: Dos and Don&#8217;ts of ES6 Promises</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/04/25/a-punnet-size-guide-to-git-cherry-picking/">A Punnet Size Guide to Git Cherry Picking</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/04/21/there-is-no-spoon/">There Is No Spoon</a>
-      </li>
-    
-  </ul>
-</section>
-
-<section>
-  <h1>GitHub Repos</h1>
-  <ul id="gh_repos">
-    <li class="loading">Status updating&#8230;</li>
-  </ul>
-  
-  <a href="https://github.com/kim3er">@kim3er</a> on GitHub
-  
-  <script type="text/javascript">
-    $(document).ready(function(){
-        if (!window.jXHR){
-            var jxhr = document.createElement('script');
-            jxhr.type = 'text/javascript';
-            jxhr.src = '/javascripts/libs/jXHR.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(jxhr, s);
-        }
-
-        github.showRepos({
-            user: 'kim3er',
-            count: 0,
-            skip_forks: true,
-            target: '#gh_repos'
-        });
-    });
-  </script>
-  <script src="/javascripts/github.js" type="text/javascript"> </script>
-</section>
-
-
-
-<section class="googleplus">
-  <h1>
-    <a href="https://plus.google.com/RichardKimber?rel=author">
-      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
-      Google+
-    </a>
-  </h1>
-</section>
-
-
-
-  
-</aside>
-
-
-    </div>
-  </div>
-  <footer role="contentinfo"><p>
-  Copyright &copy; 2015 - Richard Kimber -
-  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
-</p>
-
-</footer>
-  
 
 <script type="text/javascript">
       var disqus_shortname = 'k3r';
-      
-        
+
         // var disqus_developer = 1;
         var disqus_identifier = 'http://rich.k3r.me/blog/2015/04/12/consuming-es6-modules-in-npm-packages/';
         var disqus_url = 'http://rich.k3r.me/blog/2015/04/12/consuming-es6-modules-in-npm-packages/';
         var disqus_script = 'embed.js';
-      
+
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
       dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
@@ -1032,42 +556,54 @@
     }());
 </script>
 
+		</div>
+	</div>
 
+	<footer role="contentinfo">
+		<p>
+			Copyright &copy; 2016 - Richard Kimber -
+			<span class="credit">Powered by <a href="http://rich.k3r.me">Mistletoe</a></span>
+		</p>
+	</footer>
 
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) {return;}
-  js = d.createElement(s); js.id = id; js.async = true;
-  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
+	<script type="text/javascript">
+		var disqus_shortname = 'k3r';
+		var disqus_script = 'count.js';
 
+		(function () {
+			var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+			dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+			(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+		}());
+	</script>
 
+	<div id="fb-root"></div>
+	<script>(function(d, s, id) {
+		var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) {return;}
+			js = d.createElement(s); js.id = id; js.async = true;
+			js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+	</script>
 
-  <script type="text/javascript">
-    (function() {
-      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
-      script.src = 'https://apis.google.com/js/plusone.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
-    })();
-  </script>
+	<script type="text/javascript">
+		(function() {
+			var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+			script.src = 'https://apis.google.com/js/plusone.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+		})();
+	</script>
 
-
-
-  <script type="text/javascript">
-    (function(){
-      var twitterWidgets = document.createElement('script');
-      twitterWidgets.type = 'text/javascript';
-      twitterWidgets.async = true;
-      twitterWidgets.src = '//platform.twitter.com/widgets.js';
-      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
-    })();
-  </script>
-
-
-
-
+	<script type="text/javascript">
+		(function(){
+			var twitterWidgets = document.createElement('script');
+			twitterWidgets.type = 'text/javascript';
+			twitterWidgets.async = true;
+			twitterWidgets.src = '//platform.twitter.com/widgets.js';
+			document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+		})();
+	</script>
 
 </body>
 </html>

@@ -1,365 +1,223 @@
-
 <!DOCTYPE html>
 <!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
 <!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
-  <meta charset="utf-8">
-  <title>RailsInstaller (Ruby 2.1) on Windows 8.1 - Adventures in brine</title>
-  <meta name="author" content="Richard Kimber">
+	<meta charset="utf-8">
+	<title>RailsInstaller (Ruby 2.1) on Windows 8.1 Adventures in brine</title>
+	<meta name="author" content="Richard Kimber">
 
-  
-  <meta name="description" content="I&rsquo;ve recently had to get Rails and Capistrano up and running on a Windows 8.1 machine. These are the problems I encountered and how I fixed &hellip;">
-  
+	<meta name="description" content="I&amp;#39;ve recently had to get Rails and Capistrano up and running on a Windows 8.1 machine. These are the problems I encountered and how I fixed them. All issues were encountered after trying to run an existing Rails 4 project.
+">
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- http://t.co/dKP3o1e -->
-  <meta name="HandheldFriendly" content="True">
-  <meta name="MobileOptimized" content="320">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="canonical" href="http://rich.k3r.me">
+	<link href="/favicon.png" rel="icon">
+	<link href="/stylesheets/reset.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link href="/atom.xml" rel="alternate" title="Adventures in brine" type="application/atom+xml">
 
-  
-  <link rel="canonical" href="http://rich.k3r.me/blog/2015/01/22/railsinstaller-ruby-2-dot-1-on-windows-8-dot-1">
-  <link href="/favicon.png" rel="icon">
-  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="Adventures in brine" type="application/atom+xml">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
 
-  
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-56802309-1']);
-    _gaq.push(['_trackPageview']);
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
 
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-56802309-1']);
+		_gaq.push(['_trackPageview']);
 
-
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
 </head>
 
-<body   >
-  <header role="banner"><hgroup>
-  <h1><a href="/">Adventures in brine</a></h1>
-  
-    <h2>A blog about code and coding.</h2>
-  
-</hgroup>
+<body>
+	<header role="banner">
+		<hgroup>
+			<h1>
+				<a href="/">Adventures in brine</a>
+			</h1>
 
-</header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
-</ul>
-  
-<form action="https://www.google.com/search" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="sitesearch" value="rich.k3r.me">
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  
-<ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
-  <li><a href="/blog/archives">Archives</a></li>
-</ul>
+			<h2>A blog about code and coding.</h2>
+		</hgroup>
+	</header>
 
-</nav>
-  <div id="main">
-    <div id="content">
-      <div>
-<article class="hentry" role="article">
-  
-  <header>
-    
-      <h1 class="entry-title">RailsInstaller (Ruby 2.1) on Windows 8.1</h1>
-    
-    
-      <p class="meta">
-        
+	<nav role="navigation">
+		<ul class="subscription" data-subscription="rss">
+			<li>
+				<a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a>
+			</li>
+		</ul>
 
+		<form action="https://www.google.com/search" method="get">
+			<fieldset role="search">
+				<input type="hidden" name="sitesearch" value="rich.k3r.me">
+				<input class="search" type="text" name="q" results="0" placeholder="Search"/>
+			</fieldset>
+		</form>
 
+		<ul class="main-navigation">
+			<li><a href="/">Blog</a></li>
+			<li><a href="/blog/archives">Archives</a></li>
+		</ul>
+	</nav>
 
+	<div id="main">
+		<div id="content">
+			
+<div>
+	<article class="hentry" role="article">
+		<header>
+			<h1 class="entry-title">
+				RailsInstaller (Ruby 2.1) on Windows 8.1
+			</h1>
 
-<time class='entry-date' datetime='2015-01-22T19:53:44+00:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>7:53 pm</span></time>
-        
-           | <a href="#disqus_thread"
-             data-disqus-identifier="http://rich.k3r.me">Comments</a>
-        
-      </p>
-    
-  </header>
+			<p class="meta">
+				
+	<time class='entry-date' datetime='2015-01-22T19:53:44+00:00'>
+		<span class='date'>
+			<span class='date-month'>Jan</span>
+			<span class='date-day'>22</span><span class='date-suffix'>nd</span>,
+			<span class='date-year'>2015</span>
+		</span>
+		<span class='time'>19:53</span>
+	</time>
 
+				| 
+<a href="/blog/2015/01/22/railsinstaller-ruby-2-dot-1-on-windows-8-dot-1/#disqus_thread"
+				data-disqus-identifier="http://rich.k3r.me/blog/2015/01/22/railsinstaller-ruby-2-dot-1-on-windows-8-dot-1/">Comments</a>
 
-<div class="entry-content"><p>I&rsquo;ve recently had to get Rails and Capistrano up and running on a Windows 8.1 machine. These are the problems I encountered and how I fixed them. All issues were encountered after trying to run an existing Rails 4 project.</p>
+			</p>
+		</header>
 
+		<div class="entry-content">
+			<p>I&#39;ve recently had to get Rails and Capistrano up and running on a Windows 8.1 machine. These are the problems I encountered and how I fixed them. All issues were encountered after trying to run an existing Rails 4 project.</p>
 <!--more-->
-
-
 <p>My first step was to install Rails using <a href="http://railsinstaller.org">RailsInstaller</a>. This is a great first step for Windows users, as you also get Ruby, Git and DevKit (which is important for building gems that contain native code). I elected to install the Ruby 2.1 version, which at the time of install, was sporting Ruby 2.1.5.</p>
-
-<h2>Invalid Certificate</h2>
-
-<p>When running <code>bundle</code>, I encountered the following error:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bat'><span class='line'>Unable to download data from https:<span class="n">//rubygems.org/</span> - SSL_connect returned<span class="o">=</span><span class="m">1</span> errno<span class="o">=</span><span class="m">0</span> state<span class="o">=</span>SSLv<span class="m">3</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>As per the accepted answer on this <a href="http://stackoverflow.com/questions/27435841/windows-7-64-bit-could-not-find-a-valid-gem-compass-0-here-is-why-unab">StackOverflow question</a>, I downloaded <a href="http://curl.haxx.se/ca/cacert.pem">cacert.pem</a> and placed it here, C:\RailsInstaller. You also need to tell <code>gem</code> where to find the certificate, which is done by setting a environment variable called <code>SSL_CERT_FILE</code>. This can be done on a temporary basis by typing the following into Command Prompt&#8221;:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bat'><span class='line'><span class="k">set</span> <span class="nv">SSL_CERT_FILE</span><span class="o">=</span>C:\RailsInstaller\cacert.pem
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Sqlite Native</h2>
-
-<p>Running any command related to the local Sqlite db, threw up:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bat'><span class='line'>cannot load such file -- sqlite<span class="m">3</span><span class="n">/sqlite3_native</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
+<p>##Invalid Certificate
+When running <code>bundle</code>, I encountered the following error:</p>
+<pre><code class="lang-bat">Unable to download data from https://rubygems.org/ - SSL_connect returned=1 errno=0 state=SSLv3
+</code></pre>
+<p>As per the accepted answer on this <a href="http://stackoverflow.com/questions/27435841/windows-7-64-bit-could-not-find-a-valid-gem-compass-0-here-is-why-unab">StackOverflow question</a>, I downloaded <a href="http://curl.haxx.se/ca/cacert.pem">cacert.pem</a> and placed it here, C:\RailsInstaller. You also need to tell <code>gem</code> where to find the certificate, which is done by setting a environment variable called <code>SSL_CERT_FILE</code>. This can be done on a temporary basis by typing the following into Command Prompt&quot;:</p>
+<pre><code class="lang-bat">set SSL_CERT_FILE=C:\RailsInstaller\cacert.pem
+</code></pre>
+<p>##Sqlite Native
+Running any command related to the local Sqlite db, threw up:</p>
+<pre><code class="lang-bat">cannot load such file -- sqlite3/sqlite3_native
+</code></pre>
 <p>According to this <a href="http://stackoverflow.com/questions/26636471/windows-ruby-rails-install-cannot-load-such-file-sqlite3-sqlite3-native">accepted answer</a>, the problem is caused by the version of the <code>sqlite3</code> gem not supporting Ruby 2.1.3+ on Windows. The gem needed to be updated to at least 1.3.10.</p>
-
-<h2>Bcrypt</h2>
-
-<p>I encountered a similar problem with the <code>bcrypt</code> gem. I didn&rsquo;t record the nature of the problem, but updating to at least 3.1.7 resolved the issue.</p>
-
-<h2>TZInfo</h2>
-
-<p>When starting up the Rails server, I received an error relating to <code>TZInfo::DataSourceNotFound</code>. According to the accepted answer on this <a href="http://stackoverflow.com/questions/23022258/tzinfodatasourcenotfound-error-starting-rails-v4-1-0-server-on-windows">question</a>, Windows needs an additional gem for the <code>tzinfo</code> gem to work correctly. Add this to your <code>Gemfile</code>:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;tzinfo-data&#39;</span><span class="p">,</span> <span class="ss">platforms</span><span class="p">:</span> <span class="o">[</span><span class="ss">:mingw</span><span class="p">,</span> <span class="ss">:mswin</span><span class="p">,</span> <span class="ss">:x64_mingw</span><span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>NPM Error</h2>
-
-<p>For bonus points, I always install Node along with my Rails installations, if only for JavaScript compilation in Sprockets. Node is best installed using the binary from the official <a href="http://nodejs.org/">website</a>.</p>
-
+<p>##Bcrypt
+I encountered a similar problem with the <code>bcrypt</code> gem. I didn&#39;t record the nature of the problem, but updating to at least 3.1.7 resolved the issue.</p>
+<p>##TZInfo
+When starting up the Rails server, I received an error relating to <code>TZInfo::DataSourceNotFound</code>. According to the accepted answer on this <a href="http://stackoverflow.com/questions/23022258/tzinfodatasourcenotfound-error-starting-rails-v4-1-0-server-on-windows">question</a>, Windows needs an additional gem for the <code>tzinfo</code> gem to work correctly. Add this to your <code>Gemfile</code>:</p>
+<pre><code class="lang-ruby">gem &#39;tzinfo-data&#39;, platforms: [:mingw, :mswin, :x64_mingw]
+</code></pre>
+<p>##NPM Error
+For bonus points, I always install Node along with my Rails installations, if only for JavaScript compilation in Sprockets. Node is best installed using the binary from the official <a href="http://nodejs.org/">website</a>.</p>
 <p>Typing <code>npm</code> into Command Prompt for the first time, returned the following:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bat'><span class='line'>Error: ENOENT<span class="p">,</span> stat &#39;C:\Users\[Username Here]\AppData\Roaming\npm
-</span></code></pre></td></tr></table></div></figure>
-
-
+<pre><code class="lang-bat">Error: ENOENT, stat &#39;C:\Users\[Username Here]\AppData\Roaming\npm
+</code></pre>
 <p>This issue was resolved by creating the missing <code>npm</code> folder in <code>Roaming</code>. Credit goes to the accepted answer of this <a href="http://stackoverflow.com/questions/25093276/node-js-windows-error-enoent-stat-c-users-rt-appdata-roaming-npm">question</a>.</p>
-
-<h2>Capistrano</h2>
-
-<p>On the first day of setup, Capistrano worked like a dream. The following day, after a system restart, no dice. Capistrano tasks kept dying with the following:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bat'><span class='line'>Error reading response length from authentication socket
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I tried reinstalling certificates and ensured the SSH Agent was running, to no avail. I still don&rsquo;t completely understand the problem, but I think the solution has more to do with the PC&rsquo;s specific environment.</p>
-
+<p>##Capistrano
+On the first day of setup, Capistrano worked like a dream. The following day, after a system restart, no dice. Capistrano tasks kept dying with the following:</p>
+<pre><code class="lang-bat">Error reading response length from authentication socket
+</code></pre>
+<p>I tried reinstalling certificates and ensured the SSH Agent was running, to no avail. I still don&#39;t completely understand the problem, but I think the solution has more to do with the PC&#39;s specific environment.</p>
 <p><a href="http://www.sourcetreeapp.com/">SourceTree</a> was already installed (and running) on the PC, when I came to install Rails. As part of the installation, SourceTree installs <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">Pageant</a>, a Windows based SSH authentication tool.</p>
-
 <p>Basically, Capistrano started working again the moment I had the presence of mind to start Pageant again.</p>
-
-<p><em>NOTE: The PC has two sets of SSH keys setup, one through Pageant, the other through <a href="https://msysgit.github.io/">Msysgit</a>. I thought I&rsquo;d been using the Msysgit key, but I suspect I was using the Pageant one all along. For Capistrano at least, Git works from the command line, regardless of the status of Pageant.</em></p>
-
-<p>I&rsquo;m not aware of any dependancy on Pageant by RailsInstaller. So I wonder whether I wouldn&rsquo;t have this dependancy now, if I didn&rsquo;t already have Pageant on the system. Or possibly, I&rsquo;d have struggled getting Capistrano working at all, not appreciating the need for Pageant.</p>
-
-<h2>Line Endings</h2>
-
-<p>I&rsquo;m still not 100% clear what happened here. We manage a number of GIT repos on Windows &amp; Mac, and have not had this issue before. Upon committing changes to a project, from the Windows machine, all the line endings were converted to CRLF. This caused problems with Rake. My inital attempts to fix the issue on a Mac resulted in me corrupting the Sqlite3 development database, so for the remainder of this fix, assume I&rsquo;ve temporarily moved the db (along with all other binary files, i.e. images) out of the directory structure.</p>
-
+<p><em>NOTE: The PC has two sets of SSH keys setup, one through Pageant, the other through <a href="https://msysgit.github.io/">Msysgit</a>. I thought I&#39;d been using the Msysgit key, but I suspect I was using the Pageant one all along. For Capistrano at least, Git works from the command line, regardless of the status of Pageant.</em></p>
+<p>I&#39;m not aware of any dependancy on Pageant by RailsInstaller. So I wonder whether I wouldn&#39;t have this dependancy now, if I didn&#39;t already have Pageant on the system. Or possibly, I&#39;d have struggled getting Capistrano working at all, not appreciating the need for Pageant.</p>
+<p>##Line Endings
+I&#39;m still not 100% clear what happened here. We manage a number of GIT repos on Windows &amp; Mac, and have not had this issue before. Upon committing changes to a project, from the Windows machine, all the line endings were converted to CRLF. This caused problems with Rake. My inital attempts to fix the issue on a Mac resulted in me corrupting the Sqlite3 development database, so for the remainder of this fix, assume I&#39;ve temporarily moved the db (along with all other binary files, i.e. images) out of the directory structure.</p>
 <p>From the project root, on a Mac, I ran the following:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>find . -type f -not -path <span class="s2">&quot;./.git/*&quot;</span> -exec perl -pi -e <span class="s1">&#39;s/\r\n|\n|\r/\n/g&#39;</span> <span class="o">{}</span> <span class="se">\;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
+<pre><code class="lang-bash">find . -type f -not -path &quot;./.git/*&quot; -exec perl -pi -e &#39;s/\r\n|\n|\r/\n/g&#39; {} \;
+</code></pre>
 <p>From Linux, you can run:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>find . -type f -not -path <span class="s2">&quot;./.git/*&quot;</span> -exec dos2unix <span class="o">{}</span> <span class="se">\;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
+<pre><code class="lang-bash">find . -type f -not -path &quot;./.git/*&quot; -exec dos2unix {} \;
+</code></pre>
 <p>The above, replaces CRLF with LF for all files in the GIT repo.</p>
-
 <p>After readding the database, I ran <code>rails server</code> to check for obvious issues; all seemed well. As per this <a href="https://help.github.com/articles/dealing-with-line-endings/#platform-windows">Github article</a>, I ran the following on the Windows machine:</p>
+<pre><code class="lang-bat">git config --global core.autocrlf true
+</code></pre>
+<p>The above, gets GIT to manage line endings on Windows machines, to keep them in sync with GIT&#39;s base line ending (LF).</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bat'><span class='line'>git config --global core.autocrlf true
-</span></code></pre></td></tr></table></div></figure>
+		</div>
 
+		<footer>
+			<p class="meta">
+				<span class="byline author vcard">
+					Posted by <span class="fn">Richard Kimber</span>
+				</span>
+				
+	<time class='entry-date' datetime='2015-01-22T19:53:44+00:00'>
+		<span class='date'>
+			<span class='date-month'>Jan</span>
+			<span class='date-day'>22</span><span class='date-suffix'>nd</span>,
+			<span class='date-year'>2015</span>
+		</span>
+		<span class='time'>19:53</span>
+	</time>
 
-<p>The above, gets GIT to manage line endings on Windows machines, to keep them in sync with GIT&rsquo;s base line ending (LF).</p>
-</div>
+				
+	<span class="categories">
+			posted in
+			<a class='category' href='/blog/categories/rails'>Rails</a>,
+			<a class='category' href='/blog/categories/windows'>Windows</a>,
+			<a class='category' href='/blog/categories/node'>Node</a>,
+			<a class='category' href='/blog/categories/tips'>Tips</a>
+			</span>
+		
+			</p>
 
+			<div class="sharing">
+				<a href="//twitter.com/share" class="twitter-share-button" data-url="http://rich.k3r.me/blog/2015/01/22/railsinstaller-ruby-2-dot-1-on-windows-8-dot-1/" data-via="kim3er" data-counturl="http://rich.k3r.me/blog/2015/01/22/railsinstaller-ruby-2-dot-1-on-windows-8-dot-1/">
+					Tweet
+				</a>
+				<div class="g-plusone" data-size="medium"></div>
+				<div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+			</div>
 
-  <footer>
-    <p class="meta">
-      
-  
+			<p class="meta">
+				
+					<a class="basic-alignment left" href="/blog/2015/01/20/finding-a-pair-of-headphones/" title="Previous Post: Finding a pair of headphones">&laquo; Finding a pair of headphones</a>
+				
 
-<span class="byline author vcard">Posted by <span class="fn">Richard Kimber</span></span>
+				
+					<a class="basic-alignment right" href="/blog/2015/01/22/shutting-the-world-out/" title="Next Post: Finding a pair of headphones">&laquo; Shutting the world out</a>
+				
+			</p>
+		</footer>
+	</article>
 
-      
-
-
-
-
-<time class='entry-date' datetime='2015-01-22T19:53:44+00:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>7:53 pm</span></time>
-      
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/node/'>node</a>, <a class='category' href='/blog/categories/rails/'>rails</a>, <a class='category' href='/blog/categories/tips/'>tips</a>, <a class='category' href='/blog/categories/windows/'>windows</a>
-  
-</span>
-
-
-    </p>
-    
-      <div class="sharing">
-  
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://rich.k3r.me/blog/2015/01/22/railsinstaller-ruby-2-dot-1-on-windows-8-dot-1/" data-via="kim3er" data-counturl="http://rich.k3r.me/blog/2015/01/22/railsinstaller-ruby-2-dot-1-on-windows-8-dot-1/" >Tweet</a>
-  
-  
-  <div class="g-plusone" data-size="medium"></div>
-  
-  
-    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
-  
-</div>
-
-    
-    <p class="meta">
-      
-        <a class="basic-alignment left" href="/blog/2015/01/20/finding-a-pair-of-headphones/" title="Previous Post: Finding a pair of headphones">&laquo; Finding a pair of headphones</a>
-      
-      
-        <a class="basic-alignment right" href="/blog/2015/01/22/shutting-the-world-out/" title="Next Post: Shutting the world out">Shutting the world out &raquo;</a>
-      
-    </p>
-  </footer>
-</article>
-
-  <section>
-    <h1>Comments</h1>
-    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-</div>
-  </section>
+	<section>
+		<h1>Comments</h1>
+		<div id="disqus_thread" aria-live="polite">
+			<noscript>
+				Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+			</noscript>
+		</div>
+	</section>
 
 </div>
-
-<aside class="sidebar">
-  
-    <section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2015/06/16/async-slash-await-readable-non-blocking-code/">Async/await, Readable Non-blocking Code</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/20/simple-routing-with-javascript-decorators/">Simple Routing With JavaScript Decorators</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/04/29/empty-promises-dos-and-donts-of-es6-promises/">Empty Promises: Dos and Don&#8217;ts of ES6 Promises</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/04/25/a-punnet-size-guide-to-git-cherry-picking/">A Punnet Size Guide to Git Cherry Picking</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/04/21/there-is-no-spoon/">There Is No Spoon</a>
-      </li>
-    
-  </ul>
-</section>
-
-<section>
-  <h1>GitHub Repos</h1>
-  <ul id="gh_repos">
-    <li class="loading">Status updating&#8230;</li>
-  </ul>
-  
-  <a href="https://github.com/kim3er">@kim3er</a> on GitHub
-  
-  <script type="text/javascript">
-    $(document).ready(function(){
-        if (!window.jXHR){
-            var jxhr = document.createElement('script');
-            jxhr.type = 'text/javascript';
-            jxhr.src = '/javascripts/libs/jXHR.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(jxhr, s);
-        }
-
-        github.showRepos({
-            user: 'kim3er',
-            count: 0,
-            skip_forks: true,
-            target: '#gh_repos'
-        });
-    });
-  </script>
-  <script src="/javascripts/github.js" type="text/javascript"> </script>
-</section>
-
-
-
-<section class="googleplus">
-  <h1>
-    <a href="https://plus.google.com/RichardKimber?rel=author">
-      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
-      Google+
-    </a>
-  </h1>
-</section>
-
-
-
-  
-</aside>
-
-
-    </div>
-  </div>
-  <footer role="contentinfo"><p>
-  Copyright &copy; 2015 - Richard Kimber -
-  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
-</p>
-
-</footer>
-  
 
 <script type="text/javascript">
       var disqus_shortname = 'k3r';
-      
-        
+
         // var disqus_developer = 1;
         var disqus_identifier = 'http://rich.k3r.me/blog/2015/01/22/railsinstaller-ruby-2-dot-1-on-windows-8-dot-1/';
         var disqus_url = 'http://rich.k3r.me/blog/2015/01/22/railsinstaller-ruby-2-dot-1-on-windows-8-dot-1/';
         var disqus_script = 'embed.js';
-      
+
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
       dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
@@ -367,42 +225,54 @@
     }());
 </script>
 
+		</div>
+	</div>
 
+	<footer role="contentinfo">
+		<p>
+			Copyright &copy; 2016 - Richard Kimber -
+			<span class="credit">Powered by <a href="http://rich.k3r.me">Mistletoe</a></span>
+		</p>
+	</footer>
 
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) {return;}
-  js = d.createElement(s); js.id = id; js.async = true;
-  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
+	<script type="text/javascript">
+		var disqus_shortname = 'k3r';
+		var disqus_script = 'count.js';
 
+		(function () {
+			var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+			dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+			(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+		}());
+	</script>
 
+	<div id="fb-root"></div>
+	<script>(function(d, s, id) {
+		var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) {return;}
+			js = d.createElement(s); js.id = id; js.async = true;
+			js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+	</script>
 
-  <script type="text/javascript">
-    (function() {
-      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
-      script.src = 'https://apis.google.com/js/plusone.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
-    })();
-  </script>
+	<script type="text/javascript">
+		(function() {
+			var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+			script.src = 'https://apis.google.com/js/plusone.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+		})();
+	</script>
 
-
-
-  <script type="text/javascript">
-    (function(){
-      var twitterWidgets = document.createElement('script');
-      twitterWidgets.type = 'text/javascript';
-      twitterWidgets.async = true;
-      twitterWidgets.src = '//platform.twitter.com/widgets.js';
-      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
-    })();
-  </script>
-
-
-
-
+	<script type="text/javascript">
+		(function(){
+			var twitterWidgets = document.createElement('script');
+			twitterWidgets.type = 'text/javascript';
+			twitterWidgets.async = true;
+			twitterWidgets.src = '//platform.twitter.com/widgets.js';
+			document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+		})();
+	</script>
 
 </body>
 </html>

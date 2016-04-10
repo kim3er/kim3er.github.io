@@ -1,625 +1,353 @@
-
 <!DOCTYPE html>
 <!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
 <!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
-  <meta charset="utf-8">
-  <title>In the Name of Gulp - Adventures in brine</title>
-  <meta name="author" content="Richard Kimber">
+	<meta charset="utf-8">
+	<title>In the name of Gulp Adventures in brine</title>
+	<meta name="author" content="Richard Kimber">
 
-  
-  <meta name="description" content="TL;DR: Use Gulp 4 if you care about task management. If you can&rsquo;t use Gulp 4, use Gulp 3 with &lsquo;runSequence&rsquo;. Also, I need to start &hellip;">
-  
+	<meta name="description" content="TL;DR:Use Gulp 4 if you care about task management. If you can&amp;#39;t use Gulp 4, use Gulp 3 with &amp;#39;runSequence&amp;#39;. Also, I need to start reading documentation more and assuming less.
+NOTE:You see the code over at Github.
+The release of Gulp 4 is right around the corner, but you can already use it on the 4.0 branch. Here is why you should.
+">
+	<!-- http://t.co/dKP3o1e -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- http://t.co/dKP3o1e -->
-  <meta name="HandheldFriendly" content="True">
-  <meta name="MobileOptimized" content="320">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="canonical" href="http://rich.k3r.me">
+	<link href="/favicon.png" rel="icon">
+	<link href="/stylesheets/reset.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link href="/atom.xml" rel="alternate" title="Adventures in brine" type="application/atom+xml">
 
-  
-  <link rel="canonical" href="http://rich.k3r.me/blog/2015/03/23/in-the-name-of-gulp">
-  <link href="/favicon.png" rel="icon">
-  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="Adventures in brine" type="application/atom+xml">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
 
-  
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-56802309-1']);
-    _gaq.push(['_trackPageview']);
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+	<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
 
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-56802309-1']);
+		_gaq.push(['_trackPageview']);
 
-
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
 </head>
 
-<body   >
-  <header role="banner"><hgroup>
-  <h1><a href="/">Adventures in brine</a></h1>
-  
-    <h2>A blog about code and coding.</h2>
-  
-</hgroup>
+<body>
+	<header role="banner">
+		<hgroup>
+			<h1>
+				<a href="/">Adventures in brine</a>
+			</h1>
 
-</header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
-</ul>
-  
-<form action="https://www.google.com/search" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="sitesearch" value="rich.k3r.me">
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  
-<ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
-  <li><a href="/blog/archives">Archives</a></li>
-</ul>
+			<h2>A blog about code and coding.</h2>
+		</hgroup>
+	</header>
 
-</nav>
-  <div id="main">
-    <div id="content">
-      <div>
-<article class="hentry" role="article">
-  
-  <header>
-    
-      <h1 class="entry-title">In the Name of Gulp</h1>
-    
-    
-      <p class="meta">
-        
+	<nav role="navigation">
+		<ul class="subscription" data-subscription="rss">
+			<li>
+				<a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a>
+			</li>
+		</ul>
 
+		<form action="https://www.google.com/search" method="get">
+			<fieldset role="search">
+				<input type="hidden" name="sitesearch" value="rich.k3r.me">
+				<input class="search" type="text" name="q" results="0" placeholder="Search"/>
+			</fieldset>
+		</form>
 
+		<ul class="main-navigation">
+			<li><a href="/">Blog</a></li>
+			<li><a href="/blog/archives">Archives</a></li>
+		</ul>
+	</nav>
 
+	<div id="main">
+		<div id="content">
+			
+<div>
+	<article class="hentry" role="article">
+		<header>
+			<h1 class="entry-title">
+				In the name of Gulp
+			</h1>
 
-<time class='entry-date' datetime='2015-03-23T22:41:47+00:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>10:41 pm</span></time>
-        
-           | <a href="#disqus_thread"
-             data-disqus-identifier="http://rich.k3r.me">Comments</a>
-        
-      </p>
-    
-  </header>
+			<p class="meta">
+				
+	<time class='entry-date' datetime='2015-03-23T22:41:47+00:00'>
+		<span class='date'>
+			<span class='date-month'>Mar</span>
+			<span class='date-day'>23</span><span class='date-suffix'>rd</span>,
+			<span class='date-year'>2015</span>
+		</span>
+		<span class='time'>22:41</span>
+	</time>
 
+				| 
+<a href="/blog/2015/03/23/in-the-name-of-gulp/#disqus_thread"
+				data-disqus-identifier="http://rich.k3r.me/blog/2015/03/23/in-the-name-of-gulp/">Comments</a>
 
-<div class="entry-content"><p><em><strong>TL;DR:</strong> Use Gulp 4 if you care about task management. If you can&rsquo;t use Gulp 4, use Gulp 3 with &lsquo;runSequence&rsquo;. Also, I need to start reading documentation more and assuming less.</em></p>
+			</p>
+		</header>
 
-<p><em><strong>NOTE:</strong> You see the code over at <a href="https://github.com/kim3er/gulp-4-demo">Github</a>.</em></p>
-
+		<div class="entry-content">
+			<p><em><strong>TL;DR:</strong>Use Gulp 4 if you care about task management. If you can&#39;t use Gulp 4, use Gulp 3 with &#39;runSequence&#39;. Also, I need to start reading documentation more and assuming less.</em></p>
+<p><em><strong>NOTE:</strong>You see the code over at <a href="https://github.com/kim3er/gulp-4-demo">Github</a>.</em></p>
 <p>The release of Gulp 4 is right around the corner, but you can already use it on the <a href="https://github.com/gulpjs/gulp/tree/4.0">4.0 branch</a>. Here is why you should.</p>
-
 <!-- more -->
-
-
-<h2>Feelings of inadequacy</h2>
-
+<p>##Feelings of inadequacy</p>
 <p>When <a href="http://gruntjs.com/">Grunt</a> gained popularity, I was excited by the premise, but underwhelmed by the execution. I feel this is more due to a deficiency on my part, rather than an actual problem with Grunt, given the <a href="http://gruntjs.com/development-team">team</a> behind it. Just looking at the <a href="http://gruntjs.com/getting-started">Getting Started</a> page causes static to course through my brain. #brains</p>
-
-<p>This feeling of inadequacy stayed with me until I found <a href="https://github.com/gulpjs/gulp">Gulp</a>. Gulp&rsquo;s barrier to entry seems a lot lower than Grunt&rsquo;s, it&rsquo;s really a tool you can just run with. Now I feel great about myself, now that I&rsquo;ve found &lsquo;my people&rsquo;. Amen brothers and sisters, this is the house of Gulp.</p>
-
-<h2>Asynchronous shrubs</h2>
-
-<p>It&rsquo;s not all roses in the garden of Gulp 3 though, well maybe it is, but those roses have thorns. And those thorns all bare the words &lsquo;async callbacks&rsquo;. If you&rsquo;ve ever considered Gulp tasks to be modular, building blocks of larger tasks, then you&rsquo;ve probably faced the same disappointment that I have, that they&rsquo;re not.</p>
-
+<p>This feeling of inadequacy stayed with me until I found <a href="https://github.com/gulpjs/gulp">Gulp</a>. Gulp&#39;s barrier to entry seems a lot lower than Grunt&#39;s, it&#39;s really a tool you can just run with. Now I feel great about myself, now that I&#39;ve found &#39;my people&#39;. Amen brothers and sisters, this is the house of Gulp.</p>
+<p>##Asynchronous shrubs</p>
+<p>It&#39;s not all roses in the garden of Gulp 3 though, well maybe it is, but those roses have thorns. And those thorns all bare the words &#39;async callbacks&#39;. If you&#39;ve ever considered Gulp tasks to be modular, building blocks of larger tasks, then you&#39;ve probably faced the same disappointment that I have, that they&#39;re not.</p>
 <p>Take this simple gulpfile:</p>
+<pre><code class="lang-js">var gulp = require(&#39;gulp&#39;)
+    sass = require(&#39;gulp-sass&#39;),
+    babel = require(&#39;gulp-babel&#39;),
+    del = require(&#39;del&#39;);
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">)</span>
-</span><span class='line'>  <span class="nx">sass</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-sass&#39;</span><span class="p">),</span>
-</span><span class='line'>  <span class="nx">babel</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-babel&#39;</span><span class="p">),</span>
-</span><span class='line'>  <span class="nx">del</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;del&#39;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">var</span> <span class="nx">DEST</span> <span class="o">=</span> <span class="s1">&#39;./dest&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nx">SRC</span> <span class="o">=</span> <span class="s1">&#39;./src&#39;</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;clean&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">del</span><span class="p">(</span><span class="nx">DEST</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;stylesheets&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="nx">SRC</span> <span class="o">+</span> <span class="s1">&#39;/app.scss&#39;</span><span class="p">)</span>
-</span><span class='line'>      <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">sass</span><span class="p">())</span>
-</span><span class='line'>      <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="nx">DEST</span><span class="p">));</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;javascripts&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="nx">SRC</span> <span class="o">+</span> <span class="s1">&#39;/app.js&#39;</span><span class="p">)</span>
-</span><span class='line'>      <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">babel</span><span class="p">({</span> <span class="nx">blacklist</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;useStrict&#39;</span> <span class="p">]</span> <span class="p">}))</span>
-</span><span class='line'>      <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="nx">DEST</span><span class="p">));</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;html&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="nx">SRC</span> <span class="o">+</span> <span class="s1">&#39;/app.html&#39;</span><span class="p">)</span>
-</span><span class='line'>      <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="nx">DEST</span><span class="p">));</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s1">&#39;clean&#39;</span><span class="p">,</span> <span class="s1">&#39;stylesheets&#39;</span><span class="p">,</span> <span class="s1">&#39;javascripts&#39;</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span> <span class="p">],</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
+var DEST = &#39;./dest&#39;,
+    SRC = &#39;./src&#39;;
 
+gulp.task(&#39;clean&#39;, function(cb) {
+    del(DEST, cb);
+});
 
+gulp.task(&#39;stylesheets&#39;, function() {
+    return gulp.src(SRC + &#39;/app.scss&#39;)
+        .pipe(sass())
+        .pipe(gulp.dest(DEST));
+});
+
+gulp.task(&#39;javascripts&#39;, function() {
+    return gulp.src(SRC + &#39;/app.js&#39;)
+        .pipe(babel({ blacklist: [ &#39;useStrict&#39; ] }))
+        .pipe(gulp.dest(DEST));
+});
+
+gulp.task(&#39;html&#39;, function() {
+    return gulp.src(SRC + &#39;/app.html&#39;)
+        .pipe(gulp.dest(DEST));
+});
+
+gulp.task(&#39;default&#39;, [ &#39;clean&#39;, &#39;stylesheets&#39;, &#39;javascripts&#39;, &#39;html&#39; ], function() {
+
+});
+</code></pre>
 <p>The script above takes the contents of <code>src</code> and sticks it in <code>dest</code>. There is a problem with the script above, that becomes apparent when you check the output:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>22:02:10<span class="o">]</span> Starting <span class="s1">&#39;clean&#39;</span>...
-</span><span class='line'><span class="o">[</span>22:02:10<span class="o">]</span> Starting <span class="s1">&#39;stylesheets&#39;</span>...
-</span><span class='line'><span class="o">[</span>22:02:10<span class="o">]</span> Starting <span class="s1">&#39;javascripts&#39;</span>...
-</span><span class='line'><span class="o">[</span>22:02:10<span class="o">]</span> Starting <span class="s1">&#39;html&#39;</span>...
-</span><span class='line'><span class="o">[</span>22:02:10<span class="o">]</span> Finished <span class="s1">&#39;clean&#39;</span> after <span class="m">23</span> ms
-</span><span class='line'><span class="o">[</span>22:02:10<span class="o">]</span> Finished <span class="s1">&#39;javascripts&#39;</span> after <span class="m">48</span> ms
-</span><span class='line'><span class="o">[</span>22:02:10<span class="o">]</span> Finished <span class="s1">&#39;html&#39;</span> after <span class="m">45</span> ms
-</span><span class='line'><span class="o">[</span>22:02:10<span class="o">]</span> Finished <span class="s1">&#39;stylesheets&#39;</span> after <span class="m">55</span> ms
-</span><span class='line'><span class="o">[</span>22:02:10<span class="o">]</span> Starting <span class="s1">&#39;default&#39;</span>...
-</span><span class='line'><span class="o">[</span>22:02:10<span class="o">]</span> Finished <span class="s1">&#39;default&#39;</span> after <span class="m">12</span> μs
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Look at the fifth entry, it&rsquo;s the <code>clean</code> task finishing after 23 milliseconds, after all the other tasks have already started. So the clean script is still deleting stuff after the other tasks have started moving their stuff across.</p>
-
-<h2>Something funny about iteration</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s1">&#39;clean&#39;</span> <span class="p">],</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="p">[</span> <span class="s1">&#39;stylesheets&#39;</span><span class="p">,</span> <span class="s1">&#39;javascripts&#39;</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span> <span class="p">].</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">taskName</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">gulp</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="nx">taskName</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>With the <code>default</code> task above, the <code>clean</code> task will complete before any other task starts; no more conflict. Thing is though, looking at the output, the <code>default</code> task is the first to finish after <code>clean</code>. Because Gulp tasks are asynchronous (non blocking), the <code>default</code> task has no reason to hang around waiting for all the tasks in the <code>forEach</code> to complete; the code is only interested in starting each task. This isn&rsquo;t a big deal in our example, but what if you then needed to add a third step?</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;build&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s1">&#39;clean&#39;</span> <span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="p">[</span> <span class="s1">&#39;stylesheets&#39;</span><span class="p">,</span> <span class="s1">&#39;javascripts&#39;</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span> <span class="p">].</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">taskName</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">gulp</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="nx">taskName</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'>  <span class="nx">cb</span><span class="p">();</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;deploy&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s1">&#39;build&#39;</span> <span class="p">],</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;deploy!&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s1">&#39;deploy&#39;</span> <span class="p">],</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Check out the output:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>22:28:20<span class="o">]</span> Starting <span class="s1">&#39;clean&#39;</span>...
-</span><span class='line'><span class="o">[</span>22:28:20<span class="o">]</span> Finished <span class="s1">&#39;clean&#39;</span> after 8.59 ms
-</span><span class='line'><span class="o">[</span>22:28:20<span class="o">]</span> Starting <span class="s1">&#39;build&#39;</span>...
-</span><span class='line'><span class="o">[</span>22:28:20<span class="o">]</span> Starting <span class="s1">&#39;stylesheets&#39;</span>...
-</span><span class='line'><span class="o">[</span>22:28:20<span class="o">]</span> Starting <span class="s1">&#39;javascripts&#39;</span>...
-</span><span class='line'><span class="o">[</span>22:28:20<span class="o">]</span> Starting <span class="s1">&#39;html&#39;</span>...
-</span><span class='line'><span class="o">[</span>22:28:20<span class="o">]</span> Finished <span class="s1">&#39;build&#39;</span> after <span class="m">10</span> ms
-</span><span class='line'><span class="o">[</span>22:28:20<span class="o">]</span> Starting <span class="s1">&#39;deploy&#39;</span>...
-</span><span class='line'>deploy!
-</span><span class='line'><span class="o">[</span>22:28:20<span class="o">]</span> Finished <span class="s1">&#39;deploy&#39;</span> after <span class="m">59</span> μs
-</span><span class='line'><span class="o">[</span>22:28:20<span class="o">]</span> Starting <span class="s1">&#39;default&#39;</span>...
-</span><span class='line'><span class="o">[</span>22:28:20<span class="o">]</span> Finished <span class="s1">&#39;default&#39;</span> after 2.89 μs
-</span><span class='line'><span class="o">[</span>22:28:20<span class="o">]</span> Finished <span class="s1">&#39;html&#39;</span> after <span class="m">42</span> ms
-</span><span class='line'><span class="o">[</span>22:28:20<span class="o">]</span> Finished <span class="s1">&#39;javascripts&#39;</span> after <span class="m">45</span> ms
-</span><span class='line'><span class="o">[</span>22:28:20<span class="o">]</span> Finished <span class="s1">&#39;stylesheets&#39;</span> after <span class="m">52</span> ms
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The <code>deploy</code> task finishes before the <code>build</code> tasks have completed, which is obviously not ideal!</p>
-
-<h2>My &lsquo;go to&rsquo; for async code (given up on the &lsquo;humor&rsquo;)</h2>
-
-<p>I had expected to find that the <code>start</code> function would support a callback or even an event emitter. That being the case, we could use something like <a href="https://github.com/caolan/async">async</a> (a neat package for dealing with asynchronous code) to do something like:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">async</span>
-</span><span class='line'>  <span class="p">.</span><span class="nx">eachSeries</span><span class="p">(</span>
-</span><span class='line'>      <span class="p">[</span> <span class="s1">&#39;stylesheets&#39;</span><span class="p">,</span> <span class="s1">&#39;javascripts&#39;</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span> <span class="p">],</span>
-</span><span class='line'>      <span class="kd">function</span><span class="p">(</span><span class="nx">taskName</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>          <span class="nx">gulp</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="nx">taskName</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">callback</span><span class="p">();</span> <span class="p">});</span>
-</span><span class='line'>          <span class="c1">// or</span>
-</span><span class='line'>          <span class="c1">// gulp.start(taskName).on(&#39;end&#39;, callback);</span>
-</span><span class='line'>      <span class="p">},</span>
-</span><span class='line'>      <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>          <span class="nx">cb</span><span class="p">()</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>  <span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>But alas, not. The <code>start</code> function is fire and forget. In the example above, crazy stuff happens in the output:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>20:34:15<span class="o">]</span> Starting <span class="s1">&#39;clean&#39;</span>...
-</span><span class='line'><span class="o">[</span>20:34:15<span class="o">]</span> Finished <span class="s1">&#39;clean&#39;</span> after 8.25 ms
-</span><span class='line'><span class="o">[</span>20:34:15<span class="o">]</span> Starting <span class="s1">&#39;build&#39;</span>...
-</span><span class='line'><span class="o">[</span>20:34:15<span class="o">]</span> Starting <span class="s1">&#39;stylesheets&#39;</span>...
-</span><span class='line'><span class="o">[</span>20:34:15<span class="o">]</span> Finished <span class="s1">&#39;stylesheets&#39;</span> after <span class="m">25</span> ms
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>&lsquo;runSequence&rsquo;, a beautiful stopgap</h2>
-
-<p>What you need, is an unassuming, wicked little plugin called <a href="https://www.npmjs.com/package/run-sequence">run-sequence</a>. Using &lsquo;run-sequence&rsquo;, you can do something like:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;build&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s1">&#39;clean&#39;</span> <span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">runSequence</span><span class="p">(</span>
-</span><span class='line'>      <span class="p">[</span> <span class="s1">&#39;stylesheets&#39;</span><span class="p">,</span> <span class="s1">&#39;javascripts&#39;</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span> <span class="p">],</span>
-</span><span class='line'>      <span class="nx">cb</span>
-</span><span class='line'>  <span class="p">);</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You can see from the output that we get exactly what we want:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>20:41:34<span class="o">]</span> Starting <span class="s1">&#39;clean&#39;</span>...
-</span><span class='line'><span class="o">[</span>20:41:34<span class="o">]</span> Finished <span class="s1">&#39;clean&#39;</span> after 8.18 ms
-</span><span class='line'><span class="o">[</span>20:41:34<span class="o">]</span> Starting <span class="s1">&#39;build&#39;</span>...
-</span><span class='line'><span class="o">[</span>20:41:34<span class="o">]</span> Starting <span class="s1">&#39;stylesheets&#39;</span>...
-</span><span class='line'><span class="o">[</span>20:41:34<span class="o">]</span> Starting <span class="s1">&#39;javascripts&#39;</span>...
-</span><span class='line'><span class="o">[</span>20:41:34<span class="o">]</span> Starting <span class="s1">&#39;html&#39;</span>...
-</span><span class='line'><span class="o">[</span>20:41:34<span class="o">]</span> Finished <span class="s1">&#39;html&#39;</span> after <span class="m">44</span> ms
-</span><span class='line'><span class="o">[</span>20:41:34<span class="o">]</span> Finished <span class="s1">&#39;stylesheets&#39;</span> after <span class="m">54</span> ms
-</span><span class='line'><span class="o">[</span>20:41:34<span class="o">]</span> Finished <span class="s1">&#39;javascripts&#39;</span> after <span class="m">49</span> ms
-</span><span class='line'><span class="o">[</span>20:41:34<span class="o">]</span> Finished <span class="s1">&#39;build&#39;</span> after <span class="m">56</span> ms
-</span><span class='line'><span class="o">[</span>20:41:34<span class="o">]</span> Starting <span class="s1">&#39;deploy&#39;</span>...
-</span><span class='line'>deploy!
-</span><span class='line'><span class="o">[</span>20:41:34<span class="o">]</span> Finished <span class="s1">&#39;deploy&#39;</span> after <span class="m">81</span> μs
-</span><span class='line'><span class="o">[</span>20:41:34<span class="o">]</span> Starting <span class="s1">&#39;default&#39;</span>...
-</span><span class='line'><span class="o">[</span>20:41:34<span class="o">]</span> Finished <span class="s1">&#39;default&#39;</span> after 3.88 μs
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>&lsquo;run-sequence&rsquo; is cool, but there is a better way.</p>
-
-<h2>The point of the post</h2>
-
-<p>Gulp 4 uses <a href="https://github.com/phated/undertaker">undertaker</a> for task management. This is significant because &lsquo;undertaker&rsquo; supports the chaining of series and parallel tasks. In order to make use of this functionality, you need to install the prerelease version of Gulp, which is easily done by following this <a href="http://demisx.github.io/gulp4/2015/01/15/install-gulp4.html">guide</a>.</p>
-
-<p>You can see examples of series and parallel functionality, <a href="https://github.com/gulpjs/gulp/blob/4.0/docs/recipes/running-tasks-in-series.md">here</a>, but check this out:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;build&#39;</span><span class="p">,</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">series</span><span class="p">(</span><span class="s1">&#39;clean&#39;</span><span class="p">,</span> <span class="s1">&#39;stylesheets&#39;</span><span class="p">,</span> <span class="s1">&#39;javascripts&#39;</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span><span class="p">));</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;deploy&#39;</span><span class="p">,</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">series</span><span class="p">(</span><span class="s1">&#39;build&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;deploy!&#39;</span><span class="p">);</span>
-</span><span class='line'>  <span class="nx">cb</span><span class="p">();</span>
-</span><span class='line'><span class="p">}));</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">series</span><span class="p">(</span><span class="s1">&#39;deploy&#39;</span><span class="p">));</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The difference here is that the dependancies array and callback have been replaced with chain-able <code>series</code> functions. You can see from the output below that, while the <code>deploy</code> task appears to start too early, the <code>console.log</code> demonstrates that the meat and veg of the task runs when it needs to.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Starting <span class="s1">&#39;default&#39;</span>...
-</span><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Starting <span class="s1">&#39;deploy&#39;</span>...
-</span><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Starting <span class="s1">&#39;build&#39;</span>...
-</span><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Starting <span class="s1">&#39;clean&#39;</span>...
-</span><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Finished <span class="s1">&#39;clean&#39;</span> after 8.95 ms
-</span><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Starting <span class="s1">&#39;stylesheets&#39;</span>...
-</span><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Finished <span class="s1">&#39;stylesheets&#39;</span> after <span class="m">17</span> ms
-</span><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Starting <span class="s1">&#39;javascripts&#39;</span>...
-</span><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Finished <span class="s1">&#39;javascripts&#39;</span> after <span class="m">32</span> ms
-</span><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Starting <span class="s1">&#39;html&#39;</span>...
-</span><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Finished <span class="s1">&#39;html&#39;</span> after 2.98 ms
-</span><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Finished <span class="s1">&#39;build&#39;</span> after <span class="m">62</span> ms
-</span><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Starting <span class="s1">&#39;&lt;anonymous&gt;&#39;</span>...
-</span><span class='line'>deploy!
-</span><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Finished <span class="s1">&#39;&lt;anonymous&gt;&#39;</span> after <span class="m">222</span> μs
-</span><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Finished <span class="s1">&#39;deploy&#39;</span> after <span class="m">63</span> ms
-</span><span class='line'><span class="o">[</span>21:39:29<span class="o">]</span> Finished <span class="s1">&#39;default&#39;</span> after <span class="m">65</span> ms
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>To sum up. Gulp 4 is a huge step forward in terms of task management. I&rsquo;ve had no problems with v4 so far, but if you need to hang with v3 for a little while longer, &lsquo;run-sequence&rsquo; is a good option.</p>
-</div>
-
-
-  <footer>
-    <p class="meta">
-      
-  
-
-<span class="byline author vcard">Posted by <span class="fn">Richard Kimber</span></span>
-
-      
-
-
-
-
-<time class='entry-date' datetime='2015-03-23T22:41:47+00:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>10:41 pm</span></time>
-      
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/gulp/'>gulp</a>, <a class='category' href='/blog/categories/javascript/'>javascript</a>, <a class='category' href='/blog/categories/task-runners/'>task runners</a>
-  
-</span>
-
-
-    </p>
-    
-      <div class="sharing">
-  
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://rich.k3r.me/blog/2015/03/23/in-the-name-of-gulp/" data-via="kim3er" data-counturl="http://rich.k3r.me/blog/2015/03/23/in-the-name-of-gulp/" >Tweet</a>
-  
-  
-  <div class="g-plusone" data-size="medium"></div>
-  
-  
-    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
-  
-</div>
-
-    
-    <p class="meta">
-      
-        <a class="basic-alignment left" href="/blog/2015/03/05/comics-the-drm-effect/" title="Previous Post: Comics: The DRM effect">&laquo; Comics: The DRM effect</a>
-      
-      
-        <a class="basic-alignment right" href="/blog/2015/04/02/controlling-cordova-from-gulp/" title="Next Post: Controlling Cordova from Gulp">Controlling Cordova from Gulp &raquo;</a>
-      
-    </p>
-  </footer>
-</article>
-
-  <section>
-    <h1>Comments</h1>
-    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-</div>
-  </section>
-
-</div>
-
-<aside class="sidebar">
-  
-    <section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2015/06/16/async-slash-await-readable-non-blocking-code/">Async/await, Readable Non-blocking Code</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/20/simple-routing-with-javascript-decorators/">Simple Routing With JavaScript Decorators</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/04/29/empty-promises-dos-and-donts-of-es6-promises/">Empty Promises: Dos and Don&#8217;ts of ES6 Promises</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/04/25/a-punnet-size-guide-to-git-cherry-picking/">A Punnet Size Guide to Git Cherry Picking</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/04/21/there-is-no-spoon/">There Is No Spoon</a>
-      </li>
-    
-  </ul>
-</section>
-
-<section>
-  <h1>GitHub Repos</h1>
-  <ul id="gh_repos">
-    <li class="loading">Status updating&#8230;</li>
-  </ul>
-  
-  <a href="https://github.com/kim3er">@kim3er</a> on GitHub
-  
-  <script type="text/javascript">
-    $(document).ready(function(){
-        if (!window.jXHR){
-            var jxhr = document.createElement('script');
-            jxhr.type = 'text/javascript';
-            jxhr.src = '/javascripts/libs/jXHR.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(jxhr, s);
-        }
-
-        github.showRepos({
-            user: 'kim3er',
-            count: 0,
-            skip_forks: true,
-            target: '#gh_repos'
-        });
+<pre><code class="lang-bash">[22:02:10] Starting &#39;clean&#39;...
+[22:02:10] Starting &#39;stylesheets&#39;...
+[22:02:10] Starting &#39;javascripts&#39;...
+[22:02:10] Starting &#39;html&#39;...
+[22:02:10] Finished &#39;clean&#39; after 23 ms
+[22:02:10] Finished &#39;javascripts&#39; after 48 ms
+[22:02:10] Finished &#39;html&#39; after 45 ms
+[22:02:10] Finished &#39;stylesheets&#39; after 55 ms
+[22:02:10] Starting &#39;default&#39;...
+[22:02:10] Finished &#39;default&#39; after 12 μs
+</code></pre>
+<p>Look at the fifth entry, it&#39;s the <code>clean</code> task finishing after 23 milliseconds, after all the other tasks have already started. So the clean script is still deleting stuff after the other tasks have started moving their stuff across.</p>
+<p>##Something funny about iteration</p>
+<pre><code class="lang-js">gulp.task(&#39;default&#39;, [ &#39;clean&#39; ], function() {
+    [ &#39;stylesheets&#39;, &#39;javascripts&#39;, &#39;html&#39; ].forEach(function(taskName) {
+        gulp.start(taskName);
     });
-  </script>
-  <script src="/javascripts/github.js" type="text/javascript"> </script>
-</section>
+});
+</code></pre>
+<p>With the <code>default</code> task above, the <code>clean</code> task will complete before any other task starts; no more conflict. Thing is though, looking at the output, the <code>default</code> task is the first to finish after <code>clean</code>. Because Gulp tasks are asynchronous (non blocking), the <code>default</code> task has no reason to hang around waiting for all the tasks in the <code>forEach</code> to complete; the code is only interested in starting each task. This isn&#39;t a big deal in our example, but what if you then needed to add a third step?</p>
+<pre><code class="lang-js">gulp.task(&#39;build&#39;, [ &#39;clean&#39; ], function(cb) {
+    [ &#39;stylesheets&#39;, &#39;javascripts&#39;, &#39;html&#39; ].forEach(function(taskName) {
+        gulp.start(taskName);
+    });
+    cb();
+});
 
+gulp.task(&#39;deploy&#39;, [ &#39;build&#39; ], function() {
+    console.log(&#39;deploy!&#39;);
+});
 
+gulp.task(&#39;default&#39;, [ &#39;deploy&#39; ], function() {
 
-<section class="googleplus">
-  <h1>
-    <a href="https://plus.google.com/RichardKimber?rel=author">
-      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
-      Google+
-    </a>
-  </h1>
-</section>
+});
+</code></pre>
+<p>Check out the output:</p>
+<pre><code class="lang-bash">[22:28:20] Starting &#39;clean&#39;...
+[22:28:20] Finished &#39;clean&#39; after 8.59 ms
+[22:28:20] Starting &#39;build&#39;...
+[22:28:20] Starting &#39;stylesheets&#39;...
+[22:28:20] Starting &#39;javascripts&#39;...
+[22:28:20] Starting &#39;html&#39;...
+[22:28:20] Finished &#39;build&#39; after 10 ms
+[22:28:20] Starting &#39;deploy&#39;...
+deploy!
+[22:28:20] Finished &#39;deploy&#39; after 59 μs
+[22:28:20] Starting &#39;default&#39;...
+[22:28:20] Finished &#39;default&#39; after 2.89 μs
+[22:28:20] Finished &#39;html&#39; after 42 ms
+[22:28:20] Finished &#39;javascripts&#39; after 45 ms
+[22:28:20] Finished &#39;stylesheets&#39; after 52 ms
+</code></pre>
+<p>The <code>deploy</code> task finishes before the <code>build</code> tasks have completed, which is obviously not ideal!</p>
+<p>##My &#39;go to&#39; for async code (given up on the &#39;humor&#39;)</p>
+<p>I had expected to find that the <code>start</code> function would support a callback or even an event emitter. That being the case, we could use something like <a href="https://github.com/caolan/async">async</a> (a neat package for dealing with asynchronous code) to do something like:</p>
+<pre><code class="lang-js">    async
+        .eachSeries(
+            [ &#39;stylesheets&#39;, &#39;javascripts&#39;, &#39;html&#39; ],
+            function(taskName, callback) {
+                gulp.start(taskName, function() { callback(); });
+                // or
+                // gulp.start(taskName).on(&#39;end&#39;, callback);
+            },
+            function(err) {
+                cb()
+            }
+        );
+</code></pre>
+<p>But alas, not. The <code>start</code> function is fire and forget. In the example above, crazy stuff happens in the output:</p>
+<pre><code class="lang-bash">[20:34:15] Starting &#39;clean&#39;...
+[20:34:15] Finished &#39;clean&#39; after 8.25 ms
+[20:34:15] Starting &#39;build&#39;...
+[20:34:15] Starting &#39;stylesheets&#39;...
+[20:34:15] Finished &#39;stylesheets&#39; after 25 ms
+</code></pre>
+<p>##&#39;runSequence&#39;, a beautiful stopgap</p>
+<p>What you need, is an unassuming, wicked little plugin called <a href="https://www.npmjs.com/package/run-sequence">run-sequence</a>. Using &#39;run-sequence&#39;, you can do something like:</p>
+<pre><code class="lang-js">gulp.task(&#39;build&#39;, [ &#39;clean&#39; ], function(cb) {
+    runSequence(
+        [ &#39;stylesheets&#39;, &#39;javascripts&#39;, &#39;html&#39; ],
+        cb
+    );
+});
+</code></pre>
+<p>You can see from the output that we get exactly what we want:</p>
+<pre><code class="lang-bash">[20:41:34] Starting &#39;clean&#39;...
+[20:41:34] Finished &#39;clean&#39; after 8.18 ms
+[20:41:34] Starting &#39;build&#39;...
+[20:41:34] Starting &#39;stylesheets&#39;...
+[20:41:34] Starting &#39;javascripts&#39;...
+[20:41:34] Starting &#39;html&#39;...
+[20:41:34] Finished &#39;html&#39; after 44 ms
+[20:41:34] Finished &#39;stylesheets&#39; after 54 ms
+[20:41:34] Finished &#39;javascripts&#39; after 49 ms
+[20:41:34] Finished &#39;build&#39; after 56 ms
+[20:41:34] Starting &#39;deploy&#39;...
+deploy!
+[20:41:34] Finished &#39;deploy&#39; after 81 μs
+[20:41:34] Starting &#39;default&#39;...
+[20:41:34] Finished &#39;default&#39; after 3.88 μs
+</code></pre>
+<p>&#39;run-sequence&#39; is cool, but there is a better way.</p>
+<p>##The point of the post</p>
+<p>Gulp 4 uses <a href="https://github.com/phated/undertaker">undertaker</a> for task management. This is significant because &#39;undertaker&#39; supports the chaining of series and parallel tasks. In order to make use of this functionality, you need to install the prerelease version of Gulp, which is easily done by following this <a href="http://demisx.github.io/gulp4/2015/01/15/install-gulp4.html">guide</a>.</p>
+<p>You can see examples of series and parallel functionality, <a href="https://github.com/gulpjs/gulp/blob/4.0/docs/recipes/running-tasks-in-series.md">here</a>, but check this out:</p>
+<pre><code class="lang-js">gulp.task(&#39;build&#39;, gulp.series(&#39;clean&#39;, &#39;stylesheets&#39;, &#39;javascripts&#39;, &#39;html&#39;));
 
+gulp.task(&#39;deploy&#39;, gulp.series(&#39;build&#39;, function(cb) {
+    console.log(&#39;deploy!&#39;);
+    cb();
+}));
 
+gulp.task(&#39;default&#39;, gulp.series(&#39;deploy&#39;));
+</code></pre>
+<p>The difference here is that the dependancies array and callback have been replaced with chain-able <code>series</code> functions. You can see from the output below that, while the <code>deploy</code> task appears to start too early, the <code>console.log</code> demonstrates that the meat and veg of the task runs when it needs to.</p>
+<pre><code class="lang-bash">[21:39:29] Starting &#39;default&#39;...
+[21:39:29] Starting &#39;deploy&#39;...
+[21:39:29] Starting &#39;build&#39;...
+[21:39:29] Starting &#39;clean&#39;...
+[21:39:29] Finished &#39;clean&#39; after 8.95 ms
+[21:39:29] Starting &#39;stylesheets&#39;...
+[21:39:29] Finished &#39;stylesheets&#39; after 17 ms
+[21:39:29] Starting &#39;javascripts&#39;...
+[21:39:29] Finished &#39;javascripts&#39; after 32 ms
+[21:39:29] Starting &#39;html&#39;...
+[21:39:29] Finished &#39;html&#39; after 2.98 ms
+[21:39:29] Finished &#39;build&#39; after 62 ms
+[21:39:29] Starting &#39;&lt;anonymous&gt;&#39;...
+deploy!
+[21:39:29] Finished &#39;&lt;anonymous&gt;&#39; after 222 μs
+[21:39:29] Finished &#39;deploy&#39; after 63 ms
+[21:39:29] Finished &#39;default&#39; after 65 ms
+</code></pre>
+<p>To sum up. Gulp 4 is a huge step forward in terms of task management. I&#39;ve had no problems with v4 so far, but if you need to hang with v3 for a little while longer, &#39;run-sequence&#39; is a good option.</p>
 
-  
-</aside>
+		</div>
 
+		<footer>
+			<p class="meta">
+				<span class="byline author vcard">
+					Posted by <span class="fn">Richard Kimber</span>
+				</span>
+				
+	<time class='entry-date' datetime='2015-03-23T22:41:47+00:00'>
+		<span class='date'>
+			<span class='date-month'>Mar</span>
+			<span class='date-day'>23</span><span class='date-suffix'>rd</span>,
+			<span class='date-year'>2015</span>
+		</span>
+		<span class='time'>22:41</span>
+	</time>
 
-    </div>
-  </div>
-  <footer role="contentinfo"><p>
-  Copyright &copy; 2015 - Richard Kimber -
-  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
-</p>
+				
+	<span class="categories">
+			posted in
+			<a class='category' href='/blog/categories/javascript'>JavaScript</a>,
+			<a class='category' href='/blog/categories/gulp'>Gulp</a>,
+			<a class='category' href='/blog/categories/task-runners'>Task Runners</a>
+			</span>
+		
+			</p>
 
-</footer>
-  
+			<div class="sharing">
+				<a href="//twitter.com/share" class="twitter-share-button" data-url="http://rich.k3r.me/blog/2015/03/23/in-the-name-of-gulp/" data-via="kim3er" data-counturl="http://rich.k3r.me/blog/2015/03/23/in-the-name-of-gulp/">
+					Tweet
+				</a>
+				<div class="g-plusone" data-size="medium"></div>
+				<div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+			</div>
+
+			<p class="meta">
+				
+					<a class="basic-alignment left" href="/blog/2015/03/05/comics-the-drm-effect/" title="Previous Post: Comics: The DRM effect">&laquo; Comics: The DRM effect</a>
+				
+
+				
+					<a class="basic-alignment right" href="/blog/2015/04/02/controlling-cordova-from-gulp/" title="Next Post: Comics: The DRM effect">&laquo; Controlling Cordova from Gulp</a>
+				
+			</p>
+		</footer>
+	</article>
+
+	<section>
+		<h1>Comments</h1>
+		<div id="disqus_thread" aria-live="polite">
+			<noscript>
+				Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+			</noscript>
+		</div>
+	</section>
+
+</div>
 
 <script type="text/javascript">
       var disqus_shortname = 'k3r';
-      
-        
+
         // var disqus_developer = 1;
         var disqus_identifier = 'http://rich.k3r.me/blog/2015/03/23/in-the-name-of-gulp/';
         var disqus_url = 'http://rich.k3r.me/blog/2015/03/23/in-the-name-of-gulp/';
         var disqus_script = 'embed.js';
-      
+
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
       dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
@@ -627,42 +355,54 @@
     }());
 </script>
 
+		</div>
+	</div>
 
+	<footer role="contentinfo">
+		<p>
+			Copyright &copy; 2016 - Richard Kimber -
+			<span class="credit">Powered by <a href="http://rich.k3r.me">Mistletoe</a></span>
+		</p>
+	</footer>
 
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) {return;}
-  js = d.createElement(s); js.id = id; js.async = true;
-  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
+	<script type="text/javascript">
+		var disqus_shortname = 'k3r';
+		var disqus_script = 'count.js';
 
+		(function () {
+			var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+			dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+			(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+		}());
+	</script>
 
+	<div id="fb-root"></div>
+	<script>(function(d, s, id) {
+		var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) {return;}
+			js = d.createElement(s); js.id = id; js.async = true;
+			js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+	</script>
 
-  <script type="text/javascript">
-    (function() {
-      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
-      script.src = 'https://apis.google.com/js/plusone.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
-    })();
-  </script>
+	<script type="text/javascript">
+		(function() {
+			var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+			script.src = 'https://apis.google.com/js/plusone.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+		})();
+	</script>
 
-
-
-  <script type="text/javascript">
-    (function(){
-      var twitterWidgets = document.createElement('script');
-      twitterWidgets.type = 'text/javascript';
-      twitterWidgets.async = true;
-      twitterWidgets.src = '//platform.twitter.com/widgets.js';
-      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
-    })();
-  </script>
-
-
-
-
+	<script type="text/javascript">
+		(function(){
+			var twitterWidgets = document.createElement('script');
+			twitterWidgets.type = 'text/javascript';
+			twitterWidgets.async = true;
+			twitterWidgets.src = '//platform.twitter.com/widgets.js';
+			document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+		})();
+	</script>
 
 </body>
 </html>
