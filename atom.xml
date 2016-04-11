@@ -4,7 +4,7 @@
   <title><![CDATA[Adventures in brine]]></title>
   <link href="http://rich.k3r.me/atom.xml" rel="self"/>
   <link href="http://rich.k3r.me/"/>
-  <updated>2015-06-16T23:06:49+01:00</updated>
+  <updated>2016-04-11T23:12:00+01:00</updated>
   <id>http://rich.k3r.me/</id>
   <author>
     <name><![CDATA[Richard Kimber]]></name>
@@ -12,6 +12,161 @@
   </author>
   <generator uri="http://rich.k3r.me/">Mistletoe</generator>
 
+  
+    
+  <entry>
+    <title type="html"><![CDATA[]]></title>
+    <link href="http://rich.k3r.me/blog/2016/04/11/stretchy-image-headers-in-cordova/"/>
+    <updated>2016-04-11T23:12:00+01:00</updated>
+    <id>http://rich.k3r.me/blog/2016/04/11/stretchy-image-headers-in-cordova/</id>
+    <content type="html"><![CDATA[<p><em><strong>TL;DR:</strong> FB Instant Article style stretchy images, in Cordova.</em></p>
+<h2 id="the-experiment">The experiment</h2>
+<p>I love this effect I&#39;ve being seeing in iPhone apps recently. Not sure what it&#39;s called, but I believe it has something to do with <a href="http://blog.matthewcheok.com/design-teardown-stretchy-headers/">Xcode&#39;s Auto Layout feature</a>. You know, it&#39;s the stretchy image at the top of Facebook&#39;s <a href="https://instantarticles.fb.com">Instant Articles</a> pages.</p>
+<p><img src="/images/stretchy-image/instant-articles.jpg" alt="Facebook Instant Articles"></p>
+<!-- More -->
+<p>The prevailing feature of these images, is how they react to momentum scrolling. As you pull down the page down (putting the page in a negative scroll position), the header image stretches to accommodate the additional space. The image maintains aspect ratio as the image stretches, creating a zoom effect.</p>
+<p><em><strong>NOTE:</strong>  Momentum scrolling is essentially the ability to over scroll your view.</em></p>
+<p>This post is a result of me wanting to recreate this effect in JavaScript, for use in Cordova apps. Long story short, I cracked it; with a couple of <em>special considerations</em>.</p>
+<h3 id="no-feedback-from-over-scroll-">No feedback from &#39;over scroll&#39;</h3>
+<p>As I&#39;m sure you&#39;re aware, scrolling a HTML element triggers a scroll event, which happens for every change in position. Not so with momentum scrolling (or, over scroll). Let&#39;s clarify that. If you&#39;re already scrolling and you go into an over scroll, you will indeed generate scroll events, indicating negative scroll positions. However, there are two key scenarios that don&#39;t generate scroll events:</p>
+<ol>
+<li>If you motion directly into an over scroll. Your scroll position is zero and you attempt to scroll up (drag) the screen with your finger. This is not considered a scroll action and does not generate a scroll event.</li>
+<li>If you release your finger during an over scroll, the resulting elastic &#39;snap back&#39; will not generate any scroll events.</li>
+</ol>
+<p>Furthermore, I suspect the snap back animation hides the true position of the content (until complete), as I&#39;ve not managed to track the animation using timers. I&#39;ve not tried <code>requestAnimationFrame</code> in a loop, but I&#39;m not optimistic.</p>
+<h3 id="cordova-only-">Cordova only?</h3>
+<p>For the sake of speed, I did my initial tests in Safari mobile, rather than a Cordova container. There are also some advantages, debugging wise, working directly in Safari. It stuck me that this experiment could have applications beyond Cordova; Safari web applications for instance. Alas not, I was getting some weird results that weren&#39;t making much sense at first.</p>
+<p>The unexpected results, were due to the window&#39;s over scroll. Within a HTML page, you have to explicitly set which elements you&#39;d like to over scroll, by adding <code>-webkit-overflow-scrolling: touch;</code> to the CSS of your scrollable element. Unfortunately for Safari Mobile, and by extension Safari web applications, the whole window over scrolls by default.</p>
+<p><em><strong>NOTE:</strong> The same happens in a Cordova container, but can be disabled using the <code>DisallowOverscroll</code> preference.</em></p>
+<p>This effectively nullifies any attempt to over scroll a HTML element from a zero position. Attempting to over scroll an element, that is at a starting position of <code>0px</code>, results in an over scroll of the whole window.</p>
+<p>I feel like this is still something that can work outside of Cordova, which I will pursue at a later date.</p>
+<h2 id="the-implementation">The implementation</h2>
+<p>Brace yourself. My implementation exists in a MVC structure, using Babel and Sass. The outcome relies heavily on jQuery, I imagine there would be small gains to be had, by removing it.</p>
+<h3 id="html">HTML</h3>
+<p>For the HTML, I placed the header image outside the scrollable container. Feels like a cheat, but I&#39;ve stuck in an empty div (<code>div.content-spacer</code>) above the actual content, the reason for this will become clear when I discuss the CSS.</p>
+<pre><code class="lang-html">&lt;div class=&quot;image-stretch&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;scroll-parent&quot;&gt;
+    &lt;div class=&quot;content-spacer&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;content-area&quot;&gt;
+        &lt;p&gt;
+            Lorem ipsum...
+        &lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<h3 id="css">CSS</h3>
+<p>The image itself is absolutely positioned behind the scrollable content. I have an empty div (<code>div.content-spacer</code>) above the content, to ensure the image is visible.</p>
+<p><img src="/images/stretchy-image/stretchy-structure.jpg" alt="3D Representation of structure"></p>
+<p>The space provided by the empty div, is 20px shy of the size of the image. This provides a buffer for the over scroll animation, which I like. It&#39;s not necessary for the effect to work though.</p>
+<p><code>.smooth-operator</code> is a class that allows the conditionally application of transition effects, basically to track the snap back animation by using a similar transition duration.</p>
+<pre><code class="lang-css">.image-stretch {
+    background-image: url(&#39;../images/stretch.jpg&#39;);
+    background-position: 50% 50%;
+    background-size: cover;
+    height: 200px;
+
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+}
+
+.smooth-operator {
+    transition-duration: 250ms;
+    transition-property: height;
+}
+
+.content-spacer {
+    height: 180px;
+}
+
+.content-area {
+    background: #fff;
+    padding: 6px 10px;
+}
+</code></pre>
+<h3 id="javascript">JavaScript</h3>
+<p>I wanted the script to react to every pixel movement, without having to deal with same pixel twice. <code>_scrollTop</code> ensures this, by acting as the script&#39;s &#39;debounce&#39;.</p>
+<h4 id="parallax-rollup">Parallax Rollup</h4>
+<p>The finished script deals with two effects; the over scroll stretch, and a slight parallax rollup (as the image disappears off the screen). I want to talk about the parallax effect first, because while it wasn&#39;t the point of the experiment, I think it adds a nice bit of fluidity to the scroll. The effect comes at a price though.</p>
+<p><img src="/images/stretchy-image/stretchy-image-can-break.gif" alt="Parallax isn&#39;t perfect"></p>
+<p>As you scroll down the content (moving your finger up), the image tracks the content at a quarter speed of the scroll, see:</p>
+<pre><code class="lang-javascript">$imageStretch
+    .css(&#39;transform&#39;, `translateY(-${scrollTop / 4}px)`);
+</code></pre>
+<p>I think it looks great, so I&#39;ve kept it. But the cost is, if you momentum scroll back to the top of the page, the content will hit the zero position before the image realises what is going on (no scroll event). So, there is a slight jump as the image realigns itself (as the result of a <code>touchend</code> event).</p>
+<pre><code class="lang-javascript">else if (scrollTop === 0 || scrollTop &gt;= imageHeight) {
+    $imageStretch
+        .css(&#39;transform&#39;, `translateY(0px)`);
+}
+</code></pre>
+<p>To try and cheat the imbalance, the script above resets the Y position of the image to <code>0px</code>, the moment the image is out of view. Meaning that the image is already in it&#39;s starting position, should the user surprise us with a momentum scroll. The slight jump can still be seen if you momentum scroll with the image only half visible.  I just saying, you could make the overall user experience more cohesive, by not tracking the content scroll at all.</p>
+<h4 id="stretchy-image-zoom">Stretchy image zoom</h4>
+<p>The main attraction is the stretchy image zoom. As the finger pulls the view into over scroll, the image stretches to compensate. During the stretch, CSS transitions are disabled, which are then enabled during the snapback. The <code>250ms</code> transition duration has worked quite well for me in tests.</p>
+<pre><code class="lang-javascript">const imageHeight = 200;
+let _scrollTop;
+
+$(&#39;.image-stretch&#39;)
+    .on(&#39;webkitTransitionEnd transitionend&#39;, function() {
+        $(this)
+            .removeClass(&#39;smooth-operator&#39;);
+    });
+
+$(&#39;.scroll-parent&#39;)
+    .on(&#39;scroll&#39;, function() {
+        const scrollTop = $(this).scrollTop();
+
+        if (_scrollTop === scrollTop) {
+            return;
+        }
+
+        _scrollTop = scrollTop;
+
+        const $imageStretch = $(&#39;.image-stretch&#39;);
+
+        if (scrollTop &lt;= 0) {
+            $imageStretch
+                .height(imageHeight + Math.abs(scrollTop));
+
+            if (scrollTop === 0) {
+                $imageStretch
+                    .css(&#39;transform&#39;, `translateY(0px)`);
+            }
+        }
+        else if (scrollTop &gt; 0 &amp;&amp; scrollTop &lt;= imageHeight) {
+            $imageStretch
+                .css(&#39;transform&#39;, `translateY(-${scrollTop / 4}px)`);
+        }
+        else {
+            $imageStretch
+                .css(&#39;transform&#39;, `translateY(0px)`);
+        }
+    })
+    .on(&#39;touchend&#39;, function() {
+        const scrollTop = $(this).scrollTop(),
+            $imageStretch = $(&#39;.image-stretch&#39;);
+
+        if (scrollTop &lt; 0) {
+            $imageStretch
+                .addClass(&#39;smooth-operator&#39;);
+
+            $imageStretch
+                .height(imageHeight);
+        }
+        else if (scrollTop === 0 || scrollTop &gt;= imageHeight) {
+            $imageStretch
+                .css(&#39;transform&#39;, `translateY(0px)`);
+        }
+    });
+</code></pre>
+<h2 id="the-result">The result</h2>
+<p><img src="/images/stretchy-image/stretchy-image-working.gif" alt="End result"></p>
+<p>You can see the code <a href="https://github.com/kim3er/stretchy-header">here</a>. To run it yourself, ensure you have <a href="http://gulpjs.com">Gulp</a> and <a href="http://cordova.apache.org">Cordova</a> installed globally (<code>npm i -g cordova gulp</code>).</p>
+<p>Run <code>gulp build</code> from the project root, and <code>cordova build ios</code> for the cordova directory. From there, you can run the project in Xcode. I will get around to creating a README, promise.</p>
+<p>The test project was built using a <a href="http://yeoman.io/">yo</a> generator I&#39;m working on, called <a href="https://www.npmjs.com/package/generator-ml">ml</a>. Which is based on an MVC app framework I&#39;m working on, called <a href="https://www.npmjs.com/package/middle-layer">middle-layer</a>.</p>
+]]></content>
+  </entry>
+    
   
     
   <entry>

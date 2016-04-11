@@ -913,3 +913,7 @@ article > footer > a {
 
 pre {
   overflow: auto; }
+
+img {
+  margin: 0 auto;
+  display: block; }
