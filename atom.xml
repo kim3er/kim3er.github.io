@@ -1124,14 +1124,14 @@ gulp emulate
     <link href="http://rich.k3r.me/blog/2015/03/23/in-the-name-of-gulp/"/>
     <updated>2015-03-23T22:41:47+00:00</updated>
     <id>http://rich.k3r.me/blog/2015/03/23/in-the-name-of-gulp/</id>
-    <content type="html"><![CDATA[<p><em><strong>TL;DR:</strong>Use Gulp 4 if you care about task management. If you can&#39;t use Gulp 4, use Gulp 3 with &#39;runSequence&#39;. Also, I need to start reading documentation more and assuming less.</em></p>
-<p><em><strong>NOTE:</strong>You see the code over at <a href="https://github.com/kim3er/gulp-4-demo">Github</a>.</em></p>
+    <content type="html"><![CDATA[<p><em><strong>TL;DR:</strong> Use Gulp 4 if you care about task management. If you can&#39;t use Gulp 4, use Gulp 3 with &#39;runSequence&#39;. Also, I need to start reading documentation more and assuming less.</em></p>
+<p><em><strong>NOTE:</strong> You see the code over at <a href="https://github.com/kim3er/gulp-4-demo">Github</a>.</em></p>
 <p>The release of Gulp 4 is right around the corner, but you can already use it on the <a href="https://github.com/gulpjs/gulp/tree/4.0">4.0 branch</a>. Here is why you should.</p>
 <!-- more -->
-<p>##Feelings of inadequacy</p>
+<h2 id="feelings-of-inadequacy">Feelings of inadequacy</h2>
 <p>When <a href="http://gruntjs.com/">Grunt</a> gained popularity, I was excited by the premise, but underwhelmed by the execution. I feel this is more due to a deficiency on my part, rather than an actual problem with Grunt, given the <a href="http://gruntjs.com/development-team">team</a> behind it. Just looking at the <a href="http://gruntjs.com/getting-started">Getting Started</a> page causes static to course through my brain. #brains</p>
 <p>This feeling of inadequacy stayed with me until I found <a href="https://github.com/gulpjs/gulp">Gulp</a>. Gulp&#39;s barrier to entry seems a lot lower than Grunt&#39;s, it&#39;s really a tool you can just run with. Now I feel great about myself, now that I&#39;ve found &#39;my people&#39;. Amen brothers and sisters, this is the house of Gulp.</p>
-<p>##Asynchronous shrubs</p>
+<h2 id="asynchronous-shrubs">Asynchronous shrubs</h2>
 <p>It&#39;s not all roses in the garden of Gulp 3 though, well maybe it is, but those roses have thorns. And those thorns all bare the words &#39;async callbacks&#39;. If you&#39;ve ever considered Gulp tasks to be modular, building blocks of larger tasks, then you&#39;ve probably faced the same disappointment that I have, that they&#39;re not.</p>
 <p>Take this simple gulpfile:</p>
 <pre><code class="lang-js">var gulp = require(&#39;gulp&#39;)
@@ -1180,7 +1180,7 @@ gulp.task(&#39;default&#39;, [ &#39;clean&#39;, &#39;stylesheets&#39;, &#39;java
 [22:02:10] Finished &#39;default&#39; after 12 μs
 </code></pre>
 <p>Look at the fifth entry, it&#39;s the <code>clean</code> task finishing after 23 milliseconds, after all the other tasks have already started. So the clean script is still deleting stuff after the other tasks have started moving their stuff across.</p>
-<p>##Something funny about iteration</p>
+<h2 id="something-funny-about-iteration">Something funny about iteration</h2>
 <pre><code class="lang-js">gulp.task(&#39;default&#39;, [ &#39;clean&#39; ], function() {
     [ &#39;stylesheets&#39;, &#39;javascripts&#39;, &#39;html&#39; ].forEach(function(taskName) {
         gulp.start(taskName);
@@ -1221,7 +1221,7 @@ deploy!
 [22:28:20] Finished &#39;stylesheets&#39; after 52 ms
 </code></pre>
 <p>The <code>deploy</code> task finishes before the <code>build</code> tasks have completed, which is obviously not ideal!</p>
-<p>##My &#39;go to&#39; for async code (given up on the &#39;humor&#39;)</p>
+<h2 id="my-go-to-for-async-code-given-up-on-the-humor-">My &#39;go to&#39; for async code (given up on the &#39;humor&#39;)</h2>
 <p>I had expected to find that the <code>start</code> function would support a callback or even an event emitter. That being the case, we could use something like <a href="https://github.com/caolan/async">async</a> (a neat package for dealing with asynchronous code) to do something like:</p>
 <pre><code class="lang-js">    async
         .eachSeries(
@@ -1243,7 +1243,7 @@ deploy!
 [20:34:15] Starting &#39;stylesheets&#39;...
 [20:34:15] Finished &#39;stylesheets&#39; after 25 ms
 </code></pre>
-<p>##&#39;runSequence&#39;, a beautiful stopgap</p>
+<h2 id="-runsequence-a-beautiful-stopgap">&#39;runSequence&#39;, a beautiful stopgap</h2>
 <p>What you need, is an unassuming, wicked little plugin called <a href="https://www.npmjs.com/package/run-sequence">run-sequence</a>. Using &#39;run-sequence&#39;, you can do something like:</p>
 <pre><code class="lang-js">gulp.task(&#39;build&#39;, [ &#39;clean&#39; ], function(cb) {
     runSequence(
@@ -1270,7 +1270,7 @@ deploy!
 [20:41:34] Finished &#39;default&#39; after 3.88 μs
 </code></pre>
 <p>&#39;run-sequence&#39; is cool, but there is a better way.</p>
-<p>##The point of the post</p>
+<h2 id="the-point-of-the-post">The point of the post</h2>
 <p>Gulp 4 uses <a href="https://github.com/phated/undertaker">undertaker</a> for task management. This is significant because &#39;undertaker&#39; supports the chaining of series and parallel tasks. In order to make use of this functionality, you need to install the prerelease version of Gulp, which is easily done by following this <a href="http://demisx.github.io/gulp4/2015/01/15/install-gulp4.html">guide</a>.</p>
 <p>You can see examples of series and parallel functionality, <a href="https://github.com/gulpjs/gulp/blob/4.0/docs/recipes/running-tasks-in-series.md">here</a>, but check this out:</p>
 <pre><code class="lang-js">gulp.task(&#39;build&#39;, gulp.series(&#39;clean&#39;, &#39;stylesheets&#39;, &#39;javascripts&#39;, &#39;html&#39;));
