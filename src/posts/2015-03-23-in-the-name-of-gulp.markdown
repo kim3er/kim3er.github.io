@@ -6,21 +6,21 @@ comments: true
 categories: [ JavaScript, Gulp, Task Runners ]
 ---
 
-_**TL;DR:**Use Gulp 4 if you care about task management. If you can't use Gulp 4, use Gulp 3 with 'runSequence'. Also, I need to start reading documentation more and assuming less._
+_**TL;DR:** Use Gulp 4 if you care about task management. If you can't use Gulp 4, use Gulp 3 with 'runSequence'. Also, I need to start reading documentation more and assuming less._
 
-_**NOTE:**You see the code over at [Github](https://github.com/kim3er/gulp-4-demo)._
+_**NOTE:** You see the code over at [Github](https://github.com/kim3er/gulp-4-demo)._
 
 The release of Gulp 4 is right around the corner, but you can already use it on the [4.0 branch](https://github.com/gulpjs/gulp/tree/4.0). Here is why you should.
 
 <!-- more -->
 
-##Feelings of inadequacy
+## Feelings of inadequacy
 
 When [Grunt](http://gruntjs.com/) gained popularity, I was excited by the premise, but underwhelmed by the execution. I feel this is more due to a deficiency on my part, rather than an actual problem with Grunt, given the [team](http://gruntjs.com/development-team) behind it. Just looking at the [Getting Started](http://gruntjs.com/getting-started) page causes static to course through my brain. #brains
 
 This feeling of inadequacy stayed with me until I found [Gulp](https://github.com/gulpjs/gulp). Gulp's barrier to entry seems a lot lower than Grunt's, it's really a tool you can just run with. Now I feel great about myself, now that I've found 'my people'. Amen brothers and sisters, this is the house of Gulp.
 
-##Asynchronous shrubs
+## Asynchronous shrubs
 
 It's not all roses in the garden of Gulp 3 though, well maybe it is, but those roses have thorns. And those thorns all bare the words 'async callbacks'. If you've ever considered Gulp tasks to be modular, building blocks of larger tasks, then you've probably faced the same disappointment that I have, that they're not.
 
@@ -78,7 +78,7 @@ The script above takes the contents of `src` and sticks it in `dest`. There is a
 
 Look at the fifth entry, it's the `clean` task finishing after 23 milliseconds, after all the other tasks have already started. So the clean script is still deleting stuff after the other tasks have started moving their stuff across.
 
-##Something funny about iteration
+## Something funny about iteration
 
 ``` js
 gulp.task('default', [ 'clean' ], function() {
@@ -129,7 +129,7 @@ deploy!
 
 The `deploy` task finishes before the `build` tasks have completed, which is obviously not ideal!
 
-##My 'go to' for async code (given up on the 'humor')
+## My 'go to' for async code (given up on the 'humor')
 
 I had expected to find that the `start` function would support a callback or even an event emitter. That being the case, we could use something like [async](https://github.com/caolan/async) (a neat package for dealing with asynchronous code) to do something like:
 
@@ -158,7 +158,7 @@ But alas, not. The `start` function is fire and forget. In the example above, cr
 [20:34:15] Finished 'stylesheets' after 25 ms
 ```
 
-##'runSequence', a beautiful stopgap
+## 'runSequence', a beautiful stopgap
 
 What you need, is an unassuming, wicked little plugin called [run-sequence](https://www.npmjs.com/package/run-sequence). Using 'run-sequence', you can do something like:
 
@@ -193,7 +193,7 @@ deploy!
 
 'run-sequence' is cool, but there is a better way.
 
-##The point of the post
+## The point of the post
 
 Gulp 4 uses [undertaker](https://github.com/phated/undertaker) for task management. This is significant because 'undertaker' supports the chaining of series and parallel tasks. In order to make use of this functionality, you need to install the prerelease version of Gulp, which is easily done by following this [guide](http://demisx.github.io/gulp4/2015/01/15/install-gulp4.html).
 
