@@ -137,9 +137,10 @@ var APP_PATH = &#39;./app&#39;,
     CORDOVA_PATH = &#39;./cordova/www&#39;;
 
 gulp.task(&#39;del-cordova&#39;, function(cb) {
-    del([ CORDOVA_PATH + &#39;/*&#39; ], function() {
-        cb();
-    });
+    del([ CORDOVA_PATH + &#39;/*&#39; ])
+        .then(function() {
+            cb();
+        });
 });
 
 gulp.task(&#39;compile&#39;, [ &#39;del-cordova&#39; ], function(cb) {
@@ -201,6 +202,7 @@ gulp emulate
 <li>When the <code>run</code> process completes, the directory is reset.</li>
 </ol>
 <p>So there you have it, in a single Gulp command you can, transpile, populate, build and emulate. For me, this little nugget has sped up my workflow, and has made the build task more approachable to other developers working on the project.</p>
+<p><em><strong>UPDATE 13/04/2015:</strong> Updated example to use latest <code>del</code> syntax.</em></p>
 
 		</div>
 
