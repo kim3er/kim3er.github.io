@@ -1,121 +1,126 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://rich.k3r.me/blog/2016/04/11/stretchy-image-headers-in-cordova/</loc>
+    <lastmod>2016-04-11T23:12:00+01:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+    <url>
     <loc>http://rich.k3r.me/blog/2015/06/16/async-slash-await-readable-non-blocking-code/</loc>
     <lastmod>2015-06-16T23:06:49+01:00</lastmod>
     <priority>0.8</priority>
   </url>
-  <url>
+    <url>
     <loc>http://rich.k3r.me/blog/2015/05/20/simple-routing-with-javascript-decorators/</loc>
     <lastmod>2015-05-20T22:30:57+01:00</lastmod>
     <priority>0.8</priority>
   </url>
-  <url>
+    <url>
     <loc>http://rich.k3r.me/blog/2015/04/29/empty-promises-dos-and-donts-of-es6-promises/</loc>
     <lastmod>2015-04-29T22:10:03+01:00</lastmod>
     <priority>0.8</priority>
   </url>
-  <url>
+    <url>
     <loc>http://rich.k3r.me/blog/2015/04/25/a-punnet-size-guide-to-git-cherry-picking/</loc>
     <lastmod>2015-04-25T10:10:55+01:00</lastmod>
     <priority>0.8</priority>
   </url>
-  <url>
+    <url>
     <loc>http://rich.k3r.me/blog/2015/04/21/there-is-no-spoon/</loc>
     <lastmod>2015-04-21T22:25:32+01:00</lastmod>
     <priority>0.8</priority>
   </url>
-  <url>
+    <url>
     <loc>http://rich.k3r.me/blog/2015/04/12/consuming-es6-modules-in-npm-packages/</loc>
     <lastmod>2015-04-12T14:06:12+01:00</lastmod>
     <priority>0.8</priority>
   </url>
-  <url>
+    <url>
     <loc>http://rich.k3r.me/blog/2015/04/02/controlling-cordova-from-gulp/</loc>
     <lastmod>2015-04-02T22:39:27+01:00</lastmod>
     <priority>0.8</priority>
   </url>
-  <url>
+    <url>
     <loc>http://rich.k3r.me/blog/2015/03/23/in-the-name-of-gulp/</loc>
     <lastmod>2015-03-23T22:41:47+00:00</lastmod>
     <priority>0.8</priority>
   </url>
-  <url>
+    <url>
     <loc>http://rich.k3r.me/blog/2015/03/05/comics-the-drm-effect/</loc>
     <lastmod>2015-03-05T07:42:41+00:00</lastmod>
     <priority>0.8</priority>
   </url>
-  <url>
+    <url>
     <loc>http://rich.k3r.me/blog/2015/02/28/localforage-for-cross-platform-storage/</loc>
     <lastmod>2015-02-28T09:30:05+00:00</lastmod>
     <priority>0.8</priority>
   </url>
-  <url>
+    <url>
     <loc>http://rich.k3r.me/blog/2015/02/19/page-attributes-in-perch/</loc>
     <lastmod>2015-02-19T07:52:05+00:00</lastmod>
     <priority>0.8</priority>
   </url>
-  <url>
+    <url>
     <loc>http://rich.k3r.me/blog/2015/02/12/knowing-your-craft-to-the-rescue/</loc>
     <lastmod>2015-02-12T07:21:23+00:00</lastmod>
     <priority>0.8</priority>
   </url>
-  <url>
+    <url>
     <loc>http://rich.k3r.me/blog/2015/02/05/the-problem-with-web-comics/</loc>
     <lastmod>2015-02-05T21:26:56+00:00</lastmod>
     <priority>0.8</priority>
   </url>
-  <url>
+    <url>
     <loc>http://rich.k3r.me/blog/2015/01/31/helpers-as-partial-controllers/</loc>
     <lastmod>2015-01-31T18:08:46+00:00</lastmod>
     <priority>0.8</priority>
   </url>
-  <url>
+    <url>
     <loc>http://rich.k3r.me/blog/2015/01/31/casual-gaming/</loc>
     <lastmod>2015-01-31T10:26:17+00:00</lastmod>
     <priority>0.8</priority>
   </url>
-  <url>
+    <url>
     <loc>http://rich.k3r.me/blog/2015/01/22/shutting-the-world-out/</loc>
     <lastmod>2015-01-22T20:18:34+00:00</lastmod>
     <priority>0.8</priority>
   </url>
-  <url>
+    <url>
     <loc>http://rich.k3r.me/blog/2015/01/22/railsinstaller-ruby-2-dot-1-on-windows-8-dot-1/</loc>
     <lastmod>2015-01-22T19:53:44+00:00</lastmod>
     <priority>0.8</priority>
   </url>
-  <url>
+    <url>
     <loc>http://rich.k3r.me/blog/2015/01/20/finding-a-pair-of-headphones/</loc>
     <lastmod>2015-01-20T22:38:34+00:00</lastmod>
     <priority>0.8</priority>
   </url>
-  <url>
+    <url>
     <loc>http://rich.k3r.me/blog/2015/01/14/flexible-index-pages-in-perch/</loc>
     <lastmod>2015-01-14T23:14:12+00:00</lastmod>
     <priority>0.8</priority>
   </url>
-  <url>
+    <url>
     <loc>http://rich.k3r.me/blog/2015/01/13/the-funniest-men-of-all-time-rebuttal/</loc>
     <lastmod>2015-01-13T17:20:21+00:00</lastmod>
     <priority>0.8</priority>
   </url>
-  <url>
+    <url>
     <loc>http://rich.k3r.me/blog/2014/12/21/half-arsed-working-techniques/</loc>
     <lastmod>2014-12-21T11:21:41+00:00</lastmod>
     <priority>0.8</priority>
   </url>
-  <url>
+    <url>
     <loc>http://rich.k3r.me/blog/2012/11/25/converting-svn-to-git/</loc>
     <lastmod>2012-11-25T20:36:00+00:00</lastmod>
     <priority>0.8</priority>
   </url>
-  <url>
+    <url>
     <loc>http://rich.k3r.me/blog/2011/03/04/content-management-with-perch/</loc>
     <lastmod>2011-03-04T04:22:42+00:00</lastmod>
     <priority>0.8</priority>
   </url>
-  <url>
+    <url>
     <loc>http://rich.k3r.me/blog/archives/</loc>
     <lastmod>2015-06-16T23:29:45+01:00</lastmod>
     <changefreq>weekly</changefreq>
