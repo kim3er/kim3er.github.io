@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "node ./scripts/build.js",
-    "serve": "node ./scripts/serve.js",
+    "post": "node ./scripts/post.js",
     "publish": "node ./scripts/publish.js",
+    "serve": "node ./scripts/serve.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Richard Kimber",
@@ -26,6 +27,7 @@
     "node-sass": "^3.4.2",
     "nunjucks": "^2.4.1",
     "rimraf": "^2.5.2",
+    "slug": "^0.9.1",
     "striptags": "^2.1.1"
   }
 }
