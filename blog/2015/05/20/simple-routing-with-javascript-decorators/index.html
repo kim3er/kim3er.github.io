@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
 <!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
-<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
 <head>
 	<meta charset="utf-8">
 	<title>Simple routing with JavaScript Decorators Adventures in brine</title>
@@ -25,7 +28,8 @@ I can&amp;#39;t decide whether this is a legitimate use for decorators, but I kn
 	<script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
 
 	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-	<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+	<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet"
+		type="text/css">
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
 
@@ -34,7 +38,7 @@ I can&amp;#39;t decide whether this is a legitimate use for decorators, but I kn
 		_gaq.push(['_setAccount', 'UA-56802309-1']);
 		_gaq.push(['_trackPageview']);
 
-		(function() {
+		(function () {
 			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
@@ -49,7 +53,7 @@ I can&amp;#39;t decide whether this is a legitimate use for decorators, but I kn
 				<a href="/">Adventures in brine</a>
 			</h1>
 
-			<h2>A blog about code and coding.</h2>
+			<h2>A blog about code, beer, and bread.</h2>
 		</hgroup>
 	</header>
 
@@ -63,7 +67,7 @@ I can&amp;#39;t decide whether this is a legitimate use for decorators, but I kn
 		<form action="https://www.google.com/search" method="get">
 			<fieldset role="search">
 				<input type="hidden" name="sitesearch" value="rich.k3r.me">
-				<input class="search" type="text" name="q" results="0" placeholder="Search"/>
+				<input class="search" type="text" name="q" results="0" placeholder="Search" />
 			</fieldset>
 		</form>
 
@@ -338,9 +342,9 @@ class NotesController extends Controller {
 	</script>
 
 	<div id="fb-root"></div>
-	<script>(function(d, s, id) {
-		var js, fjs = d.getElementsByTagName(s)[0];
-			if (d.getElementById(id)) {return;}
+	<script>(function (d, s, id) {
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) { return; }
 			js = d.createElement(s); js.id = id; js.async = true;
 			js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
 			fjs.parentNode.insertBefore(js, fjs);
@@ -348,7 +352,7 @@ class NotesController extends Controller {
 	</script>
 
 	<script type="text/javascript">
-		(function() {
+		(function () {
 			var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
 			script.src = 'https://apis.google.com/js/plusone.js';
 			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
@@ -356,7 +360,7 @@ class NotesController extends Controller {
 	</script>
 
 	<script type="text/javascript">
-		(function(){
+		(function () {
 			var twitterWidgets = document.createElement('script');
 			twitterWidgets.type = 'text/javascript';
 			twitterWidgets.async = true;
@@ -366,4 +370,5 @@ class NotesController extends Controller {
 	</script>
 
 </body>
+
 </html>

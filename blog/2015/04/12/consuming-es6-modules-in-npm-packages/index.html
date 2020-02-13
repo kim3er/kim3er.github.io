@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
 <!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
-<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
 <head>
 	<meta charset="utf-8">
 	<title>Consuming ES6 modules in NPM packages Adventures in brine</title>
@@ -25,7 +28,8 @@ In this post I&amp;#39;m going to describe how you can make use of Babel&amp;#39
 	<script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
 
 	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-	<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+	<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet"
+		type="text/css">
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
 
@@ -34,7 +38,7 @@ In this post I&amp;#39;m going to describe how you can make use of Babel&amp;#39
 		_gaq.push(['_setAccount', 'UA-56802309-1']);
 		_gaq.push(['_trackPageview']);
 
-		(function() {
+		(function () {
 			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
@@ -49,7 +53,7 @@ In this post I&amp;#39;m going to describe how you can make use of Babel&amp;#39
 				<a href="/">Adventures in brine</a>
 			</h1>
 
-			<h2>A blog about code and coding.</h2>
+			<h2>A blog about code, beer, and bread.</h2>
 		</hgroup>
 	</header>
 
@@ -63,7 +67,7 @@ In this post I&amp;#39;m going to describe how you can make use of Babel&amp;#39
 		<form action="https://www.google.com/search" method="get">
 			<fieldset role="search">
 				<input type="hidden" name="sitesearch" value="rich.k3r.me">
-				<input class="search" type="text" name="q" results="0" placeholder="Search"/>
+				<input class="search" type="text" name="q" results="0" placeholder="Search" />
 			</fieldset>
 		</form>
 
@@ -172,7 +176,7 @@ if ( typeof noGlobal === strundefined ) {
     controller        &lt;-- Compile third
     model            &lt;-- Compile second
 </code></pre>
-<p>``` js base/base_class.js
+<p><code>`</code> js base/base_class.js
 class BaseClass {
     parent()  {
         console.log(&#39;something interesting&#39;);
@@ -186,7 +190,7 @@ class AppController extends BaseClass {
         console.log(&#39;I\&#39;m an action&#39;);
     }
 }
-</code></pre><p>``` js model/user_model.js
+</code></pre><p><code>`</code> js model/user_model.js
 class UserModel extends BaseClass {
     constructor() {
         this.parent();
@@ -202,7 +206,7 @@ class BaseController extends BaseClass {
         console.log(&#39;I\&#39;m a default action&#39;);
     }
 }
-</code></pre><p>``` js controller/app_controller.js
+</code></pre><p><code>`</code> js controller/app_controller.js
 class AppController extends BaseController {
     action()  {
         this.defaultAction();
@@ -241,7 +245,7 @@ touch gulpfile.js .gitignore
     package.json        &lt;-- This was created when you typed in \&#39;npm init\&#39;
 </code></pre>
 <p>Make &#39;.gitignore&#39; look this:</p>
-<p>``` text .gitignore
+<p><code>`</code> text .gitignore
 node_modules</p>
 <pre><code>
 Change the `main` option in &#39;package.json&#39; to read &#39;./lib/index.js&#39;. A &#39;lib&#39; directory will be created as part of the build process, which will contain our ES5 code.
@@ -255,7 +259,7 @@ Change the `main` option in &#39;package.json&#39; to read &#39;./lib/index.js&#
 </code></pre><p><code>main</code> is the entry point to our package. In a consumer, if you were to <code>require(&#39;es6-module&#39;)</code>, you&#39;ll get the exports from the <code>main</code> file.</p>
 <h4 id="the-build-script">The build script</h4>
 <p>We need a build script in our &#39;gulpfile.js&#39;.</p>
-<p>``` js gulpfile.js
+<p><code>`</code> js gulpfile.js
 var gulp = require(&#39;gulp&#39;),
     del = require(&#39;del&#39;),
     babel = require(&#39;gulp-babel&#39;);</p>
@@ -267,7 +271,7 @@ var gulp = require(&#39;gulp&#39;),
     });
 });</p>
 <p>gulp.task(&#39;build&#39;, [ &#39;clear&#39; ], function() {
-    return gulp.src([ SRC_PATH + &#39;/<em>*/</em>.js&#39; ])
+    return gulp.src([ SRC_PATH + &#39;/*<em>/</em>.js&#39; ])
                 .pipe(babel({ blacklist: [ &#39;useStrict&#39; ] }))
                 .pipe(gulp.dest(LIB_PATH));
 });</p>
@@ -294,7 +298,7 @@ npm install --save-dev gulp del gulp-babel
     clever_class.js    &lt;-- An example module
     index.js        &lt;-- Our main file
 </code></pre>
-<p>``` js src/clever_class.js
+<p><code>`</code> js src/clever_class.js
 export class CleverClass {
     constructor() {
         console.log(&#39;I\&#39;m a clever class&#39;);
@@ -324,7 +328,7 @@ mkdir app
 touch gulpfile.js .gitignore
 </code></pre>
 <p>Here is our &#39;.gitignore&#39;:</p>
-<p>``` text .gitignore
+<p><code>`</code> text .gitignore
 .web
 node_modules</p>
 <pre><code>
@@ -338,7 +342,7 @@ module-consumer
     package.json        &lt;-- This was created when you typed in \&#39;npm init\&#39;
 </code></pre><h4 id="the-build-script">The build script</h4>
 <p>Our test app is going to be a very simple website, so we&#39;re going to need a web server, in this case <a href="https://github.com/senchalabs/connect">Connect</a>. Because we&#39;re using a website as our testbed, we need to a way to consume the NPM package in a way that the browser understands; for this, we will use <a href="http://browserify.org/">Browserify</a>.</p>
-<p>``` js gulpfile.js
+<p><code>`</code> js gulpfile.js
 var gulp = require(&#39;gulp&#39;),
     connect = require(&#39;gulp-connect&#39;),
     del = require(&#39;del&#39;),
@@ -376,7 +380,7 @@ var gulp = require(&#39;gulp&#39;),
 <pre><code>cb();
 </code></pre><p>});</p>
 <p>gulp.task(&#39;livereload&#39;, function () {
-    return gulp.src( WEB_PATH + &#39;/<em>*/</em>&#39; )
+    return gulp.src( WEB_PATH + &#39;/*<em>/</em>&#39; )
         .pipe(connect.reload());
 });</p>
 <p>gulp.task(&#39;serve&#39;, [ &#39;clear&#39; ], function(cb) {
@@ -386,7 +390,7 @@ var gulp = require(&#39;gulp&#39;),
         function() {
             watch([ APP_PATH + &#39;/app.js&#39; ], function() { gulp.start(&#39;js&#39;); });
             watch([ APP_PATH + &#39;/index.html&#39; ], function() { gulp.start(&#39;index&#39;); });
-            watch([ WEB_PATH + &#39;/<em>*/</em>&#39; ], function() { gulp.start(&#39;livereload&#39;); });</p>
+            watch([ WEB_PATH + &#39;/*<em>/</em>&#39; ], function() { gulp.start(&#39;livereload&#39;); });</p>
 <pre><code>        cb();
     }
 );
@@ -423,7 +427,7 @@ npm install --save-dev gulp gulp-connect del gulp-watch run-sequence babelify br
 <p>This is what we type into terminal. It&#39;s a &#39;stitch everything together task&#39;. We use Run Sequence to run our two compilation tasks, <code>js</code> and <code>index</code>, before kicking off the web server task <code>connect</code>. Finally, we set off the file watchers, that react accordingly to file changes.</p>
 <h4 id="the-code">The code</h4>
 <p>I&#39;m going to start by boilerplating &#39;index.html&#39; in the &#39;app&#39; directory; the sole point of this file is to load &#39;app.js&#39;.</p>
-<p>``` html app/index.html
+<p><code>`</code> html app/index.html
 &lt;!DOCTYPE html&gt;</p>
 <p><html></p>
 <p><head>
@@ -578,9 +582,9 @@ new es6.CleverClass();
 	</script>
 
 	<div id="fb-root"></div>
-	<script>(function(d, s, id) {
-		var js, fjs = d.getElementsByTagName(s)[0];
-			if (d.getElementById(id)) {return;}
+	<script>(function (d, s, id) {
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) { return; }
 			js = d.createElement(s); js.id = id; js.async = true;
 			js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
 			fjs.parentNode.insertBefore(js, fjs);
@@ -588,7 +592,7 @@ new es6.CleverClass();
 	</script>
 
 	<script type="text/javascript">
-		(function() {
+		(function () {
 			var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
 			script.src = 'https://apis.google.com/js/plusone.js';
 			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
@@ -596,7 +600,7 @@ new es6.CleverClass();
 	</script>
 
 	<script type="text/javascript">
-		(function(){
+		(function () {
 			var twitterWidgets = document.createElement('script');
 			twitterWidgets.type = 'text/javascript';
 			twitterWidgets.async = true;
@@ -606,4 +610,5 @@ new es6.CleverClass();
 	</script>
 
 </body>
+
 </html>

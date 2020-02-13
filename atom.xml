@@ -4,7 +4,7 @@
   <title><![CDATA[Adventures in brine]]></title>
   <link href="http://rich.k3r.me/atom.xml" rel="self"/>
   <link href="http://rich.k3r.me/"/>
-  <updated>2016-05-08T11:18:31+01:00</updated>
+  <updated>2020-02-13T08:55:12+00:00</updated>
   <id>http://rich.k3r.me/</id>
   <author>
     <name><![CDATA[Richard Kimber]]></name>
@@ -12,6 +12,34 @@
   </author>
   <generator uri="http://rich.k3r.me/">Mistletoe</generator>
 
+  
+    
+  <entry>
+    <title type="html"><![CDATA[]]></title>
+    <link href="http://rich.k3r.me/blog/2020/02/13/dont-break-the-seal/"/>
+    <updated>2020-02-13T08:55:12+00:00</updated>
+    <id>http://rich.k3r.me/blog/2020/02/13/dont-break-the-seal/</id>
+    <content type="html"><![CDATA[<p><img src="/images/feature/dont-break-the-seal.jpg" alt="My jars"></p>
+<p>I&#39;m no expert, but... No, I&#39;m no expert. I am part of a Facebook group though, I&#39;m part of a lot of Facebook groups, I&#39;m a little obsessed, but this Facebook group in particular is a group for sourdough bakers. A post went up yesterday asking about the proper way to store sourdough. Most commenters were using a Kilner style clip top jar, which was no surprise, I use one myself. What did surprise me, shocked me to my core in fact, was that almost all of my brethren were advocating the removal of the seal from their clip top jars. I really, really don&#39;t think you need to do this, and I&#39;d like to explain why I think this is the case.</p>
+<!-- more -->
+<p>Firstly, sorry, do what you like, I&#39;m just as sure that taking the seal off isn&#39;t hurting the starter. I&#39;m not telling what to do, it just seems a shame not to use the seal that you already own.</p>
+<p>I&#39;ve been storing starter in intact clip tops for over five years now, which is pretty mad when I think about it. But I appreciate that some of you have been working with starter for a lot longer.</p>
+<p>The conundrum is this, fermentation creates CO2 that needs to go somewhere. But, you don&#39;t want to leave your starter open to the elements, as it&#39;ll dry or possibly pick an unwanted yeast or other infection.</p>
+<p>Clip top jars solve this, by creating a rubber or silicone seal, you prevent the nasties from getting in. Then, as CO2 builds up, the pressure forces the lid up, allowing gas to escape.</p>
+<p>The arm wrestle is between the biceps of the glass and the metal clip! Who will win? It&#39;s the glass, usually, see below.</p>
+<p>But what are the mitigating factors?</p>
+<p>Quality of the starter. Personally, I don&#39;t think my starter has it within itself to break an ice cream wafer. I am terrible person though who regularly starves the poor fella. The flip side to that is that maybe you&#39;re a highly motivated baker, who regularly feeds (and presumably uses) your starter. In which case, you&#39;re opening the lid a lot, otherwise known as burping.</p>
+<p>Either you&#39;re treating it mean, and it&#39;s totally lack lustre, or treating it keen, and the pressure really doesn&#39;t get a chance to build up.</p>
+<p>Quality of the jar. If it&#39;s going to break it&#39;s going to break. In my experience the metal gives way before the glass. That was my fault though, and I promise not to put them in the dish washer anymore. Probably don&#39;t put your starter in a jar with a hairline crack.</p>
+<p>I also brew beer, and actually I&#39;ve not been terrible recently. Fermentation of a decent beer is a lot more active than your average sourdough, so you tend to use airlocks. Airlocks are also great as a visual indicator of the potency of the fermentation. Vigorous bubbling is a good sign you&#39;ve done something right. I bring this up for two reasons:</p>
+<p>Bottle priming. After the primary fermentation has finished, many brewers reignite the fermentation to carbonate their beers. Before pouring their beer into flip top bottles, they add a little sugar. The seal of the bottle forces the CO2 into the beer, creating bubbles. You can over do it though, and I know people who have had exploding bottles. I guess sometimes, the metal does win. But again, mitigating factors. In beer head space is an absolute no no. You want to fill those bottles right to the top. You&#39;d never do that with a starter, you want it to grow.
+I&#39;ve done something potentially pretty silly, but so far (🤞), it helps proves my point. I hate waste, but in my last brew I ended up with some surplus wort (unfermented beer). I couldn&#39;t throw it away, so I bunged it in a clip top (with a smidge of yeast) and put it in the cupboard.</p>
+<p>A day later it sounded like a kettle was boiling in the kitchen. After hunting around, I realised it was the leftover wort/beer. The pressure was forcing the gas through seal, creating a slight whistle. I was so worried I&#39;d created a beer bomb, that I went out and bought a fermentation jar with built in airlock, then decided it was a great experiment so haven&#39;t used the new jar. So far, no explosions. Crucially though, a similar amount of headroom to that of my starter.</p>
+<p>The picture. To the left, a summer fruit wheat beer. Centre, my poor starter. I don&#39;t usually measure it&#39;s ability to grow, but I&#39;m hoping to post a picture later to show I haven&#39;t died due to a sourdough explosion. To the right, unused fermentation jar.</p>
+<p>I hope this is of some help, or prompts someone to demonstrate how utterly wrong I am. If your starter does explode, you should never believe what you read on the internet.</p>
+]]></content>
+  </entry>
+    
   
     
   <entry>
@@ -573,7 +601,7 @@ c.asyncAction()
 </code></pre><p>Ideally, I wanted to pick the very last commit on <code>wrong-branch</code> and append it to end of <code>develop</code>. The contents of the commit was mostly in isolation of the rest of the project, so I didn&#39;t expect any conflicts.</p>
 <h2 id="precautions">Precautions</h2>
 <p>So, what did I do? Firstly, I took two precautionary steps:</p>
-<h3 id="1-update-wrong-branch-with-develop-">1. Update <code>wrong-branch</code> with <code>develop</code></h3>
+<h3 id="1-update-wrong-branch-with-develop">1. Update <code>wrong-branch</code> with <code>develop</code></h3>
 <p>I wanted to reduce the risk of conflict, so I made sure <code>wrong-branch</code> had the latest updates from <code>develop</code>.</p>
 <pre><code class="lang-bash">git checkout wrong-branch
 git merge develop
@@ -719,7 +747,7 @@ if ( typeof noGlobal === strundefined ) {
     controller        &lt;-- Compile third
     model            &lt;-- Compile second
 </code></pre>
-<p>``` js base/base_class.js
+<p><code>`</code> js base/base_class.js
 class BaseClass {
     parent()  {
         console.log(&#39;something interesting&#39;);
@@ -733,7 +761,7 @@ class AppController extends BaseClass {
         console.log(&#39;I\&#39;m an action&#39;);
     }
 }
-</code></pre><p>``` js model/user_model.js
+</code></pre><p><code>`</code> js model/user_model.js
 class UserModel extends BaseClass {
     constructor() {
         this.parent();
@@ -749,7 +777,7 @@ class BaseController extends BaseClass {
         console.log(&#39;I\&#39;m a default action&#39;);
     }
 }
-</code></pre><p>``` js controller/app_controller.js
+</code></pre><p><code>`</code> js controller/app_controller.js
 class AppController extends BaseController {
     action()  {
         this.defaultAction();
@@ -788,7 +816,7 @@ touch gulpfile.js .gitignore
     package.json        &lt;-- This was created when you typed in \&#39;npm init\&#39;
 </code></pre>
 <p>Make &#39;.gitignore&#39; look this:</p>
-<p>``` text .gitignore
+<p><code>`</code> text .gitignore
 node_modules</p>
 <pre><code>
 Change the `main` option in &#39;package.json&#39; to read &#39;./lib/index.js&#39;. A &#39;lib&#39; directory will be created as part of the build process, which will contain our ES5 code.
@@ -802,7 +830,7 @@ Change the `main` option in &#39;package.json&#39; to read &#39;./lib/index.js&#
 </code></pre><p><code>main</code> is the entry point to our package. In a consumer, if you were to <code>require(&#39;es6-module&#39;)</code>, you&#39;ll get the exports from the <code>main</code> file.</p>
 <h4 id="the-build-script">The build script</h4>
 <p>We need a build script in our &#39;gulpfile.js&#39;.</p>
-<p>``` js gulpfile.js
+<p><code>`</code> js gulpfile.js
 var gulp = require(&#39;gulp&#39;),
     del = require(&#39;del&#39;),
     babel = require(&#39;gulp-babel&#39;);</p>
@@ -814,7 +842,7 @@ var gulp = require(&#39;gulp&#39;),
     });
 });</p>
 <p>gulp.task(&#39;build&#39;, [ &#39;clear&#39; ], function() {
-    return gulp.src([ SRC_PATH + &#39;/<em>*/</em>.js&#39; ])
+    return gulp.src([ SRC_PATH + &#39;/*<em>/</em>.js&#39; ])
                 .pipe(babel({ blacklist: [ &#39;useStrict&#39; ] }))
                 .pipe(gulp.dest(LIB_PATH));
 });</p>
@@ -841,7 +869,7 @@ npm install --save-dev gulp del gulp-babel
     clever_class.js    &lt;-- An example module
     index.js        &lt;-- Our main file
 </code></pre>
-<p>``` js src/clever_class.js
+<p><code>`</code> js src/clever_class.js
 export class CleverClass {
     constructor() {
         console.log(&#39;I\&#39;m a clever class&#39;);
@@ -871,7 +899,7 @@ mkdir app
 touch gulpfile.js .gitignore
 </code></pre>
 <p>Here is our &#39;.gitignore&#39;:</p>
-<p>``` text .gitignore
+<p><code>`</code> text .gitignore
 .web
 node_modules</p>
 <pre><code>
@@ -885,7 +913,7 @@ module-consumer
     package.json        &lt;-- This was created when you typed in \&#39;npm init\&#39;
 </code></pre><h4 id="the-build-script">The build script</h4>
 <p>Our test app is going to be a very simple website, so we&#39;re going to need a web server, in this case <a href="https://github.com/senchalabs/connect">Connect</a>. Because we&#39;re using a website as our testbed, we need to a way to consume the NPM package in a way that the browser understands; for this, we will use <a href="http://browserify.org/">Browserify</a>.</p>
-<p>``` js gulpfile.js
+<p><code>`</code> js gulpfile.js
 var gulp = require(&#39;gulp&#39;),
     connect = require(&#39;gulp-connect&#39;),
     del = require(&#39;del&#39;),
@@ -923,7 +951,7 @@ var gulp = require(&#39;gulp&#39;),
 <pre><code>cb();
 </code></pre><p>});</p>
 <p>gulp.task(&#39;livereload&#39;, function () {
-    return gulp.src( WEB_PATH + &#39;/<em>*/</em>&#39; )
+    return gulp.src( WEB_PATH + &#39;/*<em>/</em>&#39; )
         .pipe(connect.reload());
 });</p>
 <p>gulp.task(&#39;serve&#39;, [ &#39;clear&#39; ], function(cb) {
@@ -933,7 +961,7 @@ var gulp = require(&#39;gulp&#39;),
         function() {
             watch([ APP_PATH + &#39;/app.js&#39; ], function() { gulp.start(&#39;js&#39;); });
             watch([ APP_PATH + &#39;/index.html&#39; ], function() { gulp.start(&#39;index&#39;); });
-            watch([ WEB_PATH + &#39;/<em>*/</em>&#39; ], function() { gulp.start(&#39;livereload&#39;); });</p>
+            watch([ WEB_PATH + &#39;/*<em>/</em>&#39; ], function() { gulp.start(&#39;livereload&#39;); });</p>
 <pre><code>        cb();
     }
 );
@@ -970,7 +998,7 @@ npm install --save-dev gulp gulp-connect del gulp-watch run-sequence babelify br
 <p>This is what we type into terminal. It&#39;s a &#39;stitch everything together task&#39;. We use Run Sequence to run our two compilation tasks, <code>js</code> and <code>index</code>, before kicking off the web server task <code>connect</code>. Finally, we set off the file watchers, that react accordingly to file changes.</p>
 <h4 id="the-code">The code</h4>
 <p>I&#39;m going to start by boilerplating &#39;index.html&#39; in the &#39;app&#39; directory; the sole point of this file is to load &#39;app.js&#39;.</p>
-<p>``` html app/index.html
+<p><code>`</code> html app/index.html
 &lt;!DOCTYPE html&gt;</p>
 <p><html></p>
 <p><head>
@@ -1627,7 +1655,7 @@ The problem with web comics, I&#39;ve discovered while writing this post, is me 
 <pre><code class="lang-ruby">render( partial: &quot;path/to/partial&quot;, locals: { param_one: &quot;something&quot; } )
 </code></pre>
 <p>Really tiresome, I know. Anyway, as the partial was being used more, the logic being stuck into said partial was also increasing exponentially.</p>
-<p>``` erb partial.html.erb
+<p><code>`</code> erb partial.html.erb
 &lt;%
 param_three = false unless defined?( param_three )</p>
 <p>if param_two == &quot;Something&quot;
@@ -1649,7 +1677,7 @@ module SomethingHelpers
 
 end
 </code></pre><p>And then the revelation, &quot;Hang on a minute, I can put my logic in here as well&quot;. Hello.</p>
-<p>``` ruby something_helpers.rb
+<p><code>`</code> ruby something_helpers.rb
 module SomethingHelpers</p>
 <pre><code>def render_something(param_one, param_two, param_three = false)
     if param_two == &quot;Something&quot;
@@ -1924,6 +1952,7 @@ I&#39;m still not 100% clear what happened here. We manage a number of GIT repos
             &lt;/a&gt;
         &lt;/div&gt;
     &lt;/article&gt;
+
 </code></pre>
 <p>The title is inferred from the <code>pageNavText</code> variable (set in the <code>foreach</code> loop), likewise the url comes from <code>pagePath</code>. The thumbnail and the except are retrieved using standard Perch content tags, as it is after all content being rendered using <code>perch_content_custom</code>.</p>
 <p>Your resulting index page will look something like:</p>
